@@ -675,6 +675,9 @@ left:85%;
     #code {
         width: clamp(2800px, 50vw, 600px);
         left: clamp(80px, 25vw, 300px);
+
+
+
     }
 }
 
@@ -1325,6 +1328,8 @@ left:85%;
    font-size: 15px;;
         white-space: pre-wrap; /* Preserve whitespace and line breaks */
         font-family: monospace; /* Use a monospace font for better readability */
+        max-width: 35vw;
+        overflow-x: auto;
 }
 
 /* For mobile responsiveness */
@@ -1332,6 +1337,12 @@ left:85%;
     #code {
         white-space: pre-wrap; /* Allow wrapping on small screens */
         word-break: break-all;  /* Break long words if needed */
+    }
+}
+/* For mobile responsiveness */
+@media (max-width: 1900px) {
+    #code {
+       overflow-x:auto;
     }
 }
 
@@ -1812,63 +1823,13 @@ left:85%;
             resize: vertical;
         }
         
-        /* Éditeur avancé - intégré mais caché */
-        #advanced-editor-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.8);
-            z-index: 1000;
-            padding: 20px;
-        }
-        
-        #advanced-editor-container {
-            background: white;
-            border-radius: 10px;
-            height: 90vh;
-            display: flex;
-            flex-direction: column;
-            animation: fadeIn 0.3s;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        /* Éditeur avancé - overlay */
-#advanced-editor-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0,0,0,0.8);
-    z-index: 1000;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Conteneur de l'éditeur avancé */
-#advanced-editor-container {
-    background: white;
-    width: 90%;
-    max-width: 1200px;
-    height: 90vh;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-}
-
-/* Zone de texte de l'éditeur avancé */
-#advanced-editor {
-    flex-grow: 1;
-    padding: 20px;
-    font-family: 'Consolas', monospace;
-    border: none;
-    resize: none;
-    outline: none;
+     
+#code{
+    overflow: auto;  /* Auto-scroll in both directions */
+    white-space: pre;  /* Preserve exact formatting */
+    font-family: 'Courier New', monospace;
+    line-height: 1.5;
+    tab-size: 4;  /* For proper indentation */
+    /* Zoom origin (top-left corner) */
+  
 }
