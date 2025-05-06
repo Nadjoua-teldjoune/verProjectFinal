@@ -42,17 +42,16 @@
       </div>
       
       <div class="nav-icon">
-        <button class="nav-btn" id="compileRunBtn" title="verify & run" onclick="runFunction()">
+        <button class="nav-btn" id="compileRunBtn" title="run" onclick="runFunction()">
           <i class="fas fa-play"></i>
         </button>
       </div>
 
       
       <a href="dashboard.html">
-        <!-- Remplacez "dashboard.html" par le chemin de votre fichier HTML -->
-     
+      
           <i class="fas fa-tachometer-alt"></i>
-          <!-- Icône de tableau de bord -->
+          
      
       </a>
       <a href="guide.html"> <i class="fas fa-book"></i> </a
@@ -111,11 +110,12 @@
       </div>
      
   </div>
-      <!-- Zone d'édition -->
+     
      
        
    
-      <!-- Zone d'affichage du résultat -->
+    
+        <!-- Zone d'édition -->
        <div>
       <div class="wr">
      
@@ -134,7 +134,6 @@
    </div>
         <div class="toggle-container">
           <button class="toggle-btn" onclick="toggleButtons()">
-            <!-- Default icon is "+" -->
             </div>
             <div class="trace-proposer-title">
               <div class="title-content">
@@ -180,7 +179,7 @@
         </div>
       </div>
 
-      <!-- Enhanced Result Section -->
+        <!-- Zone d'affichage du résultat -->
       <div class="result-section">
         <div class="result-header">
           <div class="result-title">
@@ -198,7 +197,7 @@
         </div>
       </div>
       <div class="app-wrapper">
-        <!-- Votre contenu principal ici -->
+     
         
        
           <iframe class="output-container" id="output-frame"></iframe>
@@ -316,18 +315,12 @@
         iframe.close();
       }
       
-      /*function validateTraceFormat(content) {
-  const lines = content.split('\n');
-  return lines.every(line => {
-    return line === '' || line.match(/^CALLER:.+,METHOD:.+,CALLEE:.+$/);
-  });
-}
-*/
+      
      
       function uploadFile() {
     const fileInput = document.getElementById("file-input");
     const codeDisplay = document.getElementById("code"); // Zone d'affichage du fichier
-    const guideLink = "help.html"; // Remplacez par votre vrai lien
+    const guideLink = "help.html"; 
 
     if (fileInput.files.length === 0) {
         alert("❌ Veuillez sélectionner un fichier à charger.");
@@ -546,14 +539,14 @@ CALLER:User,METHOD:access,CALLEE:Resource;`
     let codeEditor = document.getElementById("code");
 
     if (codeEditor) {
-        codeEditor.innerText = "Écrivez votre trace ici"; // Reset text
-        codeEditor.focus(); // Put cursor inside the editor
+        codeEditor.innerText = "Write your Trace here "; // Reset text
+        codeEditor.focus(); //  cursor inside the editor
     }
 }
 
       function removePlaceholder() {
         let code = document.getElementById("code");
-        if (code.innerText === "Écrivez votre trace ici") {
+        if (code.innerText === "Write your Trace here ") {
           code.innerText = "";
         }
       }
@@ -561,7 +554,7 @@ CALLER:User,METHOD:access,CALLEE:Resource;`
       function addPlaceholder() {
         let code = document.getElementById("code");
         if (code.innerText.trim() === "") {
-          code.innerText = "Écrivez votre trace ici";
+          code.innerText = "Write your Trace here ";
         }
       }
       function highlightKeywords() {
@@ -813,176 +806,9 @@ class TraceAnalyzer {
   }
 }
 
-/**
- * Generates AI-powered security trace pattern suggestions
- * @param {string} tactic - The security tactic to generate a trace for
- * @param {number} [count=3] - Number of trace examples to generate
- * @returns {Promise<Array<string>>} - Array of generated trace patterns
- */
- async function getAITraceSuggestion(tactic, count = 3) {
-  // Validate input
-  if (!tactic || typeof tactic !== 'string') {
-    throw new Error('Invalid tactic provided');
-  }
 
-  const validTactics = [
-    'Maintain Copies',
-    'Authorize User',
-    'Maintain Confidentiality',
-    'Ping Echo',
-    'One-time Password',
-    'ID/Password & Maintain Confidentiality'
-  ];
 
-  if (!validTactics.includes(tactic)) {
-    throw new Error(`Unsupported tactic. Valid options are: ${validTactics.join(', ')}`);
-  }
 
-  // Construct the AI prompt
-  const prompt = `
-    You are a security software expert. Generate ${count} diverse and realistic examples 
-    of security trace patterns for the "${tactic}" tactic. Each trace should follow this exact format:
-    CALLER:ClassName,METHOD:methodName,CALLEE:ClassName
-    
-    Include 3-5 method calls that demonstrate the tactic in action.
-    Use realistic class and method names that would appear in enterprise software.
-    Separate each complete trace example with "====".
-    
-    For ${tactic}, focus on these key aspects:
-    ${getTacticSpecificGuidance(tactic)}
-  `;
-
-  try {
-    // Call OpenAI API (or your preferred AI service)
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
-      },
-      body: JSON.stringify({
-        model: 'gpt-4',
-        messages: [{
-          role: 'system',
-          content: 'You are a security trace pattern specialist. Generate accurate, technical trace examples.'
-        }, {
-          role: 'user',
-          content: prompt
-        }],
-        temperature: 0.7,
-        max_tokens: 1000
-      })
-    });
-
-    if (!response.ok) {
-      throw new Error(`AI API error: ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    const content = data.choices[0]?.message?.content;
-    
-    if (!content) {
-      throw new Error('No content received from AI');
-    }
-
-    // Process the response into clean trace patterns
-    return processAIResponse(content);
-  } catch (error) {
-    console.error('AI suggestion failed:', error);
-    // Fallback to default patterns
-    return getDefaultPatterns(tactic, count);
-  }
-}
-
-// Helper function to add tactic-specific guidance
-function getTacticSpecificGuidance(tactic) {
-  const guidance = {
-    'Maintain Copies': `Focus on replication methods like copy(), sync(), replicate(). 
-      Include primary and backup storage interactions.`,
-    'Authorize User': `Show authentication flows with methods like authenticate(), 
-      verifyCredentials(), checkAccess().`,
-    'Maintain Confidentiality': `Highlight encryption/decryption with methods like encryptData(), 
-      decrypt(), secureTransmit().`,
-    'Ping Echo': `Demonstrate health checking with ping(), echo(), checkStatus(), 
-      and fault handling methods.`,
-    'One-time Password': `Show OTP generation, validation with generateOTP(), 
-      validateOTP(), expireToken().`,
-    'ID/Password & Maintain Confidentiality': `Combine authentication and encryption 
-      with methods like encryptCredentials(), verifySecureAuth().`
-  };
-  
-  return guidance[tactic] || 'Demonstrate the security pattern with realistic method calls.';
-}
-
-// Process the AI response into clean trace arrays
-function processAIResponse(content) {
-  return content
-    .split('====')
-    .map(trace => trace.trim())
-    .filter(trace => trace.length > 0)
-    .map(trace => {
-      // Remove any commentary or non-trace lines
-      return trace.split('\n')
-        .filter(line => line.startsWith('CALLER:'))
-        .join('\n');
-    });
-}
-
-// Fallback default patterns
-function getDefaultPatterns(tactic, count) {
-  const defaults = {
-    'Maintain Copies': [
-      `CALLER:DataManager,METHOD:replicateData,CALLEE:PrimaryStorage\n` +
-      `CALLER:DataManager,METHOD:copyToBackup,CALLEE:BackupStorage\n` +
-      `CALLER:BackupStorage,METHOD:verifyCopy,CALLEE:DataManager`,
-      
-      `CALLER:DatabaseSync,METHOD:syncRecords,CALLEE:MainDatabase\n` +
-      `CALLER:DatabaseSync,METHOD:updateReplica,CALLEE:ReplicaDatabase\n` +
-      `CALLER:ReplicaDatabase,METHOD:acknowledgeSync,CALLEE:DatabaseSync`
-    ],
-    // ... other default patterns
-  };
-  
-  return defaults[tactic]?.slice(0, count) || [];
-}
-
-// Example usage:
-document.getElementById('suggest-btn').addEventListener('click', async () => {
-  const tactic = document.getElementById('tactic-select').value;
-  const loadingIndicator = document.getElementById('loading');
-  const resultsContainer = document.getElementById('ai-results');
-  
-  loadingIndicator.style.display = 'block';
-  resultsContainer.innerHTML = '';
-  
-  try {
-    const suggestions = await getAITraceSuggestion(tactic, 2);
-    
-    suggestions.forEach((trace, index) => {
-      const traceElement = document.createElement('div');
-      traceElement.className = 'ai-suggestion';
-      traceElement.innerHTML = `
-        <h4>Option ${index + 1}:</h4>
-        <pre>${trace}</pre>
-        <button onclick="useThisPattern(${index})">Use This Pattern</button>
-      `;
-      resultsContainer.appendChild(traceElement);
-    });
-  } catch (error) {
-    resultsContainer.innerHTML = `
-      <div class="error">Error generating suggestions: ${error.message}</div>
-    `;
-  } finally {
-    loadingIndicator.style.display = 'none';
-  }
-});
-
-function useThisPattern(index) {
-  const suggestion = document.querySelectorAll('.ai-suggestion')[index];
-  const trace = suggestion.querySelector('pre').textContent;
-  document.getElementById('code').value = trace;
-  highlightTraceSyntax(); // Your existing syntax highlighting function
-}
 
 function compileOnly() {
             console.log("Compile only selected");
