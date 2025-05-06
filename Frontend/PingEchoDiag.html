@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ping/Echo Tactic - Diagramme Dynamique</title>
+    <style>
+      /* Reset et styles de base */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Arial", sans-serif;
+        background-color: #121212;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        flex-direction: column;
+      }
+
+      /* Conteneur principal */
+      .container {
+        border: 2px solid #ffd700; /* Bordure dorée */
+        padding: 20px;
+        width: 80%; /* Largeur ajustée */
+        text-align: center;
+        position: relative;
+        opacity: 0;
+        transform: translateY(-20px);
+        transition: opacity 1s ease-in, transform 1s ease-in;
+        background-color: #1e1e1e;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        display: flex; /* Disposition horizontale */
+        justify-content: center; /* Centrage horizontal */
+        align-items: center; /* Centrage vertical */
+        gap: 20px; /* Espace entre les éléments */
+      }
+
+      /* Boîtes représentant les entités */
+      .box {
+        border: 1px solid #ffd700; /* Bordure dorée */
+        padding: 15px;
+        text-align: center;
+        background-color: #2a2a2a;
+        opacity: 0;
+        transform: scale(0.8);
+        transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out,
+          box-shadow 0.3s ease;
+        border-radius: 8px;
+        cursor: pointer;
+        min-width: 150px; /* Largeur minimale pour les boîtes */
+      }
+
+      .box:hover {
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.7); /* Ombre dorée au survol */
+        transform: scale(1.05);
+      }
+
+      /* Flèches */
+      .arrow {
+        width: 50px; /* Longueur réduite pour s'adapter à la disposition horizontale */
+        height: 2px;
+        background: #ffd700; /* Couleur dorée */
+        position: relative;
+        opacity: 0;
+        transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
+      }
+
+      .arrow::after {
+        content: "▶";
+        position: absolute;
+        right: -10px;
+        top: -5px;
+        color: #ffd700; /* Couleur dorée */
+      }
+
+      .arrow:hover {
+        transform: scale(1.2); /* Effet de zoom au survol */
+      }
+
+      /* Séquence d'interactions */
+      .sequence {
+        border: 2px solid #ffd700; /* Bordure dorée */
+        padding: 15px;
+        margin-top: 20px;
+        width: 80%;
+        text-align: left;
+        opacity: 0;
+        transform: translateY(-20px);
+        transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+        background-color: #2a2a2a;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+      }
+
+      /* Interactions individuelles */
+      .interaction {
+        padding: 10px;
+        margin: 10px 0;
+        border-bottom: 1px dashed #ffd700; /* Bordure dorée */
+        opacity: 0;
+        transform: translateX(-20px);
+        transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
+      }
+
+      .interaction:hover {
+        background-color: rgba(255, 215, 0, 0.1); /* Fond doré au survol */
+        border-radius: 5px;
+      }
+
+      /* Titres */
+      h3,
+      h4 {
+        color: #ffd700; /* Couleur dorée */
+        margin-bottom: 15px;
+      }
+
+      h3 {
+        font-size: 1.5em;
+      }
+
+      h4 {
+        font-size: 1.2em;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 600px) {
+        .container {
+          flex-direction: column; /* Disposition verticale sur petits écrans */
+          width: 90%;
+        }
+
+        .sequence {
+          width: 90%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container" id="container">
+      <h3>Ping/Echo Tactic</h3>
+      <div class="box" id="pingSender">PingSender</div>
+      <div class="arrow" id="arrow1"></div>
+      <div class="box" id="faultMonitor">FaultMonitor</div>
+      <div class="arrow" id="arrow2"></div>
+      <div class="box" id="pingReceiver">PingReceiver</div>
+    </div>
+
+    <div class="sequence" id="sequence">
+      <h4>Sequence Diagram</h4>
+      <div class="interaction" id="step1">
+        PingSender ➝ FaultMonitor : ping()
+      </div>
+      <div class="interaction" id="step2">
+        FaultMonitor ➝ FaultMonitor : notifyException()
+      </div>
+      <div class="interaction" id="step3">
+        FaultMonitor ➝ FaultMonitor : handleException()
+      </div>
+      <div class="interaction" id="step4">
+        FaultMonitor ➝ PingSender : echo()
+      </div>
+    </div>
+    <title>Bouton Retour</title>
+    <style>
+      body {
+        background-color: #121212;
+        color: white;
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
+
+      .btn-retour {
+        position: fixed; /* Le bouton reste fixé */
+        bottom: 20px; /* Distance du bas */
+        left: 20px; /* Distance de la gauche */
+        background: linear-gradient(45deg, #b8860b, #ffcc00);
+        color: black;
+        font-size: 18px;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: 0.3s;
+        box-shadow: 0px 4px 10px rgba(255, 215, 0, 0.5);
+      }
+
+      .btn-retour:hover {
+        background: linear-gradient(45deg, #ffcc00, #b8860b);
+        transform: scale(1.1);
+        box-shadow: 0px 6px 15px rgba(255, 215, 0, 0.7);
+      }
+    </style>
+  </head>
+  <body>
+    <button class="btn-retour" onclick="history.back()">Retour</button>
+  </body>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(() => {
+          document.getElementById("container").style.opacity = "1";
+          document.getElementById("container").style.transform =
+            "translateY(0)";
+        }, 500);
+
+        setTimeout(() => {
+          document.getElementById("pingSender").style.opacity = "1";
+          document.getElementById("pingSender").style.transform = "scale(1)";
+        }, 1000);
+
+        setTimeout(() => {
+          document.getElementById("arrow1").style.opacity = "1";
+        }, 1500);
+
+        setTimeout(() => {
+          document.getElementById("faultMonitor").style.opacity = "1";
+          document.getElementById("faultMonitor").style.transform = "scale(1)";
+        }, 2000);
+
+        setTimeout(() => {
+          document.getElementById("arrow2").style.opacity = "1";
+        }, 2500);
+
+        setTimeout(() => {
+          document.getElementById("pingReceiver").style.opacity = "1";
+          document.getElementById("pingReceiver").style.transform = "scale(1)";
+        }, 3000);
+
+        setTimeout(() => {
+          document.getElementById("sequence").style.opacity = "1";
+          document.getElementById("sequence").style.transform = "translateY(0)";
+        }, 3500);
+
+        setTimeout(() => {
+          document.getElementById("step1").style.opacity = "1";
+          document.getElementById("step1").style.transform = "translateX(0)";
+        }, 4000);
+
+        setTimeout(() => {
+          document.getElementById("step2").style.opacity = "1";
+          document.getElementById("step2").style.transform = "translateX(0)";
+        }, 4500);
+
+        setTimeout(() => {
+          document.getElementById("step3").style.opacity = "1";
+          document.getElementById("step3").style.transform = "translateX(0)";
+        }, 5000);
+
+        setTimeout(() => {
+          document.getElementById("step4").style.opacity = "1";
+          document.getElementById("step4").style.transform = "translateX(0)";
+        }, 5500);
+      });
+    </script>
+  </body>
+</html>

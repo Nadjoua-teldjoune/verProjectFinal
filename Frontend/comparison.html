@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Comparaison des Tactiques</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ==================== */
+      /* Global Reset & Basics */
+      /* ==================== */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: #1a1a1a; /* Fond sombre */
+        color: white;
+        line-height: 1.6;
+      }
+
+      .container {
+        width: 90%;
+        max-width: 1200px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.2); /* Ombre dorée */
+      }
+
+      h2 {
+        color: #ffd700; /* Doré */
+        margin-bottom: 20px;
+        font-size: 2rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        text-align: center;
+      }
+
+      /* Bouton Retour */
+      .back-button {
+        background-color: #ffd700; /* Fond doré */
+        color: #1a1a1a; /* Texte sombre */
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px; /* Espace entre l'icône et le texte */
+        position: fixed; /* Fixer le bouton */
+        top: 60px; /* Augmente cette valeur pour descendre le bouton */
+        left: 20px;
+        z-index: 1000; /* S'assurer qu'il est au-dessus des autres éléments */
+      }
+
+      /* Boutons de traduction */
+      .language-button {
+        background-color: #4a4a4a;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        position: fixed;
+        top: 60px;
+        right: 20px;
+        z-index: 1000;
+      }
+
+      .language-button:hover {
+        background-color: #5a5a5a;
+        transform: translateY(-2px);
+      }
+
+      .language-button:active {
+        transform: translateY(0);
+      }
+
+      .back-button:hover {
+        background-color: #ffbb33; /* Doré plus clair au survol */
+        transform: translateY(-2px); /* Légère élévation */
+      }
+
+      .back-button:active {
+        transform: translateY(0); /* Retour à la position initiale */
+      }
+
+      .select-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+        margin-bottom: 30px;
+      }
+
+      label {
+        color: #ffbb33; /* Jaune doré */
+        font-size: 1.1rem;
+        margin-right: 10px;
+      }
+
+      .select-container {
+        position: relative;
+      }
+
+      .select-container::after {
+        content: "\f078"; /* Icône FontAwesome */
+        font-family: "Font Awesome 6 Free";
+        font-weight: 900;
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #ffd700; /* Couleur dorée */
+        pointer-events: none;
+      }
+
+      select {
+        padding: 10px;
+        border: 2px solid #ffd700; /* Bordure dorée */
+        border-radius: 5px;
+        background-color: rgb(31, 29, 29); /* Fond noir */
+        color: white;
+        font-size: 1rem;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+        appearance: none; /* Masque la flèche par défaut */
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        padding-right: 30px; /* Espace pour l'icône */
+      }
+
+      select:focus {
+        border-color: #ffbb33; /* Jaune doré */
+        box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); /* Effet de halo */
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        background-color: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+        overflow: hidden;
+        font-size: 0.9rem; /* Taille de police réduite pour tout le tableau */
+        box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3); /* Ombre dorée */
+      }
+
+      th,
+      td {
+        padding: 12px; /* Réduit la taille du padding */
+        border: 1px solid rgba(255, 215, 0, 0.2); /* Bordure dorée */
+        text-align: left;
+        padding: 8px; /* Réduit le padding des cellules */
+        font-size: 0.9rem; /* Réduit la taille de la police */
+      }
+
+      th {
+        background: linear-gradient(45deg, #ffd700, #b5a026); /* Dégradé doré */
+        color: #1a1a1a; /* Texte sombre */
+        font-size: 1.1rem; /* Taille de police réduite */
+        text-transform: uppercase;
+      }
+
+      tr:nth-child(even) {
+        background-color: rgba(255, 255, 255, 0.05);
+      }
+
+      tr {
+        transition: transform 0.3s ease, background-color 0.3s ease;
+      }
+
+      tr:hover {
+        background-color: rgba(255, 215, 0, 0.1); /* Effet de survol doré */
+        transform: scale(1.02);
+      }
+
+      /* Icônes dynamiques */
+      .icon {
+        margin-right: 8px;
+        font-size: 1.2rem;
+        vertical-align: middle;
+        transition: transform 0.3s ease, color 0.3s ease;
+      }
+
+      .icon.advantage {
+        color: #4caf50; /* Vert pour les avantages */
+      }
+
+      .icon.disadvantage {
+        color: #f44336; /* Rouge pour les inconvénients */
+      }
+
+      .icon.performance {
+        color: #ffc107; /* Jaune pour les performances */
+      }
+
+      .icon:hover {
+        transform: scale(1.2); /* Agrandit l'icône au survol */
+      }
+
+      /* ==================== */
+      /* Responsive Design */
+      /* ==================== */
+      @media (max-width: 768px) {
+        .select-container {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        select {
+          width: 100%;
+          max-width: 300px;
+        }
+
+        table {
+          font-size: 0.9rem;
+        }
+
+        th,
+        td {
+          padding: 10px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        h2 {
+          font-size: 1.5rem;
+        }
+
+        label {
+          font-size: 1rem;
+        }
+
+        select {
+          font-size: 0.9rem;
+        }
+
+        table {
+          font-size: 0.8rem;
+        }
+
+        th,
+        td {
+          padding: 8px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <button onclick="goBack()" class="back-button">
+      <i class="fas fa-arrow-left"></i> Retour
+    </button>
+
+    <button
+      onclick="translateToEnglish()"
+      class="language-button"
+      id="englishBtn"
+    >
+      <i class="fas fa-language"></i> English
+    </button>
+
+    <button
+      onclick="translateToFrench()"
+      class="language-button"
+      id="frenchBtn"
+      style="display: none; top: 110px"
+    >
+      <i class="fas fa-language"></i> Français
+    </button>
+
+    <div class="container">
+      <h2 id="pageTitle">Comparaison entre deux tactiques</h2>
+
+      <!-- Sélecteurs et tableau -->
+      <div class="select-container">
+        <div>
+          <label for="tactic1" id="tactic1Label">Tactique 1 :</label>
+          <select id="tactic1" onchange="updateComparison()"></select>
+        </div>
+        <div>
+          <label for="tactic2" id="tactic2Label">Tactique 2 :</label>
+          <select id="tactic2" onchange="updateComparison()"></select>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th id="criteriaHeader">Critère</th>
+            <th id="tactic1Name">Tactique 1</th>
+            <th id="tactic2Name">Tactique 2</th>
+          </tr>
+        </thead>
+        <tbody id="comparisonTable">
+          <tr>
+            <td>
+              <i class="fas fa-check-circle icon advantage"></i>
+              <span id="advantagesLabel">Avantages</span>
+            </td>
+            <td id="t1_advantages"></td>
+            <td id="t2_advantages"></td>
+          </tr>
+          <tr>
+            <td>
+              <i class="fas fa-times-circle icon disadvantage"></i>
+              <span id="disadvantagesLabel">Inconvénients</span>
+            </td>
+            <td id="t1_disadvantages"></td>
+            <td id="t2_disadvantages"></td>
+          </tr>
+          <tr>
+            <td>
+              <i class="fas fa-bolt icon performance"></i>
+              <span id="performanceLabel">Impact sur les performances</span>
+            </td>
+            <td id="t1_performance"></td>
+            <td id="t2_performance"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <script>
+      const tactics = {
+        ping_echo: {
+          name: "Ping Echo",
+          name_fr: "Ping Echo",
+          advantages:
+            " Vérifie la disponibilité du serveur en envoyant des requêtes périodiques.\n" +
+            " Permet de détecter rapidement les pannes et les temps de latence.\n" +
+            " Aide au monitoring des services en temps réel sans nécessiter de connexion directe.",
+          advantages_en:
+            " Checks server availability by sending periodic requests.\n" +
+            " Allows quick detection of failures and latency times.\n" +
+            " Helps with real-time service monitoring without requiring a direct connection.",
+          disadvantages:
+            " Peut générer un trafic réseau inutile si la fréquence des pings est trop élevée.\n" +
+            " Ne fournit aucune information sur l'état interne du serveur, seulement sa disponibilité.\n" +
+            " Susceptible aux attaques par déni de service (DDoS) si mal configuré.",
+          disadvantages_en:
+            " Can generate unnecessary network traffic if ping frequency is too high.\n" +
+            " Provides no information about the server's internal state, only its availability.\n" +
+            " Vulnerable to Denial of Service (DDoS) attacks if misconfigured.",
+          performance:
+            " Impact généralement faible car les pings sont de petite taille.\n" +
+            " Peut poser problème sur des réseaux à faible bande passante.\n" +
+            " Risque de surcharge en cas de monitoring excessif.",
+          performance_en:
+            " Generally low impact because pings are small in size.\n" +
+            " May cause issues on low-bandwidth networks.\n" +
+            " Risk of overload in case of excessive monitoring.",
+        },
+
+        maintain_copies: {
+          name: "Maintain Multiple Copies",
+          name_fr: "Maintenir plusieurs copies",
+          advantages:
+            " Améliore la tolérance aux pannes en stockant plusieurs copies des données.\n" +
+            " Permet de récupérer rapidement des données en cas de corruption ou suppression accidentelle.\n" +
+            " Optimise les performances de lecture en répartissant les requêtes sur plusieurs copies.",
+          advantages_en:
+            " Improves fault tolerance by storing multiple copies of data.\n" +
+            " Allows quick data recovery in case of corruption or accidental deletion.\n" +
+            " Optimizes read performance by distributing requests across multiple copies.",
+          disadvantages:
+            " Consomme plus d'espace de stockage, ce qui peut être coûteux.\n" +
+            " Nécessite une synchronisation régulière des copies, ce qui peut ralentir les mises à jour.\n" +
+            " Peut entraîner des incohérences si la réplication n'est pas bien gérée.",
+          disadvantages_en:
+            " Consumes more storage space, which can be costly.\n" +
+            " Requires regular copy synchronization, which may slow down updates.\n" +
+            " Can lead to inconsistencies if replication is not well managed.",
+          performance:
+            " Meilleure disponibilité des données mais peut ralentir les mises à jour.\n" +
+            " Augmente l'utilisation du stockage et de la bande passante.\n" +
+            " Peut entraîner un temps de réponse plus élevé en cas de réplication synchrone.",
+          performance_en:
+            " Better data availability but may slow down updates.\n" +
+            " Increases storage and bandwidth usage.\n" +
+            " May result in higher response time with synchronous replication.",
+        },
+
+        confidentiality: {
+          name: "Maintain Data Confidentiality",
+          name_fr: "Maintenir la confidentialité des données",
+          advantages:
+            " Protège les données sensibles en les chiffrant pour éviter l'accès non autorisé.\n" +
+            " Renforce la conformité aux réglementations de sécurité (RGPD, HIPAA, etc.).\n" +
+            " Peut s'appliquer à différents niveaux : stockage, transmission et traitement.",
+          advantages_en:
+            " Protects sensitive data by encrypting it to prevent unauthorized access.\n" +
+            " Enhances compliance with security regulations (GDPR, HIPAA, etc.).\n" +
+            " Can be applied at different levels: storage, transmission, and processing.",
+          disadvantages:
+            " Implémentation complexe nécessitant une gestion sécurisée des clés de chiffrement.\n" +
+            " Peut entraîner des coûts de performance en raison du chiffrement/déchiffrement.\n" +
+            " Risque de perte de données si les clés sont perdues ou compromises.",
+          disadvantages_en:
+            " Complex implementation requiring secure encryption key management.\n" +
+            " May incur performance costs due to encryption/decryption.\n" +
+            " Risk of data loss if keys are lost or compromised.",
+          performance:
+            " Peut ralentir les accès aux données chiffrées, notamment sur de gros volumes.\n" +
+            " Augmente l'utilisation CPU, surtout pour les algorithmes forts (AES-256, RSA, etc.).\n" +
+            " Optimisation possible via le chiffrement matériel ou des caches sécurisés.",
+          performance_en:
+            " May slow down access to encrypted data, especially for large volumes.\n" +
+            " Increases CPU usage, particularly for strong algorithms (AES-256, RSA, etc.).\n" +
+            " Optimization possible via hardware encryption or secure caches.",
+        },
+
+        authorize_users: {
+          name: "Authorize Users",
+          name_fr: "Autoriser les utilisateurs",
+          advantages:
+            " Renforce la sécurité d'accès en s'assurant que seuls les utilisateurs autorisés interagissent avec le système.\n" +
+            " Permet une gestion fine des permissions (accès limité par rôle, hiérarchie, etc.).\n" +
+            " Peut être combiné avec d'autres mécanismes de sécurité (authentification multi-facteurs, logs d'audit).",
+          advantages_en:
+            " Strengthens access security by ensuring only authorized users interact with the system.\n" +
+            " Enables fine-grained permission management (role-based access, hierarchy, etc.).\n" +
+            " Can be combined with other security mechanisms (multi-factor authentication, audit logs).",
+          disadvantages:
+            " Implémentation complexe nécessitant une gestion fine des droits et rôles.\n" +
+            " Peut entraîner des erreurs de configuration laissant des failles de sécurité.\n" +
+            " Augmente la charge administrative si les autorisations sont gérées manuellement.",
+          disadvantages_en:
+            " Complex implementation requiring fine-grained rights and roles management.\n" +
+            " May lead to configuration errors leaving security vulnerabilities.\n" +
+            " Increases administrative overhead if permissions are managed manually.",
+          performance:
+            " Impact faible à modéré selon la complexité des permissions.\n" +
+            " Peut ralentir les requêtes en cas de validation d'accès dynamique sur chaque action.\n" +
+            " Optimisable via des systèmes de cache des permissions ou des stratégies de délégation.",
+          performance_en:
+            " Low to moderate impact depending on permission complexity.\n" +
+            " May slow down requests with dynamic access validation on each action.\n" +
+            " Can be optimized via permission caching systems or delegation strategies.",
+        },
+
+        otp: {
+          name: "Onetime Password (OTP)",
+          name_fr: "Mot de passe à usage unique (OTP)",
+          advantages:
+            " Ajoute une couche de sécurité supplémentaire en exigeant un code temporaire unique.\n" +
+            " Protège contre le vol de mot de passe classique (phishing, keyloggers, etc.).\n" +
+            " Peut être mis en œuvre avec divers moyens (SMS, applications mobiles, e-mail).",
+          advantages_en:
+            " Adds an extra security layer by requiring a unique temporary code.\n" +
+            " Protects against traditional password theft (phishing, keyloggers, etc.).\n" +
+            " Can be implemented via various means (SMS, mobile apps, email).",
+          disadvantages:
+            " Peut être contraignant pour l'utilisateur qui doit récupérer un code à chaque connexion.\n" +
+            " Si le moyen de réception (téléphone, email) est compromis, la sécurité est réduite.\n" +
+            " Risque de problème en cas de perte d'accès à l'appareil générant les OTP.",
+          disadvantages_en:
+            " Can be cumbersome for users who need to retrieve a code for each login.\n" +
+            " If the receiving method (phone, email) is compromised, security is reduced.\n" +
+            " Risk of issues if access to the OTP-generating device is lost.",
+          performance:
+            " Ajoute un léger délai à l'authentification, surtout avec des SMS ou e-mails.\n" +
+            " Faible impact sur les performances globales si bien intégré.\n" +
+            " Peut poser problème si les serveurs d'OTP rencontrent des latences ou des erreurs.",
+          performance_en:
+            " Adds a slight delay to authentication, especially with SMS or emails.\n" +
+            " Low impact on overall performance if well integrated.\n" +
+            " May cause issues if OTP servers experience latency or errors.",
+        },
+
+        id_password_confidentiality: {
+          name: "Composition ID/Password & Maintain Data Confidentiality",
+          name_fr: "Combinaison ID/Mot de passe & Confidentialité des données",
+          advantages:
+            " Combine l'authentification et la confidentialité des données pour un niveau de sécurité élevé.\n" +
+            " Protège les comptes et les informations stockées en empêchant toute lecture en clair.\n" +
+            " Peut être renforcé par des politiques comme le stockage sécurisé des mots de passe (hachage + salage).",
+          advantages_en:
+            " Combines authentication and data confidentiality for high security.\n" +
+            " Protects accounts and stored information by preventing plaintext reading.\n" +
+            " Can be strengthened with policies like secure password storage (hashing + salting).",
+          disadvantages:
+            " Implémentation complexe nécessitant de bien sécuriser chaque couche (authentification, chiffrement, stockage).\n" +
+            " Nécessite des mises à jour régulières pour contrer les nouvelles menaces.\n" +
+            " Peut ralentir les accès aux données en raison du chiffrement et des vérifications d'authentification.",
+          disadvantages_en:
+            " Complex implementation requiring securing each layer (authentication, encryption, storage).\n" +
+            " Requires regular updates to counter new threats.\n" +
+            " May slow down data access due to encryption and authentication checks.",
+          performance:
+            " Risque d'augmentation du temps d'accès aux données en cas d'authentification forte.\n" +
+            " Exige plus de ressources pour gérer les processus de sécurité.\n" +
+            " Optimisable en équilibrant la sécurité et la rapidité (ex : utilisation de jetons d'authentification).",
+          performance_en:
+            " Risk of increased data access time with strong authentication.\n" +
+            " Requires more resources to manage security processes.\n" +
+            " Can be optimized by balancing security and speed (e.g., using authentication tokens).",
+        },
+      };
+
+      function populateSelectBoxes() {
+        let select1 = document.getElementById("tactic1");
+        let select2 = document.getElementById("tactic2");
+
+        for (let key in tactics) {
+          let option1 = document.createElement("option");
+          option1.value = key;
+          option1.textContent = tactics[key].name;
+          select1.appendChild(option1);
+
+          let option2 = document.createElement("option");
+          option2.value = key;
+          option2.textContent = tactics[key].name;
+          select2.appendChild(option2);
+        }
+        select1.selectedIndex = 0;
+        select2.selectedIndex = 1;
+        updateComparison();
+      }
+
+      function updateComparison() {
+        let t1 = document.getElementById("tactic1").value;
+        let t2 = document.getElementById("tactic2").value;
+        let isEnglish =
+          document.getElementById("englishBtn").style.display === "none";
+
+        document.getElementById("tactic1Name").innerText = isEnglish
+          ? tactics[t1].name
+          : tactics[t1].name_fr || tactics[t1].name;
+        document.getElementById("tactic2Name").innerText = isEnglish
+          ? tactics[t2].name
+          : tactics[t2].name_fr || tactics[t2].name;
+
+        document.getElementById("t1_advantages").innerText = isEnglish
+          ? tactics[t1].advantages_en
+          : tactics[t1].advantages;
+        document.getElementById("t2_advantages").innerText = isEnglish
+          ? tactics[t2].advantages_en
+          : tactics[t2].advantages;
+
+        document.getElementById("t1_disadvantages").innerText = isEnglish
+          ? tactics[t1].disadvantages_en
+          : tactics[t1].disadvantages;
+        document.getElementById("t2_disadvantages").innerText = isEnglish
+          ? tactics[t2].disadvantages_en
+          : tactics[t2].disadvantages;
+
+        document.getElementById("t1_performance").innerText = isEnglish
+          ? tactics[t1].performance_en
+          : tactics[t1].performance;
+        document.getElementById("t2_performance").innerText = isEnglish
+          ? tactics[t2].performance_en
+          : tactics[t2].performance;
+      }
+
+      // Fonction pour le bouton Retour
+      function goBack() {
+        window.history.back(); // Retour à la page précédente
+      }
+
+      function translateToEnglish() {
+        document.getElementById("pageTitle").textContent =
+          "Comparison between two tactics";
+        document.getElementById("tactic1Label").textContent = "Tactic 1:";
+        document.getElementById("tactic2Label").textContent = "Tactic 2:";
+        document.getElementById("criteriaHeader").textContent = "Criterion";
+        document.getElementById("advantagesLabel").textContent = "Advantages";
+        document.getElementById("disadvantagesLabel").textContent =
+          "Disadvantages";
+        document.getElementById("performanceLabel").textContent =
+          "Performance impact";
+        document.querySelector(".back-button i").nextSibling.textContent =
+          " Back";
+
+        document.getElementById("englishBtn").style.display = "none";
+        document.getElementById("frenchBtn").style.display = "flex";
+
+        updateComparison();
+      }
+
+      function translateToFrench() {
+        document.getElementById("pageTitle").textContent =
+          "Comparaison entre deux tactiques";
+        document.getElementById("tactic1Label").textContent = "Tactique 1:";
+        document.getElementById("tactic2Label").textContent = "Tactique 2:";
+        document.getElementById("criteriaHeader").textContent = "Critère";
+        document.getElementById("advantagesLabel").textContent = "Avantages";
+        document.getElementById("disadvantagesLabel").textContent =
+          "Inconvénients";
+        document.getElementById("performanceLabel").textContent =
+          "Impact sur les performances";
+        document.querySelector(".back-button i").nextSibling.textContent =
+          " Retour";
+
+        document.getElementById("englishBtn").style.display = "flex";
+        document.getElementById("frenchBtn").style.display = "none";
+
+        updateComparison();
+      }
+
+      populateSelectBoxes();
+    </script>
+  </body>
+</html>

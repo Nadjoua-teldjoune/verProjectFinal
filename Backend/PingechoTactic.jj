@@ -1,0 +1,345 @@
+PARSER_BEGIN(PingEchoParser)
+
+
+
+import java.io.*;
+
+import java.util.*;
+
+
+
+public class PingEchoParser {
+
+    public static Map<String, String> map = new HashMap<String, String>();
+
+    public static Token exceptionHandlingCallee;
+
+    public static Map<String, String> tacticParticipatingObjects = new LinkedHashMap<String, String>();
+
+    public static int numberOfChecks = 0;
+
+
+
+    public static void main(String[] args) throws ParseException {
+
+        try {
+
+          Scanner scanner = new Scanner(System.in);
+
+            StringBuilder inputBuilder = new StringBuilder();
+
+
+
+            while (scanner.hasNextLine()) {
+
+                String line = scanner.nextLine();
+
+                inputBuilder.append(line).append("\n");
+
+            }
+
+            scanner.close();
+
+
+
+            String traceInput = inputBuilder.toString();
+
+
+
+            PingEchoParser parser = new PingEchoParser(new java.io.StringReader(traceInput));
+
+
+
+            System.out.println("\n===========================================================================");
+
+            System.out.println("                   TACTIC DETECTION SYSTEM INITIALIZED  ");
+
+            System.out.println("===========================================================================\n");
+
+            System.out.println("\nPingSender:TracePingSender ->METHOD->PingReceiver:TracePingReceiver ");
+
+            System.out.println("\nPingSender:TracePingSender ->METHOD->PingReceiver:TracePingReceiver");
+
+            System.out.println("\nOptional Block :  ");
+
+            System.out.println("\nPingSender:TracePingSender ->METHOD->FaultMonitorTraceFaultMonitor   ");
+
+            System.out.println("\nFaultMonitorTraceFaultMonitor->METHOD->FaultMonitorTraceFaultMonitor ");
+
+            System.out.println("\nPingReceiver:TracePingReceiver->METHOD-> PingSender:TracePingSender");
+
+            System.out.println("===========================================================================\n");
+
+            parser.PingEcho();
+
+
+
+            System.out.println("\n=======================================================================");
+
+            System.out.println("                            ANALYSIS SUMMARY  ");
+
+            System.out.println("=======================================================================");
+
+            System.out.println(" Total PingEcho Tactic occurrences detected: " + numberOfChecks);
+
+            System.out.println("=======================================================================");
+
+
+
+            if (!tacticParticipatingObjects.isEmpty()) {
+
+                System.out.println("\n=======================================================================");
+
+              
+
+
+
+                for (Map.Entry<String, String> entry : tacticParticipatingObjects.entrySet()) {
+
+                    System.out.println(" " + entry.getKey() + " --> " + entry.getValue());
+
+                }
+
+
+
+                System.out.println("\n Total PingEcho Tactic occurrences detected: " + numberOfChecks);
+
+            } else {
+
+                System.out.println("No PingEcho tactics detected.");
+
+            }
+
+
+
+        } catch (Exception e) {
+
+            System.out.println(" Error: " + e.getMessage());
+
+            e.printStackTrace();
+
+        }
+
+    }
+
+}
+
+PARSER_END(PingEchoParser)
+
+
+
+// ------------------------- TOKENS -------------------------
+
+
+
+SKIP : { "\n" | "\r" | "\r\n" | " " | "\t" }
+
+
+
+TOKEN : { < LITERAL : (["a"-"z", "A"-"Z"])+ > }
+
+TOKEN : { < CALLER : "CALLER:" > }
+
+TOKEN : { < METHOD : "METHOD:" > }
+
+TOKEN : { < CALLEE : "CALLEE:" > }
+
+TOKEN : { < COMMA : "," > }
+
+TOKEN : { < SEMICOLON : ";" > }
+
+
+
+// ------------------------ GRAMMAIRE ------------------------
+
+
+
+void PingEcho() : {}
+
+{
+
+    A() B() C()
+
+}
+
+
+
+void A() : { Token caller; Token callee; }
+
+{
+
+    <CALLER> caller = <LITERAL> { map.put("caller", caller.image); }
+
+    <COMMA> <METHOD> <LITERAL>
+
+    <COMMA> <CALLEE> callee = <LITERAL> { map.put("callee", callee.image); }
+
+    <SEMICOLON>
+
+    {
+
+        System.out.println( caller.beginLine + "|PingSender: " + caller.image + " --Ping--> PingReceiver: " + callee.image);
+
+    }
+
+}
+
+
+
+void B() : { Token caller; Token callee; }
+
+{
+
+    LOOKAHEAD({ getToken(2).image.equals(map.get("callee")) })
+
+    (
+
+        <CALLER> caller = <LITERAL>
+
+        <COMMA> <METHOD> <LITERAL>
+
+        <COMMA> <CALLEE> callee = <LITERAL>
+
+        {
+
+            if (!callee.image.equals(map.get("caller"))) {
+
+                System.out.println(caller.beginLine + "|  ERROR! Unexpected CALLER or CALLEE at PingEcho response in the ligne:"+caller.beginLine  );
+
+                System.out.println("-----------------------------------------------------------------------");
+
+            } else {
+
+                tacticParticipatingObjects.put("PingSender", callee.image);
+
+                tacticParticipatingObjects.put("PingReceiver", caller.image);
+
+                numberOfChecks++;
+
+                System.out.println( caller.beginLine + "| PingReceiver: " + caller.image + " --Echo--> PingSender: " + callee.image);
+
+                System.out.println(" PingEcho tactic detected.\n-----------------------------------------------------------------------");
+
+            }
+
+        }
+
+        <SEMICOLON>
+
+    )
+
+    | E()
+
+}
+
+
+
+void C() : {}
+
+{
+
+    LOOKAHEAD({ getToken(2).image.equals(map.get("caller")) })
+
+    (
+
+        (A() B() C())?
+
+    )
+
+    | H()
+
+}
+
+
+
+void E() : { Token caller; }
+
+{
+
+    LOOKAHEAD({ getToken(2).image.equals(map.get("caller")) })
+
+    (
+
+        <CALLER> caller = <LITERAL>
+
+        <COMMA> <METHOD> <LITERAL>
+
+        <COMMA> <CALLEE> exceptionHandlingCallee = <LITERAL>
+
+        <SEMICOLON>
+
+        {
+
+            System.out.println( caller.beginLine + "| PingSender: " + caller.image + " --NotifyException--> FaultMonitor: " + exceptionHandlingCallee.image);
+
+        }
+
+        F()
+
+    )
+
+    | PingEcho()
+
+}
+
+
+
+void F() : { Token caller; Token callee; }
+
+{
+
+    LOOKAHEAD({ getToken(2).image.equals(exceptionHandlingCallee.image) && getToken(8).image.equals(exceptionHandlingCallee.image) })
+
+    (
+
+        <CALLER> caller = <LITERAL>
+
+        <COMMA> <METHOD> <LITERAL>
+
+        <COMMA> <CALLEE> callee = <LITERAL>
+
+        <SEMICOLON>
+
+        {
+
+            System.out.println( caller.beginLine + "| FaultMonitor: " + caller.image + " --HandleExeception--> FaultMonitor: " + callee.image);
+
+        }
+
+        B()
+
+    )
+
+    | PingEcho()
+
+}
+
+
+
+void H() : { Token caller; Token callee; }
+
+{
+
+    (
+
+        <CALLER> caller = <LITERAL>
+
+        <COMMA> <METHOD> <LITERAL>
+
+        <COMMA> <CALLEE> callee = <LITERAL>
+
+        <SEMICOLON>
+
+        {
+
+            System.out.println(caller.beginLine + "|  ERROR! Unexpected CALLER or CALLEE at PingEcho response in the ligne:"+caller.beginLine  );
+
+            System.out.println("-----------------------------------------------------------------------");
+
+        }
+
+        C()
+
+    )?
+
+}

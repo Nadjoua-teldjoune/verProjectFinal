@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose Your Role</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #121212;
+            color: #E0E0E0;
+            text-align: center;
+            padding: 50px;
+        }
+
+        h1 {
+            color: #E3B70A;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap; /* Responsive design */
+        }
+
+        .card {
+            background: #1E1E1E;
+            padding: 30px; /* Augmentation du padding */
+            border-radius: 12px;
+            width: 350px; /* Largeur augmentée */
+            height: 250px; /* Hauteur fixe pour uniformité */
+            text-align: center;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+
+        .card img {
+            width: 70px; /* Icône plus grande */
+            margin-bottom: 20px; /* Espacement augmenté */
+            transition: filter 0.3s ease, transform 0.3s ease;
+        }
+
+        .card h2 {
+            font-size: 24px; /* Texte plus grand */
+            margin-bottom: 15px; /* Espacement augmenté */
+            transition: color 0.3s ease;
+        }
+
+        .card p {
+            font-size: 16px; /* Texte plus grand */
+            color: #B0B0B0;
+            transition: color 0.3s ease;
+        }
+
+        /* Specific colors */
+        .owner h2 { color: #BB86FC; } /* Purple */
+        .user h2 { color: #03DAC6; }  /* Turquoise */
+
+        /* Selection effect */
+        .selected {
+            border: 3px solid #ffbb33;
+            box-shadow: 0 0 15px #ffbb33;
+        }
+
+        .selected h2, .selected p {
+            color: #ffbb33 !important;
+        }
+
+        .selected img {
+            filter: brightness(1.5) sepia(1) hue-rotate(10deg);
+            transform: scale(1.1);
+        }
+
+        /* Back button */
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #E3B70A;
+            color: #121212;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: #ffbb33;
+        }
+
+        /* Confirmation message */
+        .confirmation-message {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: #E3B70A;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .confirmation-message.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Back button -->
+    <div class="back-button" onclick="window.location.href='index.html'">
+        ← Back
+    </div>
+
+    <h1> Choose Your Role</h1>
+
+    <div class="container">
+        <div class="card owner" onclick="chooseRole(this, 'owner')">
+            <img src="https://img.icons8.com/ios-filled/50/BB86FC/crown.png" alt="Owner">
+            <h2>👑 Owner</h2>
+            <p>Add and manage tactics.</p>
+        </div>
+
+        <div class="card user" onclick="chooseRole(this, 'user')">
+            <img src="https://img.icons8.com/ios-filled/50/03DAC6/user.png" alt="User">
+            <h2>👤 User</h2>
+            <p>View recorded tactics.</p>
+        </div>
+    </div>
+
+    <!-- Confirmation message -->
+    <div id="confirmationMessage" class="confirmation-message">
+        Redirecting...
+    </div>
+
+    <script>
+        function chooseRole(element, role) {
+            // Remove "selected" class from all cards
+            document.querySelectorAll('.card').forEach(card => card.classList.remove('selected'));
+
+            // Add "selected" class to the clicked card
+            element.classList.add('selected');
+
+            // Show confirmation message
+            const confirmationMessage = document.getElementById('confirmationMessage');
+            confirmationMessage.classList.add('show');
+
+            // Redirect after a short delay
+            setTimeout(() => {
+                if (role === 'owner') {
+                    window.location.href = "index2.html";
+                } else {
+                    window.location.href = "index2.html";
+                }
+            }, 1000); // Delay to show the effect before redirecting
+        }
+    </script>
+
+</body>
+</html>

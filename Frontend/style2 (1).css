@@ -1,0 +1,1874 @@
+/* ==================== */
+/* Global Reset & Basics */
+/* ==================== */
+* {
+  
+    
+    font-family: 'Poppins', sans-serif; /* Modern font */
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ==================== */
+/* Navigation Bar */
+/* ==================== */
+
+
+
+a {
+    text-decoration: none;
+    color: #007BFF;
+    font-weight: bold;
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+
+a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+    transform: scale(1.05);
+}
+
+
+
+
+.nav-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+  
+  .nav-btn, .nav-icon > a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    color: #d4af37;
+    font-size: 18px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  
+  /* Effets au survol */
+  .nav-btn:hover, .nav-icon > a:hover {
+    color: #f9d423;
+    background-color: rgba(212, 175, 55, 0.1);
+    transform: translateY(-2px);
+  }
+  
+  /* Tooltips */
+  .nav-btn[title]::after, .nav-icon[title]::after {
+    content: attr(title);
+    position: absolute;
+    bottom: -35px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(26, 26, 26, 0.9);
+    color: #f9d423;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+  }
+  
+  .nav-btn[title]:hover::after, .nav-icon[title]:hover::after {
+    opacity: 1;
+  }
+
+
+.actions {
+    display: flex;
+    gap: 10px;
+    margin-left: auto; /* Push actions to the right */
+}
+
+
+
+
+#file-input {
+    padding: 10px;
+    border: 2px dashed #ffbb33; /* Dashed border for a modern look */
+    border-radius: 8px;
+    background-color: rgba(74, 144, 226, 0.1); /* Light blue background */
+    color: #333;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#file-input:hover {
+    background-color: rgba(230, 209, 46, 0.2); /* Slightly darker on hover */
+    border-color:#ffbb33; /* Darker border on hover */
+}
+.buttons-container,
+.buttons-container1 {
+    /* Base Styles */
+    margin-top: 1rem;
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-start;
+    align-items: center; /* Better vertical alignment */
+    margin-left:-1vw ;
+    width: auto; /* More flexible than fixed 10% */
+    min-width: fit-content; /* Prevent squeezing */
+}
+
+/* Responsive Adjustments */
+
+/* Large Desktop */
+@media (min-width: 1600px) {
+    .buttons-container,
+    .buttons-container1 {
+        gap: 0.5rem; /* Slightly larger gap */
+    }
+}
+
+/* Tablet Landscape */
+@media (max-width: 1024px) {
+    .buttons-container,
+    .buttons-container1 {
+        width: 70%; /* Full width */
+        justify-content: center; /* Center buttons */
+    }
+}
+
+/* Tablet Portrait */
+@media (max-width: 80vw) {
+    .buttons-container,
+    .buttons-container1 {
+        gap: 0.5rem;
+        margin-top: 0.75rem;
+    }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    .buttons-container,
+    .buttons-container1 {
+        gap: 0.375rem;
+        flex-direction: column; /* Stack vertically */
+        align-items: stretch; /* Full-width buttons */
+    }
+}
+
+/* Small Mobile */
+@media (max-width: 360px) {
+    .buttons-container,
+    .buttons-container1 {
+        gap: 0.25rem;
+        margin-top: 0.5rem;
+    }
+}
+
+
+
+
+
+.buttons-container .action-btn:hover {
+    background-color: #d4af37; /* Darker blue on hover */
+    transform: translateY(-2px); /* Lift effect */
+    box-shadow: 0 4px 12px rgba(202, 202, 40, 0.3); /* Subtle shadow */
+}
+/* Dark Mode Styles */
+.buttons-container1 .action-btn:hover {
+    background-color: #d4af37; /* Darker blue on hover */
+    transform: translateY(-2px); /* Lift effect */
+    box-shadow: 0 4px 12px rgba(202, 202, 40, 0.3); /* Subtle shadow */
+}
+
+
+
+
+.icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 2px; /* Adjust icon size */
+    color: white; /* Adjust color */
+    padding: 10px;
+    transition: color 0.3s ease;
+}
+
+.icon-btn:hover {
+    color: #ffbb33; /* Change color on hover */
+}
+
+body.dark-mode .buttons-container h3 {
+    color: #ffffff; 
+    background-color: #ffbb33;
+    font-size: 12px;
+    
+    font-style: italic;
+    }
+    
+    body.dark-mode .buttons-container1 h3 {
+        color: #ffffff; 
+        background-color: #ffbb33;
+        font-size: 12px;
+        
+        font-style: italic;
+        }
+            
+      
+
+
+
+
+
+/* FontAwesome Icon Styling */
+.info i {
+    font-size: 30px;
+    color: white;
+    transition: transform 0.2s, color 0.3s;
+}
+
+/* Hover effect for icons */
+.info:hover i {
+    color: #ffcc00;  /* Highlight color */
+    transform: scale(1.1);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* Dark Mode */
+body.dark-mode {
+    background-color:rgb(23, 23, 23);
+    color: white;
+}
+
+
+
+
+
+
+
+/* Left Side: Icons */
+
+
+/* Right Side: Buttons */
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between buttons */
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+/* Icon Styling */
+.navbar-left i {
+    font-size: 24px; /* Adjust icon size */
+    color: inherit; /* Inherit color from parent */
+    transition: color 0.3s ease; /* Smooth color transition */
+}
+
+/* Dark Mode Icon Color */
+.dark-mode .navbar-left i {
+    color: #ffffff; /* White color for dark mode */
+}
+
+
+
+/* Hover Effect (optional) */
+.navbar-left i:hover {
+    color: #ffbb33; /* Green color on hover */
+}
+
+/* Run Button Styling */
+
+/* Dark/Light Mode Toggle Button Styling */
+
+
+.mode-toggle-btn:hover {
+    background-color: #444; /* Slightly lighter on hover */
+}
+
+
+/* Simple Icon Button */
+
+
+
+.navbar-left{
+    background-color:#333 ;
+}
+
+
+
+
+
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem; /* 20px → 1.25rem (20/16) */
+    
+    /* Padding converted to relative units */
+    padding: 0.9375rem 1.25rem; /* 15px 20px → 0.9375rem 1.25rem */
+    
+    background-color: rgb(23, 23, 23);
+    
+
+    border-radius: 8%;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    position: relative;
+    border: 1px solid rgba(23, 23, 23, 0.1); /* Subtle border for depth */
+ 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for elevation */
+    /* Responsive width control */
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Second version adjustments */
+.menu-item.alt-version {
+    background: rgb(23, 23, 23);
+    border: none;
+    padding: 0.625rem 0.9375rem; /* 10px 15px → 0.625rem 0.9375rem */
+    border-radius: 0.5vw; /* 8px equivalent */
+    min-border-radius: 0.375rem;
+}
+
+/* Media queries for perfect scaling */
+@media (max-width: 1200px) {
+    .menu-item {
+        border-radius: 1vw;
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .menu-item {
+        border-radius: 1.5vw;
+        padding: 0.75rem 1rem;
+        gap: 0.75rem;
+    }
+    
+    .menu-item.alt-version {
+        padding: 0.5rem 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .menu-item {
+        border-radius: 2vw;
+        padding: 0.5rem 0.75rem;
+        gap: 0.5rem;
+    }
+}
+
+.menu-item h1 {
+    font-size: 16px; /* Slightly larger font size */
+    font-weight: 500; /* Medium font weight for better readability */
+    font-style: normal; /* Remove italic for a cleaner look */
+    color: rgba(255, 255, 255, 0.9); /* Light text color */
+    background-color: transparent;
+    margin: 0; /* Remove default margin */
+    letter-spacing: 0.5px; /* Slight letter spacing for elegance */
+}
+
+/* Icons */
+.menu-item img {
+    width: 30px;
+    height: 30px;
+    background-color: transparent;
+    filter: brightness(0.9); /* Slightly dim the icon for subtlety */
+}
+
+/* Hover Effects */
+.menu-item:hover {
+    background: linear-gradient(90deg, rgba(229, 161, 52, 0.6) 0%, rgba(255, 224, 68, 0.8) 100%);
+    transform: translateX(10px);
+    box-shadow: 0 6px 12px rgba(229, 161, 52, 0.3); /* More pronounced shadow on hover */
+    border-color: rgba(229, 161, 52, 0.5); /* Highlight border on hover */
+}
+
+/* Optional: Add a smooth transition for the text color on hover */
+.menu-item:hover h1 {
+    color: rgba(0, 0, 0, 0.9); /* Darker text on hover for contrast */
+}
+
+/* Optional: Add a subtle animation for the icon on hover */
+.menu-item:hover img {
+    transform: scale(1.1); /* Slightly enlarge the icon */
+    transition: transform 0.3s ease-in-out;
+}
+.navbar-left {
+    background-color: rgb(23, 23, 23);
+    display: flex;
+    align-items: center;
+    gap: 1.125rem; /* 18px (1.125rem) base gap */
+    flex-shrink: 0;
+    
+    /* Responsive margin using your min() approach */
+    margin-left: min(62.5vw, 60rem); /* 62.5% of viewport width, max 60rem (960px) */
+    
+    /* Responsive adjustments */
+    @media (max-width: 1600px) {
+        margin-left: min(55vw, 50rem); /* 50% of viewport, max 800px */
+        gap: 4rem; /* 16px */
+    }
+    @media (max-width: 1200px) {
+        margin-left: min(40vw, 40rem); /* 40% of viewport, max 640px */
+        gap: 1.875rem; /* 14px */
+    }
+    @media (max-width: 992px) {
+        margin-left: min(20vw, 20rem); /* 20% of viewport, max 320px */
+        gap: 0.75rem; /* 12px */
+    }
+    @media (max-width: 768px) {
+        margin-left: 0;
+        gap: 0.1rem; /* 10px */
+        width: 80%;
+        justify-content: space-around;
+        padding: 0 1rem; /* Add horizontal padding */
+    }
+    @media (max-width: 480px) {
+        gap: 0.1rem; /* 8px */
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+.btn-run {
+    background-color: #444;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Spacing between icon and text */
+}
+
+.btn-run i {
+    font-size: 18px; /* Adjust icon size */
+}
+
+.btn-run:hover {
+    background-color: #d4af37;
+    transform: scale(1.05);
+}
+
+.btn-run:active {
+    transform: scale(0.95);
+}
+.navbar{
+    padding: 1px;
+}
+ .logo {
+    margin-left: -10px;
+    border-radius: 50%;
+    
+    margin-top: 30px;
+}
+
+
+/* Editor section (Right Side) */
+.editor {
+    flex: 1;                       /* Maintains flex grow behavior */
+    padding: 2vh 2vw;              /* Responsive padding (was 20px) */
+    background: #222;
+    height: 60vh;                  /* Responsive height (was 450px) */
+    min-height: 30vw     ;        /* Minimum height */
+    max-height: 30vw;             /* Maximum height */
+    max-width: 90%;     /* Includes padding in height calculation */
+}
+header.img{
+    border-radius: 100%;
+}
+header {
+    /* Responsive sizing */
+    height: clamp(2.5rem, 8vh, 3.75rem); /* 40px-60px with 8vh preference */
+    
+    /* Layout & positioning */
+    position: relative;
+    z-index: 100;
+    
+    /* Ensures content alignment */
+    display: flex;
+    align-items: center;
+    
+    /* Protection against extreme viewports */
+    min-height: -webkit-fill-available; /* Mobile browser fallback */
+}
+.menu-item:hover {
+    background: linear-gradient(90deg, rgba(229, 161, 52, 0.6) 0%, rgba(255, 224, 68, 0.8) 100%);
+    transform: translateX(10px);
+    box-shadow: 0 6px 12px rgba(229, 161, 52, 0.3);
+    border-color: rgba(229, 161, 52, 0.5);
+}
+
+.menu-item:active {
+    transform: translateX(5px) scale(0.98); /* Slight press-down effect */
+}
+
+/* Ensure the h1 inside the button looks correct */
+
+/* For WebKit browsers (Chrome, Edge, Safari) */
+/* Icons */
+.menu-item img{
+    width: 35px;
+    height: 35px;
+    background-color: #fff;
+}
+
+.menu-item h1 {
+    font-size: 14px; /* Slightly larger font size */
+    font-weight: 500; /* Medium font weight for better readability */
+    font-style: normal; /* Remove italic for a cleaner look */
+    color: rgba(255, 255, 255, 0.9); /* Light text color */
+    background-color: transparent;
+    margin: 0; /* Remove default margin */
+    letter-spacing: 0.5px; /* Slight letter spacing for elegance */
+}
+
+
+
+
+
+
+
+
+
+
+
+.action-btn:hover {
+    background: #777;
+}
+
+        .sidebar {
+            /* Dynamic width */
+            width: clamp(250px, 17.5rem, 280px); /* 280px → 17.5rem with min/max */
+            
+            /* Responsive height */
+            height: 100vh;
+            min-height: -webkit-fill-available; /* Mobile browser fix */
+            
+            /* Styling */
+            background-color: rgb(23, 23, 23);
+            padding: 0.5rem; /* 10px → 0.625rem */
+            
+            /* Layout improvements */
+            position: relative;
+           left: -9%;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: clamp(200px, 15vw, 250px);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                max-height: 60vh;
+                position: sticky;
+                top: 0;
+                z-index: 100;
+            }
+        }
+        
+        /* Mobile viewport units fix */
+        @supports (height: 100dvh) {
+            .sidebar {
+                height: 100dvh; /* Dynamic viewport height */
+            }
+        }
+
+        .output-container {
+            /* Dynamic Sizing */
+            width: clamp(300px, 30vw, 600px); /* Combined constraints */
+            height: clamp(50px, 70vh, 700px); /* Combined constraints */
+            
+            /* Positioning */
+            position: absolute;
+            left: 110%;
+            top: 30%;
+            transform: translateX(-50%);
+            margin-top: 5%; 
+            margin-left: -6%;          /* Styling */
+            background: rgb(248, 246, 244);
+            border: 2px solid #555;
+            border-radius: 8px;
+            overflow-x: hidden;
+            display: block;
+           
+            z-index: 100; /* Ensure proper stacking */
+        }
+        
+        
+     
+/* Adaptation mobile paysage */
+@media (max-width: 768px) {
+    .output-container {
+        width: 5%;
+left:85%;
+       
+        margin: 0 auto;
+       top:auto;
+        bottom: 2rem;
+        transform: none;
+        height: min(500px, 50vh);
+    }
+}
+ 
+        
+        /* Mobile Devices */
+ 
+/* File Upload Section */
+.file-upload {
+    /* Base Styles */
+    margin-bottom: 0.8rem;         /* Use rem for vertical spacing */
+    display: flex;
+    gap: 1rem;                    /* Consistent gap using rem */
+    margin-left: 0;               /* Reset default margin */
+    align-items: center;          /* Better vertical alignment */
+    flex-wrap: wrap;              /* Allow wrapping if needed */
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        flex-direction: column;
+        gap: 0.5rem;             /* Reduced but still visible gap */
+        align-items: flex-start;  /* Better mobile alignment */
+        margin-bottom: 0.5rem;    /* Adjusted spacing */
+        
+        /* Mobile-specific enhancements */
+        width: 100%;
+        padding: 0 1rem;         /* Prevent edge sticking */
+    }
+
+    /* Large desktop enhancement */
+    @media (min-width: 1600px) {
+        gap: 1.25rem;           /* Slightly larger gap on big screens */
+    }
+}
+
+
+/* Tablet Landscape to Small Desktop */
+@media (max-width: 1200px) {
+    #code {
+        width: clamp(2800px, 50vw, 600px);
+        left: clamp(80px, 25vw, 300px);
+    }
+}
+
+/* Tablet Portrait */
+@media (max-width: 900px) {
+    #code {
+        width: clamp(260px, 60vw, 550px);
+        height: clamp(280px, 55vh, 450px);
+        left: clamp(60px, 20vw, 250px);
+        font-size: clamp(11px, 1.8vw, 14px);
+    }
+}
+/* Mobile Landscape (768px and below) */
+@media (max-width: 768px) {
+    #code {
+        width: 40vw; /* More reasonable width for mobile */
+    
+        left: 1; /* Reset any absolute positioning */
+        margin: 0.5rem 0 0.5rem 5vw; /* Top, Right, Bottom, Left */
+        transform: none; /* Remove any transforms */
+    }
+}
+/* Mobile Portrait */
+@media (max-width: 480px) {
+    #code {
+        width: 9vw;
+        height: 60vh;
+        left: 5vw;
+        font-size: 13px; /* Fixed minimum size */
+        padding: 8px;
+    }
+}
+#code span {
+    font-weight: bold; /* Optional: Make keywords bold */
+}
+ 
+.action-btn1 {
+    /* Color & Style */
+    background-color: #d4af37;
+    color: #fff;
+    border: none;
+    border-radius: 0.5em; /* 8px equivalent */
+    font-weight: bold;
+    cursor: pointer;
+    
+    /* Sizing */
+    padding: 0.5em 3em; /* Vertical, Horizontal */
+    width: clamp(12rem, 25vw, 18.75rem); /* 300px max, scales down */
+    min-width: 8rem; /* Prevents too narrow on mobile */
+    
+    /* Typography */
+    font-size: clamp(0.875rem, 1.25vw, 1rem); /* Scales between 14-16px */
+    
+    /* Effects */
+    transition: all 0.3s ease;
+    box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.1);
+    
+    /* Layout */
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+
+
+
+  .toggle-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2em;
+    color: #d4af37; /* Adjust color as needed */
+  }
+  
+  .action-btn {
+    /* Color & Style */
+    background-color: #d4af37;
+    color: #fff;
+    border: none;
+    border-radius: 0.5em; /* 8px equivalent */
+    font-weight: bold;
+    cursor: pointer;
+    
+    /* Sizing */
+    padding: 0.5em 3em; /* Vertical, Horizontal */
+    width: clamp(1rem, 2vw, 1.75rem); /* 300px max, scales down */
+    min-width: 8rem; /* Prevents too narrow on mobile */
+    
+    /* Typography */
+    font-size: clamp(0.875rem, 1.25vw, 1rem); /* Scales between 14-16px */
+    
+    /* Effects */
+    transition: all 0.3s ease;
+    box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.1);
+    
+    /* Layout */
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .action-btn1 {
+        width: clamp(1rem, 40vw, 15rem);
+        padding: 0.75em 2em; /* More tap-friendly */
+    }
+}
+
+@media (max-width: 480px) {
+    .action-btn1 {
+        width: 100%;
+        max-width: 100%;
+        padding: 0.75em 1em;
+    }
+}
+
+  
+.toggle-btn {
+    /* Reset and Base Styles */
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: all 0.3s ease;
+    
+    /* Visual Styling */
+    color: #FFD700; /* Gold color matching your theme */
+    font-size: clamp(1.1rem, 1.5vw, 1.3rem); /* Responsive sizing */
+    
+    /* Positioning */
+    position: fixed;
+    right: 2rem;
+    bottom: 2rem;
+    z-index: 1000;
+    
+    /* Hover Effects */
+    &:hover {
+        color: #fff;
+        transform: scale(1.1);
+    }
+    
+    /* Active State */
+    &:active {
+        transform: scale(0.95);
+    }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1200px) {
+    .toggle-btn {
+        right: 1.5rem;
+        bottom: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .toggle-btn {
+        width: 50%;
+        right: 1rem;
+        bottom: 1rem;
+        font-size: 1.3rem; /* Fixed size for mobile */
+    }
+}
+
+@media (max-width: 480px) {
+    .toggle-btn {
+        right: 0.75rem;
+        bottom: 0.75rem;
+    }
+}
+
+  /* Style pour le bouton Dashboard */
+.btn-dashboard {
+   
+    color: #fff; /* Couleur du texte */
+    padding: 10px 20px; /* Espacement interne */
+    border: none; /* Pas de bordure */
+    border-radius: 8px; /* Coins arrondis */
+    font-weight: bold; /* Texte en gras */
+    cursor: pointer; /* Curseur en forme de main */
+    transition: all 0.3s ease; /* Transition fluide */
+    display: flex; /* Alignement horizontal */
+    align-items: center; /* Centrer verticalement */
+    gap: 8px; /* Espace entre l'icône et le texte */
+}
+
+/* Effet au survol */
+.btn-dashboard:hover {
+    background-color: #d1aa3dad; /* Couleur plus foncée au survol */
+    transform: translateY(-2px); /* Légère élévation */
+    box-shadow: 0 4px 12px rgba(230, 164, 34, 0.3); /* Ombre subtile */
+}
+
+/* Effet au clic */
+.btn-dashboard:active {
+    transform: translateY(0); /* Retour à la position initiale */
+}
+
+/* Style pour le bouton Dashboard */
+.btn-dashboard {
+    color: #fff; /* Couleur du texte */
+    padding: 10px 20px; /* Espacement interne */
+    border: none; /* Pas de bordure */
+    border-radius: 8px; /* Coins arrondis */
+    font-weight: bold; /* Texte en gras */
+    cursor: pointer; /* Curseur en forme de main */
+    transition: all 0.3s ease; /* Transition fluide */
+    display: flex; /* Alignement horizontal */
+    align-items: center; /* Centrer verticalement */
+    gap: 8px; /* Espace entre l'icône et le texte */
+}
+
+/* Effet au survol */
+.btn-dashboard:hover {
+    background-color: #d1aa3dad; /* Couleur plus foncée au survol */
+    transform: translateY(-2px); /* Légère élévation */
+    box-shadow: 0 4px 12px rgba(230, 164, 34, 0.3); /* Ombre subtile */
+}
+
+/* Effet au clic */
+.btn-dashboard:active {
+    transform: translateY(0); /* Retour à la position initiale */
+}
+
+
+
+
+
+
+
+
+
+
+  .custom-trace-btn:hover {
+    background: rgba(255, 215, 0, 0.2);
+  }
+  
+  /* États ouverts */
+  .category.open .template-buttons {
+    display: flex;
+  }
+  
+  .category.open .category-title i.fa-chevron-right {
+    transform: rotate(90deg);
+  }
+
+/* Professional Title - Dynamic Version */
+.trace-proposer-title {
+    margin: 1.25rem 0 0.9375rem; /* 20px 0 15px → */
+    width: 50%;
+}
+
+.title-content {
+    display: flex;
+    align-items: center;
+    gap: 1.650rem; /* 10px → */
+
+ 
+}
+
+.trace-proposer-title h2 {
+    color: #FFD700;
+    font-size: clamp(1rem, 1.1vw, 1.1rem); /* Fluid scaling */
+    font-weight: 500;
+    letter-spacing: 0.03125rem; /* 0.5px → */
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    text-transform: uppercase;
+}
+
+.trace-proposer-title i {
+    color: #FFD700;
+    font-size: clamp(1rem, 1.1vw, 1.1rem); /* Matches h2 */
+}
+
+.title-actions {
+    margin-left: auto;
+}
+
+.expand-toggle {
+    background: transparent;
+    border: none;
+    color: rgba(255, 215, 0, 0.7);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0.3125rem; /* 5px → */
+}
+
+.expand-toggle:hover {
+    color: #FFD700;
+    transform: scale(1.1);
+}
+
+.title-divider {
+    height: 0.0625rem; /* 1px → */
+    background: linear-gradient(90deg, 
+                rgba(255,215,0,0) 0%, 
+                rgba(255,215,0,0.3) 50%, 
+                rgba(255,215,0,0) 100%);
+    margin-top: 0.5rem; /* 8px → */
+}
+
+/* ==================== */
+/* Responsive Container */
+/* ==================== */
+.container {
+    display: flex;
+    width: 50%;
+    padding: 2.5%;
+    gap: 2.5%;
+    min-height: 0; /* Fixes flexbox overflow */
+}
+
+.wsh {
+    margin-bottom: 10vh;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1200px) {
+    .container {
+        width: 65%;
+    }
+    
+    .trace-proposer-title h2,
+    .trace-proposer-title i {
+        font-size: clamp(0.9rem, 1.3vw, 1rem);
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: 85%;
+        padding: 5%;
+        gap: 5%;
+    }
+    
+    .title-content {
+        gap: 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        width: 95%;
+    }
+    
+    .trace-proposer-title {
+        margin: 1rem 0 0.75rem;
+    }
+    
+    .title-divider {
+        margin-top: 0.375rem;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ==================== */
+/* Global Reset & Basics */
+/* ==================== */
+:root {
+    --current-screen-width: 100vw;
+    --dynamic-breakpoint: 768px; /* Default, will be overridden by JS */
+  }
+  
+  * {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* ==================== */
+  /* Dynamic Media Queries Replacement */
+  /* ==================== */
+  
+  /* These classes will be toggled by JavaScript */
+  .dynamic-mobile-layout .buttons-container,
+  .dynamic-mobile-layout .buttons-container1 {
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+  }
+  
+  .dynamic-mobile-layout .code {
+    width: 5%;
+    left: 85%;
+    margin: 0 auto;
+    top: auto;
+    bottom: 2rem;
+    transform: none;
+    height: min(500px, 50vh);
+  }
+  
+  /* Will be applied when JS detects screen <= 768px */
+  .dynamic-tablet-layout .sidebar {
+    width: 100%;
+    height: auto;
+    max-height: 60vh;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+ 
+  /* ==================== */
+      /* Dynamic Screen Size CSS */
+      /* ==================== */
+      :root {
+        --current-screen-width: 100vw;
+        --dynamic-breakpoint-sm: 480px;
+        --dynamic-breakpoint-md: 768px;
+        --dynamic-breakpoint-lg: 1024px;
+        --dynamic-breakpoint-xsl: 1100px;
+        --dynamic-breakpoint-xl: 1200px;
+        --dynamic-breakpoint-xxl: 1600px;
+        --dynamic-breakpoint-xxxl: 1800px;
+      }
+
+      /* Mobile (<= 480px) */
+      .dynamic-sm-screen .buttons-container,
+      .dynamic-sm-screen .buttons-container1 {
+        gap: 0.375rem;
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      /* Tablet (<= 768px) */
+      .dynamic-md-screen .buttons-container,
+      .dynamic-md-screen .buttons-container1 {
+        gap: 0.5rem;
+        margin-top: 0.75rem;
+      }
+      @media (max-width: 1600px) {
+        .output-container {
+            left: 82%;
+            width: clamp(280px, 32vw, 550px);
+        }
+    }
+    
+      
+
+
+ /* Default styles */
+ 
+
+  /* XXL Screens (> 1600px) - Default values already good */
+ /* Large Desktop (1024-1200px) */
+ 
+
+   /* Large Desktop (1024-1200px) */
+ 
+   /* Large Desktop (1024-1200px) */
+   .dynamic-xxl-screen .output-container {
+    left:85%;
+    top: 12%;
+   width: 35%;
+  }
+  .dynamic-xxl-screen .result-section {
+   
+    left: 81%;
+    top: 12%;
+   
+  }
+   .dynamic-xl-screen .output-container {
+    left:95%;
+    top: 10%;
+    width:
+    20%
+  }
+  .dynamic-xl-screen .result-section {
+   
+    left: 92%;
+    top: 10%;
+    width:
+    28%
+  }
+  .dynamic-xsl-screen .output-container {
+    left: 61%;
+    top: 110%;
+    width: clamp(200px, 50vw, 500px);
+  }
+  .dynamic-xsl-screen .result-section {
+   
+    left: 61%;
+    top: 105%;
+    width: clamp(200px, 50vw, 500px);
+  }
+
+  /* Large Desktop (1024-1200px) */
+  .dynamic-lg-screen .output-container {
+    left: 61%;
+    top: 110%;
+    width: clamp(200px, 50vw, 500px);
+  }
+ /* Large Desktop (1024-1200px) */
+ .dynamic-lg-screen .result-section {
+    left: 61%;
+    top: 105%;
+    width: clamp(200px, 50vw, 500px);
+  }
+/* Large Desktop (1024-1200px) */
+.dynamic-md-screen .output-container {
+    left: 35%;
+    top: 130%;
+    width: clamp(200px, 50vw, 500px);
+  }
+ /* Large Desktop (1024-1200px) */
+ .dynamic-md-screen .result-section {
+    left: 61%;
+    top: 115%;
+    width: clamp(200px, 50vw, 500px);
+  }
+  
+
+  /* Mobile Landscape/Portrait (< 768px) */
+  .dynamic-sm-screen .output-container {
+    width:  5%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0 auto;
+    top: auto;
+    bottom: 2rem;
+    height: min(500px, 50vh);
+  }
+  .dynamic-sm-screen .code {
+    width: 85%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0 auto;
+    top: auto;
+    bottom: 2rem;
+    height: min(500px, 50vh);
+  }
+  dynamic-xl-screen .code {
+    width:80%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0 auto;
+    top: auto;
+    bottom: 2rem;
+    height: min(500px, 50vh);
+  }
+  *{
+    font-family: 'Poppins', sans-serif; /* Modern font */
+  }
+ 
+/* Tablet Landscape to Small Desktop */
+@media (max-width: 1200px) {
+    #code {
+        width: clamp(280px, 50vw, 600px);
+        left: clamp(80px, 25vw, 300px);
+    }
+}
+
+/* Tablet Portrait */
+@media (max-width: 900px) {
+    #code {
+        width: clamp(260px, 60vw, 550px);
+        height: clamp(280px, 55vh, 450px);
+        left: clamp(60px, 20vw, 250px);
+        font-size: clamp(11px, 1.8vw, 14px);
+    }
+
+    
+}
+
+/* Mobile Landscape */
+@media (max-width: 768px) {
+    #code {
+        width: 50vw;
+        position: relative;           /* Wider to accommodate long lines */
+        left: -15%;
+        margin: 0.5rem auto;   /* Centered on mobile */
+        transform: none;
+        white-space: pre;      /* Allow wrapping on mobile */
+    }
+}
+
+/* Mobile Portrait */
+@media (max-width: 480px) {
+    #code {
+        width: 90vw;
+        height: 60vh;
+        left: 5vw;
+        font-size: 13px;
+        padding: 8px;
+    }
+}
+
+/* Style for the call sequence entries */
+.call-entry {
+    display: block;
+    margin-bottom: 2px;
+    color: #4fc3f7;            /* Light blue for better readability */
+}
+
+.call-entry:hover {
+    background-color: #333;     /* Highlight on hover */
+}
+#code {
+    white-space: nowrap;   /* Prevents text from wrapping */
+    overflow-x: auto;      /* Adds horizontal scroll if needed */
+    font-family: monospace; /* Ensures consistent spacing */
+    
+    /* Optional styling */
+    background: #222;
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+}#code {
+        /* Preserve original formatting */
+         /* Horizontal scroll for long lines */
+    overflow-y: auto;           /* Vertical scroll if needed */
+    font-family: 'Courier New', monospace;
+    background-color: #222;
+    color:#ffffff;
+    border: 1px solid #555;
+    border-radius: 5px;
+    padding: 10px;
+    min-height: 300px;
+
+   font-size: 15px;;
+        white-space: pre-wrap; /* Preserve whitespace and line breaks */
+        font-family: monospace; /* Use a monospace font for better readability */
+}
+
+/* For mobile responsiveness */
+@media (max-width: 768px) {
+    #code {
+        white-space: pre-wrap; /* Allow wrapping on small screens */
+        word-break: break-all;  /* Break long words if needed */
+    }
+}
+
+
+
+
+
+      
+      .sidebar h3 {
+        font-size: 1rem;
+      
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 600;
+      
+        padding-bottom: 8px;
+        display: inline-block;
+        animation: fadeIn 0.5s ease-out;
+        
+      }
+      
+      .menu-item {
+        transition: all 0.3s ease;
+        animation: fadeIn 0.5s ease-out;
+      }
+      
+      .menu-item:hover {
+        transform: translateX(5px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      }
+      
+     
+      .trace-proposer-title {
+        animation: fadeIn 0.6s ease-out;
+      }
+    
+      /* Professional title styling */
+      .tactic-selection-header {
+        display: flex;
+      
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        
+        padding-top: 35px; /* adds space inside the element on top */
+      
+      
+      }
+      
+      .tactic-selection-header i {
+        margin-right: 12px;
+        color: #5e5d5d;
+        font-size: 1.5rem;
+      }
+      
+      .tactic-selection-header h3 {
+        margin: 0;
+        font-size: 1.3rem;
+        
+        color: #5e5d5d;
+        font-weight: 600;
+      }
+
+
+
+
+      .tactic-selection-header i {
+        margin-right: 12px;
+        color: #ffffff;
+        font-size: 1.5rem;
+        font-size: 1.5rem;
+        text-shadow: 0 0 8px rgba(115, 114, 110, 0.5);
+        animation: pulseGlow 2s infinite alternate;
+    }
+    
+    .tactic-selection-header h3 {
+        margin: 0;
+        font-size: 1.3rem;
+        font-weight: 600;
+        background: linear-gradient(135deg, #b9b6a2 0%, #FFFFFF 50%, #FFD700 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        text-shadow: 0 2px 4px rgba(255, 215, 0, 0.3);
+        position: relative;
+        display: inline-block;
+    }
+    
+    .tactic-selection-header h3::after {
+        content: '';
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #FFD700, transparent);
+        transform: scaleX(0);
+        transform-origin: right;
+        transition: transform 0.4s ease;
+    }
+    
+    .tactic-selection-header:hover h3::after {
+        transform: scaleX(1);
+        transform-origin: left;
+    }
+    
+    @keyframes pulseGlow {
+        0% {
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+            transform: scale(1);
+        }
+        100% {
+            text-shadow: 0 0 16px rgba(255, 215, 0, 0.8), 0 0 24px rgba(255, 215, 0, 0.6);
+            transform: scale(1.05);
+        }
+    }
+    
+    @keyframes textShimmer {
+        0% { background-position: 0% 50%; }
+        100% { background-position: 100% 50%; }
+    }
+    
+    .tactic-selection-header:hover h3 {
+        animation: textShimmer 3s infinite linear;
+        background-size: 200% auto;
+    }
+
+
+
+      /* Result section styling */
+      .result-section {
+         /* Dynamic Sizing */
+        
+         
+         /* Positioning */
+         position: absolute;
+         left: 77%;
+         top: 22%;
+         transform: translateX(-50%);
+         width: 32%;
+         /* Styling */
+
+        
+         border-radius: 8px;
+         overflow-x: hidden;
+         display: block;
+         z-index: 100; /* Ensure proper stacking */
+     }
+     
+    
+      
+      .result-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+      
+     
+      
+      .result-actions {
+        display: flex;
+        gap: 10px;
+      }
+      
+      .result-btn {
+        padding: 8px 15px;
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      
+      .download-btn {
+        background-color:#5e5d5d;
+        color: white;
+      }
+      
+      .download-btn:hover {
+        background-color: #5e5d5d;
+        transform: translateY(-2px);
+      }
+      
+      .clear-btn {
+        background-color: #f5f5f5;
+        color: #555;
+      }
+      
+      .clear-btn:hover {
+        background-color: #e0e0e0;
+        transform: translateY(-2px);
+      }
+      
+      
+      /* Success and error message styling */
+      .success-message {
+        color: #28a745;
+        font-weight: 500;
+      }
+      
+      .error-message {
+        color: #dc3545;
+        font-weight: 500;
+      }
+              /* Dropdown styles */
+              .dropdown {
+                position: relative;
+                display: inline-block;
+            }
+            
+            .dropdown-content {
+                display: none;
+                position: absolute;
+               
+                min-width: 160px;
+               
+               
+            }
+            
+            .dropdown-content a {
+                color: white;
+                padding: 8px 12px;
+                text-decoration: none;
+                display: block;
+                font-size: 14px;
+                position: relative;
+                left: -10.5vw;
+                top:-2.5vw;
+            }
+            
+            .dropdown-content a:hover {
+                background-color: #3d3d3d;
+            }
+            
+            .dropdown:hover .dropdown-content {
+                display:inline-table;
+            }
+            
+            /* Button styles */
+            
+            .btn-run .caret {
+                margin-left: 8px;
+                transition: transform 0.2s;
+            }
+            
+            .dropdown:hover .btn-run .caret {
+                transform: rotate(180deg);
+            }
+/* Container de sortie - Version optimisée */
+
+.output-container {
+    /* Style visuel */
+    background: #f7f7f7;
+   
+    padding: 1rem;
+  
+ 
+    
+    /* Positionnement sans position: relative */
+
+margin-right: -2.8vw;
+    
+    margin-top: 12vh; /* Position verticale */
+    
+    /* Dimensions */
+    width: min(20%, 40vw); /* Entre 30% et 50vw max */
+    height: min(60vh, 700px);
+    
+    
+    
+    /* Isolation pour performance */
+    contain: layout paint;
+}
+/* Contenu du output */
+.output-container pre {
+    white-space: pre-wrap;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #f0f0f0;
+    margin: 0;
+    padding: 0.5rem;
+}
+
+
+@media (max-width: 1200px) {
+    .output-container {
+        width:40%;
+        top: 15%;
+    }
+}
+
+@media (max-width: 992px) {
+    .output-container {
+        position: relative;
+        width: 100%;
+        height: auto;
+        max-height: 300px;
+        right: auto;
+        top: auto;
+        margin-top: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .output-container {
+        max-height: 250px;
+        padding: 0.8rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .output-container {
+        max-height: 200px;
+        border-radius: 6px;
+    }
+    
+    .output-container pre {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 1483px) {
+    .output-container {
+       
+        max-height: 200px;
+        border-radius: 6px;
+       margin-left:-5vw;
+       max-width: 45vw;
+    }
+   
+}
+
+@media (max-width: 1483px) {
+    .output-container {
+       
+        max-height: 200px;
+        border-radius: 6px;
+       margin-left:-5vw;
+       max-width: 45vw;
+    }
+   
+}
+ 
+
+@media (max-width: 1620px) {
+    .output-container {
+       
+        max-height: 700px;
+        border-radius: 6px;
+       margin-left:-1vw;
+       max-width: 30vw;
+    }
+   
+}
+@media (max-width: 1620px) {
+    .result-section{
+       
+     
+       margin-left:3vw;
+    
+    }
+   
+}
+@media (max-width: 1900px) {
+    .output-container {
+       
+        max-height: 700px;
+        border-radius: 6px;
+       margin-left:-6vw;
+       max-width: 30vw;
+    }
+   
+}
+@media (max-width: 1900px) {
+    .result-section{
+       
+     
+       margin-left:2vw;
+    
+    }
+   
+}
+
+    
+/* Adaptation mobile paysage */
+@media (max-width: 768px) {
+    .output-container {
+        width: 50%;
+left:85%;
+       
+        margin: 0 auto;
+       top:auto;
+        bottom: 2rem;
+        transform: none;
+        height: min(500px, 50vh);
+    }
+    .result-section{
+        left: 61%;
+        top: 15%;
+        width: clamp(200px, 50vw, 500px);
+    }
+}
+  
+ @media (max-width: 1900px) {
+    .output-container {
+        border-radius: 6px;
+        margin-left:-2.8vw; 
+        display: block !important;
+        width: 33vw !important;
+        max-width: none;
+        max-height: 1000px !important;
+        
+      
+    }}
+    
+
+
+
+    .result-title i {
+        margin-right: 12px;
+        color: #ffffff;
+        font-size: 1.1rem;
+        font-size: 1rem;
+        text-shadow: 0 0 8px rgba(115, 114, 110, 0.5);
+        
+    }
+    
+    .result-title  h3 {
+        margin: 0;
+        font-size: 1.1rem;
+        font-weight: 600;
+        background: linear-gradient(135deg, #b9b6a2 0%, #FFFFFF 50%, #f1f1f1 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        text-shadow: 0 2px 4px rgba(255, 215, 0, 0.3);
+        position: relative;
+        display: inline-block;
+    }
+    
+   
+    
+    
+    @keyframes pulseGlow {
+        0% {
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+            transform: scale(1);
+        }
+        100% {
+            text-shadow: 0 0 16px rgba(255, 215, 0, 0.8), 0 0 24px rgba(255, 215, 0, 0.6);
+            transform: scale(1.05);
+        }
+    }
+    
+    @keyframes textShimmer {
+        0% { background-position: 0% 50%; }
+        100% { background-position: 100% 50%; }
+    }
+         /* Style de base */
+         #editor-container {
+            position: relative;
+            max-width: 100%;
+            margin: 20px auto;
+        }
+        
+        #code {
+            min-height: 200px;
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #3498db;
+            border-radius: 8px;
+            font-family: 'Consolas', monospace;
+            resize: vertical;
+        }
+        
+        /* Éditeur avancé - intégré mais caché */
+        #advanced-editor-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            padding: 20px;
+        }
+        
+        #advanced-editor-container {
+            background: white;
+            border-radius: 10px;
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+            animation: fadeIn 0.3s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        /* Éditeur avancé - overlay */
+#advanced-editor-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.8);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Conteneur de l'éditeur avancé */
+#advanced-editor-container {
+    background: white;
+    width: 90%;
+    max-width: 1200px;
+    height: 90vh;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Zone de texte de l'éditeur avancé */
+#advanced-editor {
+    flex-grow: 1;
+    padding: 20px;
+    font-family: 'Consolas', monospace;
+    border: none;
+    resize: none;
+    outline: none;
+}

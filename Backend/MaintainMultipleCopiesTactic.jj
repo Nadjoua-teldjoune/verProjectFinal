@@ -1,0 +1,171 @@
+PARSER_BEGIN(MaintainMultipleCopiesParser)
+
+import java.util.*;
+
+public class MaintainMultipleCopiesParser {
+    static List<String[]> detectedTactics = new ArrayList<String[]>(); 
+   
+    static List<List<String>> interactionSequence = new ArrayList<List<String>>();
+
+    public static void main(String args[]) throws ParseException {
+        try {
+            Scanner scanner = new Scanner(System.in);
+            StringBuilder inputBuilder = new StringBuilder();
+
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                inputBuilder.append(line).append("\n");
+            }
+            scanner.close();
+
+            String traceInput = inputBuilder.toString();
+            MaintainMultipleCopiesParser parser = new MaintainMultipleCopiesParser(new java.io.StringReader(traceInput)); // Correction ici
+
+            System.out.println("\n=====================================================================================");
+            System.out.println("                      TACTIC DETECTION SYSTEM INITIALIZED  ");
+            System.out.println("=====================================================================================\n");
+
+            System.out.println("                      <----  Tactic structure ----> : ");
+            System.out.println("\n TraceCacheClient:CacheClient --METHOD--> TraceCacheMgr:CacheMgr ");
+            System.out.println(" TraceCacheMgr:CacheMgr --METHOD--> TraceCache:Cache ");    
+            System.out.println(" Optional Block : ");  
+            System.out.println(" TraceCacheMgr:CacheMgr --METHOD--> TraceRepository:Repository");
+            System.out.println(" TraceCacheMgr:CacheMgr --METHOD --> TraceCache:Cache \n");
+
+            
+            parser.Start();
+            int tacticCount = parser.detectMaintainMultipleCopies(); // Appel de la méthode de détection
+
+            System.out.println("\n=====================================================================================");
+            System.out.println(" Total Maintain Multiple Copies Tactic occurrences detected : " + tacticCount);
+            System.out.println("=====================================================================================\n");
+
+        } catch (Exception e) {
+            System.out.println("Erreur de parsing : " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    int detectMaintainMultipleCopies() {
+    int tacticCount = 0; // Counter for detected tactics
+    boolean check = true;
+    boolean check1 = true;
+   
+
+    if (interactionSequence.size() < 2) {
+        System.out.println("Not enough interactions for pattern detection (need at least 2).");
+        return tacticCount;
+    }
+
+    for (int i = 0; i < interactionSequence.size() - 1; i++) {
+        List<String> step1 = interactionSequence.get(i);
+        List<String> step2 = interactionSequence.get(i + 1);
+
+        String caller1 = step1.get(0), method1 = step1.get(1), callee1 = step1.get(2);
+        String caller2 = step2.get(0), method2 = step2.get(1), callee2 = step2.get(2);
+        check = true;
+
+        if (i + 3 < interactionSequence.size()) {
+             check = true;
+            check1 = true;
+           
+            List<String> step3 = interactionSequence.get(i + 2);
+            List<String> step4 = interactionSequence.get(i + 3);
+
+            String caller3 = step3.get(0), method3 = step3.get(1), callee3 = step3.get(2);
+            String caller4 = step4.get(0), method4 = step4.get(1), callee4 = step4.get(2);
+
+            boolean extendedCondition1 = caller2.equals(caller3);
+            boolean extendedCondition2 = caller3.equals(caller4);
+            boolean extendedCondition3 = callee2.equals(callee4);
+            boolean extendedCondition4 = !callee2.equals(callee3);
+            boolean condition2 = !callee1.equals(callee2);
+            boolean condition1 = !caller1.equals(caller2);
+            boolean extendedCondition5 = !callee3.equals(callee4);
+            boolean condition3 = callee1.equals(caller2);
+            if (condition1 && condition2 && condition3 && extendedCondition1 && extendedCondition2 && extendedCondition3 && extendedCondition4 && extendedCondition5) {
+                System.out.println("\n=====================================================================================");
+                System.out.println("                      Tactic detected at line " + (i + 1));
+                System.out.println("-------------------------------------------------------------------------------------");
+                System.out.println((i+1) + " | " + caller1 + ":CacheClient -- " + method1 + " --> " + callee1 + ":CacheMgr");
+                System.out.println((i + 2) + " | " + caller2 + ":CacheMgr -- " + method2 + " --> " + callee2 + ":Cache");
+                System.out.println((i + 3) + " | " + caller3 + ":CacheMgr -- " + method3 + " --> " + callee3 + ":Repository");
+                System.out.println((i + 4) + " | " + caller4 + ":CacheMgr -- " + method4 + " --> " + callee4 + ":Cache");
+                System.out.println("=====================================================================================");
+               
+                tacticCount++; // Increment counter
+                i = i + 3;
+                continue;
+            } else {
+                System.out.println(" X ERROR! Unexpected CALLER Or CALLEE at event line  " + (i + 1));
+                 System.out.println("-------------------------------------------------------------------------------------\n\n");
+                check1=false;
+            }
+        }
+
+        if (check || (i + 3 > interactionSequence.size())) {
+            boolean condition1 = !caller1.equals(caller2);
+            boolean condition2 = !callee1.equals(callee2);
+            boolean condition3 = callee1.equals(caller2);
+
+            if (condition1 && condition2 && condition3) {
+                System.out.println("\n=====================================================================================");
+                System.out.println("                      Tactic detected at line " +( i +1));
+                System.out.println("-------------------------------------------------------------------------------------");
+                System.out.println((i+1) + " | " + caller1 + ":CacheClient -- " + method1 + " --> " + callee1 + ":CacheMgr");
+                System.out.println((i + 2) + " | " + caller2 + ":CacheMgr -- " + method2 + " --> " + callee2 + ":Cache");
+                System.out.println("=====================================================================================");
+
+                tacticCount++;
+                i=i+1 ;
+            }
+            if ((!condition1 || !condition2)&& (check1=false) ) {
+               System.out.println(" X ERROR! Unexpected CALLER Or CALLEE at event line  " + (i + 1));
+               System.out.println("-------------------------------------------------------------------------------------\n\n");
+             
+            }
+           
+        }
+    }
+
+    return tacticCount; // Return the total number of detected tactics
+}
+
+
+}
+PARSER_END(MaintainMultipleCopiesParser)
+
+SKIP : { " " | "\t" | "\r" | "\n" }
+
+TOKEN : {
+    < CALLER : "CALLER:" > |
+    < CALLEE : "CALLEE:" > |
+    < METHOD : "METHOD:" > |
+    < COMMA : "," > |
+    < SEMICOLON : ";" > |
+    < LITERAL : (["a"-"z", "A"-"Z", "0"-"9", "_"])+ >
+}
+
+void Start() :
+{
+    
+
+     System.out.println("\n Analyzing trace...\n\n      ");
+   
+}
+{
+    ( MethodInvocation() )*
+}
+
+void MethodInvocation() :
+{ Token caller, method, callee; }
+{
+    <CALLER> caller = <LITERAL>
+    <COMMA> <METHOD> method = <LITERAL>
+    <COMMA> <CALLEE> callee = <LITERAL>
+    <SEMICOLON>
+    {
+        interactionSequence.add(Arrays.asList(caller.image, method.image, callee.image));
+    }
+}
+

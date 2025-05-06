@@ -1,0 +1,129 @@
+PARSER_BEGIN(MaintainDataConfidentialityParser)
+
+import java.util.*;
+
+public class MaintainDataConfidentialityParser {
+    static List detectedTactics = new ArrayList();
+    static Map pendingEncryptions = new HashMap();
+    static Map encryptionToSend = new HashMap();
+
+    public static void main(String args[]) throws ParseException {
+        try {
+            Scanner scanner = new Scanner(System.in);
+            StringBuilder inputBuilder = new StringBuilder();
+
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                inputBuilder.append(line).append("\n");
+            }
+            scanner.close();
+
+            String traceInput = inputBuilder.toString();
+
+            MaintainDataConfidentialityParser parser = new MaintainDataConfidentialityParser(new java.io.StringReader(traceInput));
+
+            System.out.println("\n=====================================================================================");
+            System.out.println("                   TACTIC DETECTION SYSTEM INITIALIZED  ");
+            System.out.println("=====================================================================================\n");
+
+            System.out.println("                      <----  Tactic structure ----> : ");
+            System.out.println(" Encryptor:TraceEncryptor --METHOD--> Encryptor:TraceEncryptor");
+            System.out.println(" Encryptor:TraceEncryptor --METHOD--> Decryptor:TraceDecryptor");
+            System.out.println(" Decryptor:TraceDecryptor --METHOD--> Decryptor:TraceDecryptor");
+
+            parser.Start();
+
+            if (!detectedTactics.isEmpty()) {
+                System.out.println("\n=====================================================================================");
+                System.out.println("                            ANALYSIS SUMMARY   ");
+                System.out.println("=====================================================================================");
+                System.out.println(" Total Maintain Data Confidentiality Tactic occurrences detected: " + detectedTactics.size());
+                System.out.println("=====================================================================================");
+
+                int count = 1;
+                System.out.println("\n=====================================================================================");
+                System.out.println("                            TACTIC DETECTION  ");
+                System.out.println("=====================================================================================\n");
+
+                for (Object obj : detectedTactics) {
+                    Map tactic = (Map) obj;
+                    System.out.println("Tactic " + count + ":");
+                    System.out.println("   Encryptor --> " + tactic.get("Encryptor"));
+                    System.out.println("   Decryptor --> " + tactic.get("Decryptor"));
+                    count++;
+                }
+                System.out.println("Total number of detected tactics: " + detectedTactics.size());
+            } else {
+                System.out.println("No Maintain Data Confidentiality tactics detected.");
+            }
+        } catch (Exception e) {
+            System.out.println(" Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+}
+
+PARSER_END(MaintainDataConfidentialityParser)
+
+/** Ignorer les espaces, tabulations et sauts de ligne */
+SKIP : { " " | "\t" | "\r" | "\n" | "\r\n" }
+
+/** Définition des tokens */
+TOKEN : {
+    < CALLER : "CALLER" > |
+    < CALLEE : "CALLEE" > |
+    < METHOD : "METHOD" > |
+    < COLON : ":" > |
+    < COMMA : "," > |
+    < SEMICOLON : ";" > |
+    < LITERAL : (["a"-"z", "A"-"Z", "0"-"9", "_", "$"])+ >
+}
+
+/** Point d'entrée */
+void Start() :
+{
+    System.out.println("\n Starting trace analysis...\n" );
+}
+{
+    (ProcessMethodCall())*
+}
+
+/** Gérer chaque appel de méthode */
+void ProcessMethodCall(): { Token caller, callee, method; }
+{
+    <CALLER> <COLON> caller = <LITERAL>
+    <COMMA> <METHOD> <COLON> method = <LITERAL>
+    <COMMA> <CALLEE> <COLON> callee = <LITERAL>
+    <SEMICOLON>
+    {
+        if (pendingEncryptions.containsKey(caller.image)) {
+            // Étape 2 : Transmission des données chiffrées
+            if (!caller.image.equals(callee.image)) {
+                encryptionToSend.put(callee.image, (String) pendingEncryptions.get(caller.image));
+            }
+            pendingEncryptions.remove(caller.image);
+        }
+        else if (encryptionToSend.containsKey(caller.image)) {
+            // Étape 3 : Déchiffrement
+            if (caller.image.equals(callee.image)) {
+                String originalEncryptor = (String) encryptionToSend.get(caller.image);
+
+                if (originalEncryptor != null) {
+                    Map<String, String> tactic = new HashMap<String, String>();
+                    tactic.put("Encryptor", originalEncryptor);
+                    tactic.put("Decryptor", caller.image);
+
+                    detectedTactics.add(tactic);
+                    System.out.println("Maintain Data Confidentiality tactic detected!");
+                }
+            }
+            encryptionToSend.remove(caller.image);
+        }
+        else {
+            // Étape 1 : Détection de l'encryption
+            if (caller.image.equals(callee.image)) {
+                pendingEncryptions.put(caller.image, caller.image);
+            }
+        }
+    }
+}

@@ -1,0 +1,121 @@
+PARSER_BEGIN(TacticParser)
+
+import java.util.*;
+import java.io.*;
+
+public class TacticParser {
+
+    private static List<String[]> events = new ArrayList<String[]>(); // [CALLER, METHOD, CALLEE]
+    private static int tacticCount = 0;
+
+    private static boolean check = true;
+    private static boolean check1 = true;
+
+    public static void main(String[] args) throws Exception {
+        try {
+            System.out.println("\n==========================================================================================");
+            System.out.println("                   TACTIC DETECTION SYSTEM INITIALIZED  ");
+            System.out.println("==========================================================================================\n");
+ Scanner scanner = new Scanner(System.in);
+            StringBuilder inputBuilder = new StringBuilder();
+
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                inputBuilder.append(line).append("\n");
+          }
+            scanner.close();
+            String traceInput = inputBuilder.toString();
+            TacticParser parser = new TacticParser(new java.io.StringReader(traceInput));
+            System.out.println("                      <----  Tactic structure ----> : ");
+            System.out.println("\n TraceClient: Client--METHOD-->TraceClient: Client ");
+            System.out.println("\n TraceClient: Client--METHOD-->TraceAuthenticator: Authenticator ");
+            System.out.println("\n TraceAuthenticator: Authenticator--METHOD-->TraceAuthenticator: Authenticator ");
+          System.out.println("\n TraceAuthenticator: Authenticator--METHOD-->TraceAuthenticator: Authenticator ");
+            parser.Trace();
+
+            detectTactic();
+
+            
+          System.out.println("\n==========================================================================================");
+            System.out.println("                      ANALYSIS SUMMARY");
+
+            System.out.println(" Total AuthenticateID/Password Tactic occurrences detected: " + tacticCount);
+            System.out.println("==========================================================================================\n");
+
+        } catch (Exception e) {
+            System.out.println("Erreur de parsing : " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private static void detectTactic() {
+        System.out.println("Detecting ID/Password tactics in the trace...\n");
+
+        for (int i = 0; i <= events.size() - 4; ) {
+            String[] e1 = events.get(i);
+            String[] e2 = events.get(i + 1);
+            String[] e3 = events.get(i + 2);
+            String[] e4 = events.get(i + 3);
+
+            boolean match =
+                e1[0].equals(e1[2]) &&                // appel local du client (encrypt)
+                e2[0].equals(e1[0]) &&                // même client appelle Authenticator
+                e2[2].equals(e3[0]) &&                // Authenticator continue les appels
+                e3[0].equals(e4[0]) &&
+                !e2[2].equals(e1[0]) &&
+                e2[2].equals(e3[2]) &&           // suite de traitement dans Authenticator
+                e3[0].equals(e4[2]);                  // appel local dans Authenticator
+
+            if (match) {
+System.out.println("\n==========================================================================================");
+                System.out.println("                  Tactic detected at line " + i);
+                System.out.println("------------------------------------------------------------------------------------------");
+              
+                 System.out.println(i + " | " + e1[0] + ":Client -- " + e1[1] + " --> " + e1[2] + ":Client");
+                System.out.println((i+1) + " | " + e2[0] + ":Client -- " + e2[1] + " --> " + e2[2] + ":Authenticator");
+                System.out.println((i+2) + " | " + e3[0] + ":Authenticator -- " + e3[1] + " --> " + e3[2] + ":Authenticator");
+                System.out.println((i+3) + " | " + e4[0] + ":Authenticator -- " + e4[1] + " --> " + e4[2] + ":Authenticator");
+
+
+                System.out.println("==========================================================================================\n");
+
+
+                tacticCount++;
+                i += 4;
+            } else {
+                System.out.println("X Invalid line detected at index " + i + ", continuing with the analysis...");
+                System.out.println("------------------------------------------------------------------------------------------\n");
+                i++;
+            }
+        }
+    }
+}
+PARSER_END(TacticParser)
+
+SKIP : { " " | "\t" | "\r" | "\n" }
+
+TOKEN : { < CALLER : "CALLER:" > }
+TOKEN : { < CALLEE : "CALLEE:" > }
+TOKEN : { < METHOD : "METHOD:" > }
+TOKEN : { < COMMA : "," > }
+TOKEN : { < SEMICOLON : ";" > }
+TOKEN : { < IDENTIFIER : ( ["a"-"z", "A"-"Z", "0"-"9", "_"] )+ > }
+
+void Trace() :
+{
+    System.out.println(" \n Analyzing trace...\n");
+}
+{
+    ( Event() )*
+}
+
+void Event() :
+{ Token caller, method, callee; }
+{
+    <CALLER> caller = <IDENTIFIER> <COMMA>
+    <METHOD> method = <IDENTIFIER> <COMMA>
+    <CALLEE> callee = <IDENTIFIER> <SEMICOLON>
+    {
+        events.add(new String[]{caller.image, method.image, callee.image});
+    }
+}

@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Carte Mentale Dynamique</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <style>
+      /* Réinitialisation des styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background-color: #121212; /* Fond sombre premium */
+        color: #fff;
+        font-family: "Arial", sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      .mindmap {
+        position: relative;
+        width: 100%;
+        height: 100%;
+      }
+
+      .node {
+        position: absolute;
+        padding: 15px;
+        border-radius: 10px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.4s ease;
+        box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        z-index: 2;
+        display: flex;
+        align-items: center;
+      }
+
+      .node:hover {
+        transform: scale(1.1);
+        box-shadow: 0 0 20px rgba(255, 215, 0, 1);
+      }
+
+      .center {
+        background-color: #ffd700;
+        color: #1a1a1a;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-weight: bold;
+      }
+
+      /* Style commun pour les boutons spécifiés */
+      .uniform-style {
+        background-color: #333; /* Fond sombre */
+        color: #ffffff; /* Texte en blanc */
+        width: 220px; /* Largeur uniforme */
+      }
+
+      .sub {
+        background-color: #222;
+        color: #fff;
+        width: 180px;
+        font-size: 14px;
+      }
+
+      /* Style pour les propriétés (texte en jaune) */
+      .property {
+        color: #ffd700; /* Texte en jaune */
+      }
+
+      /* Positionnement dynamique */
+      #security {
+        top: 15%;
+        left: 20%;
+      }
+      #availability {
+        top: 15%;
+        right: 20%;
+      }
+      #confidentiality {
+        top: 35%;
+        left: 10%;
+      }
+      #authorize {
+        top: 35%;
+        left: 30%;
+      }
+      #ping-echo {
+        top: 35%;
+        right: 30%;
+      }
+      #multiple-copies {
+        top: 35%;
+        right: 10%;
+      }
+      #encryption {
+        top: 60%;
+        left: 5%;
+      }
+      #access-control {
+        top: 60%;
+        left: 25%;
+      }
+      #authentication {
+        top: 60%;
+        right: 25%;
+      }
+      #otp {
+        top: 60%;
+        right: 5%;
+      }
+      #id-password-confidentiality {
+        top: 80%;
+        left: 15%;
+      }
+
+      /* Lignes de connexion */
+      .line {
+        position: absolute;
+        background-color: #ffd700;
+        height: 3px;
+        z-index: 1;
+        transform-origin: left;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+      }
+
+      /* Style pour les icônes */
+      .node i {
+        margin-right: 10px; /* Espace entre l'icône et le texte */
+        font-size: 18px; /* Taille de l'icône */
+      }
+
+      .node.center i {
+        font-size: 24px; /* Taille de l'icône pour le nœud central */
+      }
+
+      /* Info-bulle pour afficher la description */
+      .tooltip {
+        position: absolute;
+        background-color: rgba(255, 215, 0, 0.9); /* Doré translucide */
+        color: #1a1a1a; /* Texte sombre */
+        padding: 8px;
+        border-radius: 5px;
+        font-size: 14px;
+        box-shadow: 0px 0px 10px rgba(255, 215, 0, 0.6);
+        display: none;
+        z-index: 3;
+        max-width: 250px;
+        text-align: center;
+      }
+
+      /* Bouton Retour */
+      .back-button {
+        background-color: #ffd700; /* Fond doré */
+        color: #1a1a1a; /* Texte sombre */
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px; /* Espace entre l'icône et le texte */
+        position: fixed; /* Fixer le bouton */
+        top: 20px; /* Position en haut */
+        left: 20px; /* Position à gauche */
+        z-index: 1000; /* S'assurer qu'il est au-dessus des autres éléments */
+        box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); /* Ombre dorée */
+      }
+
+      .back-button:hover {
+        background-color: #ffbb33; /* Doré plus clair au survol */
+        transform: translateY(-2px); /* Légère élévation */
+      }
+
+      .back-button:active {
+        transform: translateY(0); /* Retour à la position initiale */
+      }
+
+      /* Boutons de traduction */
+
+      .language-button {
+        background-color: #4a4a4a;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        position: fixed;
+        /* Position commune */
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+      }
+
+      .language-button:hover {
+        background-color: #5a5a5a;
+        transform: translateY(-2px);
+      }
+
+      .language-button:active {
+        transform: translateY(0);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Bouton Retour -->
+    <button onclick="goBack()" class="back-button">
+      <i class="fas fa-arrow-left"></i> <span id="backText">Retour</span>
+    </button>
+
+    <!-- Boutons de traduction - Version corrigée -->
+    <button
+      onclick="translateToEnglish()"
+      class="language-button"
+      id="englishBtn"
+      style="top: 20px; right: 20px"
+    >
+      <i class="fas fa-language"></i> <span>English</span>
+    </button>
+
+    <button
+      onclick="translateToFrench()"
+      class="language-button"
+      id="frenchBtn"
+      style="display: none; top: 20px; right: 20px"
+    >
+      <i class="fas fa-language"></i> <span>Français</span>
+    </button>
+
+    <div class="mindmap">
+      <!-- Nœud central -->
+      <div class="node center" id="center-node">
+        <i class="fas fa-sitemap"></i>
+        <span id="centerNodeText">Tactiques Architecturales</span>
+      </div>
+
+      <!-- Nœuds principaux -->
+      <div class="node uniform-style" id="security">
+        <i class="fas fa-shield-alt"></i>
+        <span id="securityText">Sécurité des Données</span>
+      </div>
+      <div class="node uniform-style" id="availability">
+        <i class="fas fa-server"></i>
+        <span id="availabilityText">Disponibilité et Résilience</span>
+      </div>
+
+      <!-- Sous-nœuds Sécurité des Données -->
+      <div class="node sub property" id="confidentiality">
+        <i class="fas fa-lock"></i>
+        <span id="confidentialityText">Maintain Data Confidentiality</span>
+      </div>
+      <div class="node sub property" id="authorize">
+        <i class="fas fa-user-check"></i>
+        <span id="authorizeText">Authorize Users</span>
+      </div>
+
+      <!-- Sous-nœuds Disponibilité et Résilience -->
+      <div class="node sub property" id="ping-echo">
+        <i class="fas fa-network-wired"></i>
+        <span id="pingEchoText">Ping Echo</span>
+      </div>
+      <div class="node sub property" id="multiple-copies">
+        <i class="fas fa-copy"></i>
+        <span id="multipleCopiesText">Maintain Multiple Copies</span>
+      </div>
+
+      <!-- Sous-nœuds supplémentaires -->
+      <div class="node uniform-style" id="encryption">
+        <i class="fas fa-key"></i>
+        <span id="encryptionText">Chiffrement des Données</span>
+      </div>
+      <div class="node uniform-style" id="access-control">
+        <i class="fas fa-shield-alt"></i>
+        <span id="accessControlText">Contrôle d'Accès</span>
+      </div>
+      <div class="node uniform-style" id="authentication">
+        <i class="fas fa-fingerprint"></i>
+        <span id="authenticationText">Authentification</span>
+      </div>
+      <div class="node sub property" id="otp">
+        <i class="fas fa-mobile-alt"></i>
+        <span id="otpText">Onetime Password (OTP)</span>
+      </div>
+
+      <!-- Nouveau nœud : Composition ID/Password & Maintain Data Confidentiality -->
+      <div class="node sub property" id="id-password-confidentiality">
+        <i class="fas fa-id-card"></i>
+        <span id="idPasswordText"
+          >Composition ID/Password & Maintain Data Confidentiality</span
+        >
+      </div>
+
+      <!-- Conteneur des lignes -->
+      <div id="lines-container"></div>
+    </div>
+
+    <!-- Info-bulle -->
+    <div id="tooltip" class="tooltip"></div>
+
+    <script>
+      function getNodeCoordinates(node) {
+        const rect = node.getBoundingClientRect();
+        return {
+          x: rect.left + rect.width / 2,
+          y: rect.top + rect.height / 2,
+        };
+      }
+
+      function drawLine(startNode, endNode) {
+        const start = getNodeCoordinates(startNode);
+        const end = getNodeCoordinates(endNode);
+
+        const line = document.createElement("div");
+        line.classList.add("line");
+
+        const length = Math.sqrt(
+          (end.x - start.x) ** 2 + (end.y - start.y) ** 2
+        );
+        const angle =
+          Math.atan2(end.y - start.y, end.x - start.x) * (180 / Math.PI);
+
+        line.style.width = `${length}px`;
+        line.style.transform = `rotate(${angle}deg)`;
+        line.style.left = `${start.x}px`;
+        line.style.top = `${start.y}px`;
+
+        document.getElementById("lines-container").appendChild(line);
+
+        // Animation d'apparition progressive
+        setTimeout(() => {
+          line.style.opacity = 1;
+        }, 200);
+      }
+
+      // Lier les éléments
+      const links = [
+        ["center-node", "security"],
+        ["center-node", "availability"],
+        ["security", "confidentiality"],
+        ["security", "authorize"],
+        ["confidentiality", "encryption"],
+        ["authorize", "access-control"],
+        ["authorize", "authentication"],
+        ["authentication", "otp"],
+        ["availability", "ping-echo"],
+        ["availability", "multiple-copies"],
+        ["confidentiality", "id-password-confidentiality"], // Nouvelle connexion
+      ];
+
+      links.forEach(([startId, endId]) => {
+        drawLine(
+          document.getElementById(startId),
+          document.getElementById(endId)
+        );
+      });
+
+      // Effet interactif au clic
+      document.querySelectorAll(".node").forEach((node) => {
+        node.addEventListener("click", () => {
+          node.classList.toggle("active");
+          node.style.backgroundColor = node.classList.contains("active")
+            ? "#ffdb4d"
+            : node.classList.contains("uniform-style")
+            ? "#333"
+            : "#222";
+          node.style.color = node.classList.contains("active")
+            ? "#1a1a1a"
+            : node.classList.contains("property")
+            ? "#ffd700"
+            : "#fff";
+        });
+      });
+
+      // Fonction pour le bouton Retour
+      function goBack() {
+        window.history.back(); // Retour à la page précédente
+      }
+
+      // Traductions
+      const translations = {
+        fr: {
+          backText: "Retour",
+          centerNodeText: "Tactiques Architecturales",
+          securityText: "Sécurité des Données",
+          availabilityText: "Disponibilité et Résilience",
+          confidentialityText: "Maintain Data Confidentiality",
+          authorizeText: "Authorize Users",
+          pingEchoText: "Ping Echo",
+          multipleCopiesText: "Maintain Multiple Copies",
+          encryptionText: "Chiffrement des Données",
+          accessControlText: "Contrôle d'Accès",
+          authenticationText: "Authentification",
+          otpText: "Onetime Password (OTP)",
+          idPasswordText:
+            "Composition ID/Password & Maintain Data Confidentiality",
+          tooltips: {
+            confidentiality:
+              "Assure la protection des données contre les accès non autorisés.",
+            authorize:
+              "Contrôle l'accès aux ressources en fonction des droits de l'utilisateur.",
+            "ping-echo":
+              "Vérifie la disponibilité des services en envoyant un signal et en écoutant la réponse.",
+            "multiple-copies":
+              "Stocke plusieurs copies des données pour assurer la résilience.",
+            otp: "Génère un mot de passe unique à usage unique pour renforcer la sécurité.",
+            "id-password-confidentiality":
+              "Associe un identifiant/mot de passe avec des mécanismes de confidentialité avancés.",
+          },
+        },
+        en: {
+          backText: "Back",
+          centerNodeText: "Architectural Tactics",
+          securityText: "Data Security",
+          availabilityText: "Availability and Resilience",
+          confidentialityText: "Maintain Data Confidentiality",
+          authorizeText: "Authorize Users",
+          pingEchoText: "Ping Echo",
+          multipleCopiesText: "Maintain Multiple Copies",
+          encryptionText: "Data Encryption",
+          accessControlText: "Access Control",
+          authenticationText: "Authentication",
+          otpText: "Onetime Password (OTP)",
+          idPasswordText:
+            "Composition ID/Password & Maintain Data Confidentiality",
+          tooltips: {
+            confidentiality:
+              "Ensures protection of data against unauthorized access.",
+            authorize: "Controls access to resources based on user rights.",
+            "ping-echo":
+              "Checks service availability by sending a signal and listening for a response.",
+            "multiple-copies":
+              "Stores multiple copies of data to ensure resilience.",
+            otp: "Generates a unique one-time password to enhance security.",
+            "id-password-confidentiality":
+              "Combines an ID/password with advanced confidentiality mechanisms.",
+          },
+        },
+      };
+
+      function translateToEnglish() {
+        applyTranslation("en");
+        document.getElementById("englishBtn").style.display = "none";
+        document.getElementById("frenchBtn").style.display = "flex";
+      }
+
+      function translateToFrench() {
+        applyTranslation("fr");
+        document.getElementById("englishBtn").style.display = "flex";
+        document.getElementById("frenchBtn").style.display = "none";
+      }
+
+      function applyTranslation(lang) {
+        const t = translations[lang];
+
+        // Traduire les textes des éléments
+        document.getElementById("backText").textContent = t.backText;
+        document.getElementById("centerNodeText").textContent =
+          t.centerNodeText;
+        document.getElementById("securityText").textContent = t.securityText;
+        document.getElementById("availabilityText").textContent =
+          t.availabilityText;
+        document.getElementById("confidentialityText").textContent =
+          t.confidentialityText;
+        document.getElementById("authorizeText").textContent = t.authorizeText;
+        document.getElementById("pingEchoText").textContent = t.pingEchoText;
+        document.getElementById("multipleCopiesText").textContent =
+          t.multipleCopiesText;
+        document.getElementById("encryptionText").textContent =
+          t.encryptionText;
+        document.getElementById("accessControlText").textContent =
+          t.accessControlText;
+        document.getElementById("authenticationText").textContent =
+          t.authenticationText;
+        document.getElementById("otpText").textContent = t.otpText;
+        document.getElementById("idPasswordText").textContent =
+          t.idPasswordText;
+
+        // Mettre à jour les descriptions des info-bulles
+        currentLanguage = lang;
+      }
+
+      // Info-bulles
+      let currentLanguage = "fr";
+      const tooltip = document.getElementById("tooltip");
+
+      document.querySelectorAll(".node").forEach((node) => {
+        node.addEventListener("mouseover", (event) => {
+          const nodeId = node.id;
+          if (translations[currentLanguage].tooltips[nodeId]) {
+            tooltip.innerHTML = translations[currentLanguage].tooltips[nodeId];
+            tooltip.style.display = "block";
+            tooltip.style.left = `${event.pageX + 15}px`;
+            tooltip.style.top = `${event.pageY + 15}px`;
+          }
+        });
+
+        node.addEventListener("mousemove", (event) => {
+          tooltip.style.left = `${event.pageX + 15}px`;
+          tooltip.style.top = `${event.pageY + 15}px`;
+        });
+
+        node.addEventListener("mouseleave", () => {
+          tooltip.style.display = "none";
+        });
+      });
+    </script>
+  </body>
+</html>

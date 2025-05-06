@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TActiCC</title>
+    <link rel="stylesheet" href="style1.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Ajout de FontAwesome pour les icônes modernes -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
+<header> <div class="navbar">
+  <a href="guide.html"> <i class="fas fa-book"></i> </a
+><!-- Guide Icon --> </div></header>
+<body></header>
+  <body>
+    <!-- Lumière dorée qui balaye l'écran de haut en bas des deux côtés -->
+    <div class="golden-scan left-scan"></div>
+    <div class="golden-scan right-scan"></div>
+
+    <!-- Lignes à gauche -->
+    <div class="vertical-line left-line line-1"></div>
+    <div class="vertical-line left-line line-2"></div>
+    <div class="vertical-line left-line line-3"></div>
+
+    <!-- Lignes à droite -->
+    <div class="vertical-line right-line line-1"></div>
+    <div class="vertical-line right-line line-2"></div>
+    <div class="vertical-line right-line line-3"></div>
+
+    <div class="horizontal-lines">
+      <div class="line"></div>
+      <div class="line"></div>
+    </div>
+
+    <!-- Welcome Screen -->
+    <div class="welcome-container">
+      <div class="logo">
+        <img
+          src="Tacticc (6).png"
+          alt="ID/Password Icon"
+          width="300px"
+          height="60"
+        />
+      </div>
+      <div class="feature-container">
+        <!-- Icône moderne à gauche du slogan -->
+        <i class="fas fa-code feature-icon"></i>
+        <div class="feature-text-container">
+          <p class="feature-text">We Parse, You Build!</p>
+        </div>
+        <!-- Icône moderne à droite du slogan -->
+        <i class="fas fa-cogs feature-icon"></i>
+      </div>
+
+      <!-- Bouton WELCOME cliquable -->
+      <div class="welcome-bar" onclick="redirectToPage2()">
+        <p>WELCOME</p>
+      </div>
+      <script src="script.js" defer></script>
+
+      <div class="features">
+        <div class="feature">
+          <img
+            src="security.png"
+            alt="Security Icon"
+            width="80px"
+            height="80"
+          />
+          <h3>Security</h3>
+        </div>
+        <div class="feature">
+          <img src="energy.png" alt="Energy Icon" width="80px" height="80" />
+          <h3>Energy Efficiency</h3>
+        </div>
+        <div class="feature">
+          <img
+            src="performance.png"
+            alt="Performance Icon"
+            width="80px"
+            height="80"
+          />
+          <h3>Performance</h3>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <p class="description">
+        Unlock the future of software design with intelligent
+        parsing—effortlessly transform your ideas into reality and build with
+        precision like never before!
+      </p>
+    </div>
+
+    <!-- Animation de fond (particules) -->
+    <div class="particles"></div>
+
+    <!-- Script pour la redirection -->
+    <script>
+      function redirectToPage2() {
+        window.location.href = "index2.html"; // Redirection vers la deuxième page
+      }
+    </script>
+    <!-- Bouton vers la carte du site -->
+    <button
+      class="structure-btn"
+      onclick="window.location.href='Lookoutsite.html'"
+    >
+      <i class="fas fa-sitemap"></i> LookOut
+    </button>
+
+    <style>
+      .structure-btn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: linear-gradient(135deg, #ffd700, #ffb800);
+        border: none;
+        border-radius: 30px;
+        padding: 10px 16px;
+        font-size: 0.9rem;
+        color: #121212;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+        z-index: 9999;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .structure-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 25px rgba(255, 215, 0, 0.5);
+      }
+
+      .structure-btn i {
+        font-size: 1rem;
+      }
+    </style>
+  </body>
+</html>

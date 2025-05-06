@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cross Functioner - Carte des Tactiques</title>
+    <style>
+      :root {
+        --dark-bg: #121212;
+        --darker-bg: #0a0a0a;
+        --gold: #ffd700;
+        --light-gold: #ffee93;
+        --dark-gold: #c9a227;
+        --accent-yellow: #fff200;
+        --text-light: #f0f0f0;
+        --text-dim: #b0b0b0;
+      }
+
+      body {
+        font-family: "Montserrat", sans-serif;
+        background-color: var(--dark-bg);
+        margin: 0;
+        padding: 20px;
+        color: var(--text-light);
+        overflow-x: hidden;
+      }
+
+      /* Conteneur principal unifié avec zoom */
+      .main-container {
+        transform-origin: center top;
+        transition: transform 0.3s ease;
+      }
+
+      /* Header compact */
+      .header {
+        background: linear-gradient(
+          135deg,
+          rgba(30, 30, 30, 0.9) 0%,
+          rgba(20, 20, 20, 0.95) 100%
+        );
+        border-radius: 8px;
+        border: 1px solid var(--dark-gold);
+        box-shadow: 0 4px 15px rgba(255, 215, 0, 0.1);
+        padding: 12px 20px;
+        margin: 0 auto 30px auto;
+        max-width: 500px;
+        text-align: center;
+        backdrop-filter: blur(4px);
+      }
+
+      .header h1 {
+        color: var(--gold);
+        margin: 5px 0;
+        font-size: 1.5rem;
+        text-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
+        letter-spacing: 0.5px;
+        background: linear-gradient(to right, var(--gold), var(--light-gold));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .header p {
+        color: var(--text-dim);
+        font-size: 0.85rem;
+        margin: 5px 0 0;
+      }
+
+      .nav-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+
+      /* Carte */
+      .map-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 40px;
+        padding: 20px;
+        overflow: auto;
+      }
+
+      .site-map {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      /* Styles des nœuds avec effets */
+      .level {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+        width: 100%;
+        flex-wrap: wrap;
+      }
+
+      .node {
+        background: linear-gradient(145deg, #1e1e1e, #2a2a2a);
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3),
+          inset 0 0 0 1px rgba(255, 215, 0, 0.1);
+        padding: 15px 20px;
+        margin: 0 12px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        min-width: 140px;
+        border: 1px solid transparent;
+        z-index: 1;
+        overflow: hidden;
+        animation: float 3s ease-in-out infinite;
+      }
+
+      .node::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 215, 0, 0.1) 0%,
+          transparent 100%
+        );
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .node:hover {
+        transform: translateY(-5px) scale(1.03);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), 0 0 0 2px var(--gold),
+          inset 0 0 12px rgba(255, 215, 0, 0.2);
+        border-color: var(--gold);
+      }
+
+      .node:hover::before {
+        opacity: 1;
+      }
+
+      .node.main {
+        background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+        color: var(--gold);
+        font-weight: bold;
+        font-size: 1.1rem;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4), inset 0 0 0 1px var(--gold),
+          0 0 12px rgba(255, 215, 0, 0.2);
+        border: 1px solid var(--gold);
+        animation: pulse 2s infinite;
+      }
+
+      .node.secondary {
+        background: linear-gradient(145deg, #252525, #1f1f1f);
+        color: var(--light-gold);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35),
+          inset 0 0 0 1px rgba(255, 215, 0, 0.15);
+      }
+
+      .node.teritary {
+        background: linear-gradient(145deg, #222222, #1c1c1c);
+        color: var(--accent-yellow);
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3),
+          inset 0 0 0 1px rgba(255, 242, 0, 0.2);
+      }
+
+      .node.feature {
+        background: linear-gradient(145deg, #1f1f1f, #191919);
+        color: var(--text-light);
+        border: 1px solid var(--dark-gold);
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.25),
+          inset 0 0 8px rgba(201, 162, 39, 0.1);
+      }
+
+      .node.feature:hover {
+        color: var(--gold);
+      }
+
+      .connector {
+        height: 30px;
+        width: 2px;
+        background: linear-gradient(to bottom, var(--dark-gold), transparent);
+        margin: 0 auto;
+        position: relative;
+      }
+
+      .connector::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 6px;
+        height: 6px;
+        background-color: var(--gold);
+        border-radius: 50%;
+        box-shadow: 0 0 8px var(--gold);
+      }
+
+      /* Dashboard et héritage */
+      .dashboard-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        margin-top: 10px;
+      }
+
+      .dashboard-connector {
+        height: 25px;
+        width: 2px;
+        background: linear-gradient(to bottom, var(--gold), transparent);
+        margin: 0 auto;
+      }
+
+      .dashboard-children {
+        display: flex;
+        justify-content: center;
+        position: relative;
+        margin-top: 15px;
+      }
+
+      .dashboard-arrow {
+        position: absolute;
+        top: -13px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: var(--gold);
+        font-size: 18px;
+        text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+      }
+
+      /* Boutons */
+      button {
+        background: linear-gradient(145deg, #2a2a2a, #1e1e1e);
+        color: var(--gold);
+        border: 1px solid var(--dark-gold);
+        padding: 10px 20px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-weight: 600;
+        font-size: 0.9rem;
+        letter-spacing: 0.5px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25),
+          inset 0 0 0 1px rgba(255, 215, 0, 0.1);
+        animation: glow 2s infinite alternate;
+      }
+
+      button:hover {
+        background: linear-gradient(145deg, #2f2f2f, #232323);
+        color: var(--light-gold);
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3), 0 0 0 1px var(--gold),
+          inset 0 0 12px rgba(255, 215, 0, 0.1);
+        transform: translateY(-2px);
+      }
+
+      /* Infobulle */
+      .node-info {
+        background: linear-gradient(145deg, #1e1e1e, #2a2a2a);
+        border-radius: 10px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), 0 0 0 1px var(--dark-gold),
+          inset 0 0 15px rgba(255, 215, 0, 0.1);
+        padding: 20px;
+        max-width: 650px;
+        margin: 25px auto;
+        display: none;
+        border: 1px solid var(--gold);
+        position: relative;
+        overflow: hidden;
+        animation: fadeIn 0.3s ease-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .node-info::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 80px;
+        height: 80px;
+        background: radial-gradient(
+          circle,
+          rgba(255, 215, 0, 0.1) 0%,
+          transparent 70%
+        );
+        z-index: 0;
+      }
+
+      .node-info h3 {
+        margin-top: 0;
+        color: var(--gold);
+        font-size: 1.5rem;
+        position: relative;
+        z-index: 1;
+      }
+
+      .node-info p {
+        line-height: 1.6;
+        color: var(--text-light);
+        position: relative;
+        z-index: 1;
+        font-size: 0.95rem;
+      }
+
+      .close-btn {
+        float: right;
+        cursor: pointer;
+        font-weight: bold;
+        color: var(--gold);
+        font-size: 1.3rem;
+        line-height: 1;
+        transition: all 0.2s ease;
+        position: relative;
+        z-index: 2;
+        padding: 0 5px;
+      }
+
+      .close-btn:hover {
+        color: var(--accent-yellow);
+        transform: scale(1.2);
+      }
+
+      /* Animations */
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-8px);
+        }
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+          box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.3);
+        }
+        70% {
+          transform: scale(1.02);
+          box-shadow: 0 0 0 8px rgba(255, 215, 0, 0);
+        }
+        100% {
+          transform: scale(1);
+          box-shadow: 0 0 0 0 rgba(255, 215, 0, 0);
+        }
+      }
+
+      @keyframes glow {
+        from {
+          box-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
+        }
+        to {
+          box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+        }
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .header {
+          padding: 10px 15px;
+        }
+
+        .header h1 {
+          font-size: 1.3rem;
+        }
+
+        .header p {
+          font-size: 0.8rem;
+        }
+
+        .node {
+          min-width: 120px;
+          padding: 12px 15px;
+          margin: 0 8px 10px 8px;
+          font-size: 0.9rem;
+        }
+
+        .level {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .dashboard-children {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .dashboard-children .node {
+          margin: 5px 0;
+        }
+
+        .controls {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        button {
+          width: 150px;
+          margin: 5px 0;
+        }
+      }
+    </style>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Conteneur principal avec un seul zoom -->
+    <div class="main-container" id="mainZoom">
+      <!-- Header compact -->
+      <div class="header">
+        <div class="nav-buttons"></div>
+        <h1 id="mainTitle">Cross Functioner</h1>
+        <p id="subTitle">Carte des Tactiques</p>
+      </div>
+
+      <!-- Carte principale -->
+      <div class="map-container">
+        <div class="site-map">
+          <!-- Niveau 1 - Accueil -->
+          <div class="level">
+            <div class="node main" data-node="accueil">
+              <span class="fr-text">Accueil</span>
+              <span class="en-text" style="display: none">Home</span>
+            </div>
+          </div>
+
+          <div class="connector"></div>
+
+          <!-- Niveau 2 - Interface Principale -->
+          <div class="level">
+            <div class="node secondary" data-node="interface">
+              <span class="fr-text">Interface Principale</span>
+              <span class="en-text" style="display: none">Main Interface</span>
+            </div>
+          </div>
+
+          <div class="connector"></div>
+
+          <!-- Niveau 3 - Sections -->
+          <div class="level">
+            <div class="node secondary" data-node="sidebar">
+              <span class="fr-text">Barre Latérale</span>
+              <span class="en-text" style="display: none">Sidebar</span>
+            </div>
+            <div class="node secondary" data-node="center">
+              <span class="fr-text">Zone Centrale</span>
+              <span class="en-text" style="display: none">Central Zone</span>
+            </div>
+            <div class="node secondary" data-node="topbar">
+              <span class="fr-text">Barre Supérieure</span>
+              <span class="en-text" style="display: none">Top Bar</span>
+            </div>
+            <div class="node secondary" data-node="results">
+              <span class="fr-text">Zone des Résultats</span>
+              <span class="en-text" style="display: none">Results Zone</span>
+            </div>
+          </div>
+
+          <div class="connector"></div>
+
+          <!-- Niveau 4 - Barre Latérale -->
+          <div class="level">
+            <div class="node teritary" data-node="tactics">
+              <span class="fr-text">Programmes de Tactiques</span>
+              <span class="en-text" style="display: none"
+                >Tactics Programs</span
+              >
+            </div>
+          </div>
+
+          <!-- Niveau 5 - Tactiques -->
+          <div class="level">
+            <div class="node feature" data-node="maintain-copies">
+              <span class="fr-text">Maintain Copies</span>
+              <span class="en-text" style="display: none">Maintain Copies</span>
+            </div>
+            <div class="node feature" data-node="id-password">
+              <span class="fr-text">ID/Password</span>
+              <span class="en-text" style="display: none">ID/Password</span>
+            </div>
+            <div class="node feature" data-node="confidentiality">
+              <span class="fr-text">Maintain Confidentiality</span>
+              <span class="en-text" style="display: none"
+                >Maintain Confidentiality</span
+              >
+            </div>
+            <div class="node feature" data-node="ping-echo">
+              <span class="fr-text">Ping Echo</span>
+              <span class="en-text" style="display: none">Ping Echo</span>
+            </div>
+            <div class="node feature" data-node="onetime-password">
+              <span class="fr-text">Onetime Password</span>
+              <span class="en-text" style="display: none"
+                >Onetime Password</span
+              >
+            </div>
+            <div class="node feature" data-node="combo">
+              <span class="fr-text">ID/Password & Confidentiality</span>
+              <span class="en-text" style="display: none"
+                >ID/Password & Confidentiality</span
+              >
+            </div>
+            <div class="node feature" data-node="add-tactic">
+              <span class="fr-text">Ajouter Tactique</span>
+              <span class="en-text" style="display: none">Add Tactic</span>
+            </div>
+          </div>
+
+          <!-- Niveau 4 - Zone Centrale -->
+          <div class="level">
+            <div class="node teritary" data-node="upload">
+              <span class="fr-text">Upload File</span>
+              <span class="en-text" style="display: none">Upload File</span>
+            </div>
+            <div class="node teritary" data-node="editor">
+              <span class="fr-text">Éditeur de Trace</span>
+              <span class="en-text" style="display: none">Trace Editor</span>
+            </div>
+          </div>
+
+          <!-- Niveau 5 - Exemples de Traces -->
+          <div class="level">
+            <div class="node feature" data-node="ex-maintain-copies">
+              <span class="fr-text">Exemple Maintain Copies</span>
+              <span class="en-text" style="display: none"
+                >Maintain Copies Example</span
+              >
+            </div>
+            <div class="node feature" data-node="ex-id-password">
+              <span class="fr-text">Exemple ID/Password</span>
+              <span class="en-text" style="display: none"
+                >ID/Password Example</span
+              >
+            </div>
+            <div class="node feature" data-node="ex-confidentiality">
+              <span class="fr-text">Exemple Maintain Confidentiality</span>
+              <span class="en-text" style="display: none"
+                >Maintain Confidentiality Example</span
+              >
+            </div>
+            <div class="node feature" data-node="ex-ping-echo">
+              <span class="fr-text">Exemple Ping Echo</span>
+              <span class="en-text" style="display: none"
+                >Ping Echo Example</span
+              >
+            </div>
+            <div class="node feature" data-node="ex-onetime-password">
+              <span class="fr-text">Exemple Onetime Password</span>
+              <span class="en-text" style="display: none"
+                >Onetime Password Example</span
+              >
+            </div>
+            <div class="node feature" data-node="ex-combo">
+              <span class="fr-text">Exemple ID/Password & Confidentiality</span>
+              <span class="en-text" style="display: none"
+                >ID/Password & Confidentiality Example</span
+              >
+            </div>
+            <div class="node feature" data-node="add-example">
+              <span class="fr-text">Ajouter Exemple</span>
+              <span class="en-text" style="display: none">Add Example</span>
+            </div>
+          </div>
+
+          <!-- Niveau 4 - Barre Supérieure -->
+          <div class="level">
+            <div class="node teritary" data-node="run">
+              <span class="fr-text">Exécuter</span>
+              <span class="en-text" style="display: none">Run</span>
+            </div>
+            <div class="node teritary" data-node="dashboard">
+              <span class="fr-text">Tableau de Bord</span>
+              <span class="en-text" style="display: none">Dashboard</span>
+            </div>
+            <div class="node teritary" data-node="history">
+              <span class="fr-text">Historique</span>
+              <span class="en-text" style="display: none">History</span>
+            </div>
+            <div class="node teritary" data-node="help">
+              <span class="fr-text">Aide</span>
+              <span class="en-text" style="display: none">Help</span>
+            </div>
+          </div>
+
+          <!-- Niveau 5 - Dashboard (hérite de Tableau de Bord) -->
+          <div class="dashboard-container">
+            <div class="connector"></div>
+            <div class="dashboard-children">
+              <div
+                class="node feature"
+                data-node="compare"
+                style="margin: 0 20px"
+              >
+                <span class="fr-text">Comparer Tactiques</span>
+                <span class="en-text" style="display: none"
+                  >Compare Tactics</span
+                >
+              </div>
+              <div
+                class="node feature"
+                data-node="tactics-map"
+                style="margin: 0 20px"
+              >
+                <span class="fr-text">Carte des Tactiques</span>
+                <span class="en-text" style="display: none">Tactics Map</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contrôles de zoom unifiés -->
+      <div class="controls">
+        <button id="zoomIn">
+          <span class="fr-text">Zoom +</span>
+          <span class="en-text" style="display: none">Zoom +</span>
+        </button>
+        <button id="zoomOut">
+          <span class="fr-text">Zoom -</span>
+          <span class="en-text" style="display: none">Zoom -</span>
+        </button>
+        <button id="resetZoom">
+          <span class="fr-text">Taille Normale</span>
+          <span class="en-text" style="display: none">Default Size</span>
+        </button>
+        <button id="backBtn">← Retour</button>
+        <button id="translateBtn">English</button>
+      </div>
+    </div>
+    <!-- Infobulle -->
+    <div class="node-info" id="nodeInfo">
+      <span class="close-btn" id="closeBtn">×</span>
+      <h3 id="infoTitle">Titre</h3>
+      <p id="infoContent">Contenu...</p>
+    </div>
+
+    <script>
+      // Données descriptives bilingues
+      const nodeData = {
+        fr: {
+          accueil: {
+            title: "Page d'Accueil",
+            content: "Point d'entrée principal du système Cross Functioner.",
+          },
+          interface: {
+            title: "Interface Principale",
+            content:
+              "L'interface complète du système avec toutes les fonctionnalités organisées en sections.",
+          },
+          sidebar: {
+            title: "Barre Latérale",
+            content:
+              "Contient les options pour choisir et gérer les programmes de tactiques de sécurité.",
+          },
+          center: {
+            title: "Zone Centrale",
+            content:
+              "Espace de travail principal pour uploader des traces ou les éditer manuellement.",
+          },
+          topbar: {
+            title: "Barre Supérieure",
+            content:
+              "Contient les commandes principales comme Exécuter, Tableau de Bord, Historique et Aide.",
+          },
+          results: {
+            title: "Zone des Résultats",
+            content:
+              "Affiche les résultats des analyses après exécution des tactiques sur les traces.",
+          },
+          tactics: {
+            title: "Programmes de Tactiques",
+            content:
+              "Section contenant les différents programmes de tactiques de sécurité disponibles.",
+          },
+          "maintain-copies": {
+            title: "Programme Maintain Copies",
+            content:
+              "Tactique pour gérer la duplication sécurisée des données.",
+          },
+          "id-password": {
+            title: "Programme ID/Password",
+            content:
+              "Tactique d'authentification basique par identifiant et mot de passe.",
+          },
+          confidentiality: {
+            title: "Programme Maintain Confidentiality",
+            content: "Tactique pour protéger la confidentialité des données.",
+          },
+          "ping-echo": {
+            title: "Programme Ping Echo",
+            content:
+              "Tactique pour vérifier la connectivité et la réponse du système.",
+          },
+          "onetime-password": {
+            title: "Programme Onetime Password",
+            content:
+              "Tactique d'authentification par mot de passe à usage unique.",
+          },
+          combo: {
+            title: "Programme ID/Password & Confidentiality",
+            content:
+              "Combinaison des tactiques d'authentification et de confidentialité.",
+          },
+          "add-tactic": {
+            title: "Ajouter un Programme",
+            content:
+              "Option pour ajouter manuellement un nouveau programme de tactiques.",
+          },
+          upload: {
+            title: "Upload File",
+            content:
+              "Fonctionnalité pour télécharger une trace depuis l'ordinateur.",
+          },
+          editor: {
+            title: "Éditeur de Trace",
+            content:
+              "Zone de texte pour écrire ou modifier manuellement une trace.",
+          },
+          "ex-maintain-copies": {
+            title: "Exemple Maintain Copies",
+            content:
+              "Exemple prédéfini de trace pour le programme Maintain Copies.",
+          },
+          "ex-id-password": {
+            title: "Exemple ID/Password",
+            content:
+              "Exemple prédéfini de trace pour le programme ID/Password.",
+          },
+          "ex-confidentiality": {
+            title: "Exemple Maintain Confidentiality",
+            content:
+              "Exemple prédéfini de trace pour le programme Maintain Confidentiality.",
+          },
+          "ex-ping-echo": {
+            title: "Exemple Ping Echo",
+            content: "Exemple prédéfini de trace pour le programme Ping Echo.",
+          },
+          "ex-onetime-password": {
+            title: "Exemple Onetime Password",
+            content:
+              "Exemple prédéfini de trace pour le programme Onetime Password.",
+          },
+          "ex-combo": {
+            title: "Exemple ID/Password & Confidentiality",
+            content:
+              "Exemple prédéfini de trace pour le programme combiné ID/Password & Confidentiality.",
+          },
+          "add-example": {
+            title: "Ajouter un Exemple",
+            content: "Bouton pour ajouter un autre exemple de trace prédéfini.",
+          },
+          run: {
+            title: "Bouton Exécuter",
+            content:
+              "Lance l'exécution de la trace avec la tactique sélectionnée.",
+          },
+          dashboard: {
+            title: "Tableau de Bord",
+            content:
+              "Centre de contrôle principal avec statistiques et outils avancés.",
+          },
+          history: {
+            title: "Historique",
+            content:
+              "Consultation des analyses passées et résultats précédents.",
+          },
+          help: {
+            title: "Aide",
+            content:
+              "Accès à la documentation et guide d'utilisation du système.",
+          },
+          compare: {
+            title: "Comparer Tactiques",
+            content:
+              "Permet de comparer visuellement l'efficacité de deux tactiques différentes. Fonctionnalité héritée du Tableau de Bord.",
+          },
+          "tactics-map": {
+            title: "Carte des Tactiques",
+            content:
+              "Représentation graphique de toutes les tactiques disponibles. Fonctionnalité héritée du Tableau de Bord.",
+          },
+        },
+        en: {
+          accueil: {
+            title: "Home Page",
+            content: "Main entry point of the Cross Functioner system.",
+          },
+          interface: {
+            title: "Main Interface",
+            content:
+              "Complete system interface with all features organized in sections.",
+          },
+          sidebar: {
+            title: "Sidebar",
+            content:
+              "Contains options to select and manage security tactics programs.",
+          },
+          center: {
+            title: "Central Zone",
+            content: "Main workspace to upload traces or edit them manually.",
+          },
+          topbar: {
+            title: "Top Bar",
+            content:
+              "Contains main commands like Run, Dashboard, History and Help.",
+          },
+          results: {
+            title: "Results Zone",
+            content:
+              "Displays analysis results after executing tactics on traces.",
+          },
+          tactics: {
+            title: "Tactics Programs",
+            content: "Section containing available security tactics programs.",
+          },
+          "maintain-copies": {
+            title: "Maintain Copies Program",
+            content: "Tactic for secure data duplication management.",
+          },
+          "id-password": {
+            title: "ID/Password Program",
+            content: "Basic authentication tactic with username and password.",
+          },
+          confidentiality: {
+            title: "Maintain Confidentiality Program",
+            content: "Tactic to protect data confidentiality.",
+          },
+          "ping-echo": {
+            title: "Ping Echo Program",
+            content: "Tactic to verify system connectivity and response.",
+          },
+          "onetime-password": {
+            title: "Onetime Password Program",
+            content: "One-time password authentication tactic.",
+          },
+          combo: {
+            title: "ID/Password & Confidentiality Program",
+            content:
+              "Combination of authentication and confidentiality tactics.",
+          },
+          "add-tactic": {
+            title: "Add Program",
+            content: "Option to manually add a new tactics program.",
+          },
+          upload: {
+            title: "Upload File",
+            content: "Feature to upload a trace from your computer.",
+          },
+          editor: {
+            title: "Trace Editor",
+            content: "Text area to write or manually edit a trace.",
+          },
+          "ex-maintain-copies": {
+            title: "Maintain Copies Example",
+            content: "Predefined trace example for Maintain Copies program.",
+          },
+          "ex-id-password": {
+            title: "ID/Password Example",
+            content: "Predefined trace example for ID/Password program.",
+          },
+          "ex-confidentiality": {
+            title: "Maintain Confidentiality Example",
+            content:
+              "Predefined trace example for Maintain Confidentiality program.",
+          },
+          "ex-ping-echo": {
+            title: "Ping Echo Example",
+            content: "Predefined trace example for Ping Echo program.",
+          },
+          "ex-onetime-password": {
+            title: "Onetime Password Example",
+            content: "Predefined trace example for Onetime Password program.",
+          },
+          "ex-combo": {
+            title: "ID/Password & Confidentiality Example",
+            content:
+              "Predefined trace example for combined ID/Password & Confidentiality program.",
+          },
+          "add-example": {
+            title: "Add Example",
+            content: "Button to add another predefined trace example.",
+          },
+          run: {
+            title: "Run Button",
+            content: "Executes the trace with the selected tactic.",
+          },
+          dashboard: {
+            title: "Dashboard",
+            content: "Main control center with statistics and advanced tools.",
+          },
+          history: {
+            title: "History",
+            content: "View past analyses and previous results.",
+          },
+          help: {
+            title: "Help",
+            content: "Access to system documentation and user guide.",
+          },
+          compare: {
+            title: "Compare Tactics",
+            content:
+              "Allows visual comparison of effectiveness between two different tactics. Feature inherited from Dashboard.",
+          },
+          "tactics-map": {
+            title: "Tactics Map",
+            content:
+              "Graphical representation of all available tactics. Feature inherited from Dashboard.",
+          },
+        },
+      };
+
+      // État de l'application
+      const state = {
+        language: "fr",
+        scale: 1,
+      };
+
+      // Initialisation
+      document.addEventListener("DOMContentLoaded", () => {
+        initEventListeners();
+        updateUI();
+      });
+
+      // Gestion des événements
+      function initEventListeners() {
+        // Navigation
+        document
+          .getElementById("backBtn")
+          .addEventListener("click", () => window.history.back());
+        document
+          .getElementById("translateBtn")
+          .addEventListener("click", toggleLanguage);
+
+        // Zoom unifié
+        document
+          .getElementById("zoomIn")
+          .addEventListener("click", () => updateZoom(0.1));
+        document
+          .getElementById("zoomOut")
+          .addEventListener("click", () => updateZoom(-0.1));
+        document
+          .getElementById("resetZoom")
+          .addEventListener("click", resetZoom);
+
+        // Infobulles
+        document
+          .getElementById("closeBtn")
+          .addEventListener("click", closeInfo);
+        document.querySelectorAll(".node").forEach((node) => {
+          node.addEventListener("click", () => showNodeInfo(node.dataset.node));
+        });
+      }
+
+      // Gestion de la langue
+      function toggleLanguage() {
+        state.language = state.language === "fr" ? "en" : "fr";
+        updateUI();
+      }
+
+      // Gestion du zoom unifié
+      function updateZoom(value) {
+        const newScale = state.scale + value;
+        if (newScale > 0.5 && newScale < 2) {
+          state.scale = newScale;
+          document.getElementById(
+            "mainZoom"
+          ).style.transform = `scale(${state.scale})`;
+        }
+      }
+
+      function resetZoom() {
+        state.scale = 1;
+        document.getElementById(
+          "mainZoom"
+        ).style.transform = `scale(${state.scale})`;
+      }
+
+      // Affichage des infos
+      function showNodeInfo(nodeId) {
+        const info = nodeData[state.language][nodeId];
+        if (info) {
+          document.getElementById("infoTitle").textContent = info.title;
+          document.getElementById("infoContent").textContent = info.content;
+          document.getElementById("nodeInfo").style.display = "block";
+        }
+      }
+
+      function closeInfo() {
+        document.getElementById("nodeInfo").style.display = "none";
+      }
+
+      // Mise à jour de l'interface
+      function updateUI() {
+        // Bouton de traduction
+        document.getElementById("translateBtn").textContent =
+          state.language === "fr" ? "English" : "Français";
+
+        // Titres
+        document.getElementById("mainTitle").textContent =
+          state.language === "fr" ? "Cross Functioner" : "Cross Functioner";
+        document.getElementById("subTitle").textContent =
+          state.language === "fr" ? "Carte des Tactiques" : "Tactics Map";
+
+        // Affichage des textes
+        document.querySelectorAll(".fr-text").forEach((el) => {
+          el.style.display = state.language === "fr" ? "inline" : "none";
+        });
+        document.querySelectorAll(".en-text").forEach((el) => {
+          el.style.display = state.language === "en" ? "inline" : "none";
+        });
+      }
+    </script>
+  </body>
+</html>

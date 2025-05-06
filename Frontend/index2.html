@@ -1,0 +1,1228 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TacticCC</title>
+
+    <!-- Styles et icônes -->
+
+    <link rel="stylesheet" href="style2.css" />
+    <!-- Deuxième fichier CSS -->
+    <link rel="icon" href="7.png" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playwrite+CU:wght@100..400&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+ 
+ 
+  </head>
+
+
+  <header>
+    <img src="logo1.png" width="110" class="logo" />
+    <!-- Left Side: Guide, Help, Historique Icons -->
+    <div class="navbar-left">
+      <div class="nav-icon">
+        <button class="nav-btn" id="compileBtn" title="verify" onclick="compilerTrace()">
+          <i class="fas fa-cog"></i>
+        </button>
+      </div>
+      
+      <div class="nav-icon">
+        <button class="nav-btn" id="compileRunBtn" title="verify & run" onclick="runFunction()">
+          <i class="fas fa-play"></i>
+        </button>
+      </div>
+
+      
+      <a href="dashboard.html">
+        <!-- Remplacez "dashboard.html" par le chemin de votre fichier HTML -->
+     
+          <i class="fas fa-tachometer-alt"></i>
+          <!-- Icône de tableau de bord -->
+     
+      </a>
+      <a href="guide.html"> <i class="fas fa-book"></i> </a
+      ><!-- Guide Icon -->
+      <a href="help.html"> <i class="fas fa-question-circle"></i></a>
+      <!-- Help Icon -->
+      <a href="historique.html"><i class="fas fa-history"></i></a>
+      <!-- Historique Icon -->
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  </header>
+
+  <body class="dark-mode">
+    <!-- Barre de navigation -->
+   
+
+    <div class="container">
+      <div class="wch">
+      <!-- Menu latéral -->
+      <div class="sidebar">
+          
+             
+        <div class="tactic-selection-header">
+          <i class="fa-brands fa-searchengin"></i>
+          <h3>Choose Tactic</h3>
+        </div>
+          <button class="menu-item">
+              <img src="MainTaincopies.png" width="39" height="45">
+              <h1>Maintain  Copies</h1>
+          </button>
+          <button class="menu-item">
+              <img src="IDPASSWORD.png" width="30" height="30">
+              <h1>Authorize User</h1>
+          </button>
+          <button class="menu-item">
+              <img src="MainTainData (2).png" width="30" height="30">
+              <h1>Maintain Confidentiality</h1>
+          </button>
+          <button class="menu-item">
+              <img src="PingEcho.png" width="30" height="30">
+              <h1>Ping Echo</h1>
+          </button>
+          <button class="menu-item">
+              <img src="Security.png" width="39" height="39">
+              <h1> Onetime Password</h1>
+          </button>
+          <button class="menu-item">
+              <img src="&&.png" width="30" height="30">
+              <h1>ID/Password & Maintain Confidentiality</h1>
+          </button>
+          
+          
+
+      </div>
+     
+  </div>
+      <!-- Zone d'édition -->
+     
+       
+   
+      <!-- Zone d'affichage du résultat -->
+       <div>
+      <div class="wr">
+     
+        <!-- File Upload Section -->
+        <div class="file-upload">
+          <input type="file" id="file-input" accept=".txt" />
+          <!-- Accept specific file types -->
+          <button class="action-btn" onclick="uploadFile()">Upload File</button>
+        </div>
+        <!-- Display Area for Uploaded Files -->
+        <div id="code" contenteditable="true" class="editor" 
+        onfocus="removePlaceholder()" 
+        onblur="addPlaceholder(); highlightTraceSyntax()">
+    write your trace here 
+    (you should choose trace before selecting tactic)
+   </div>
+        <div class="toggle-container">
+          <button class="toggle-btn" onclick="toggleButtons()">
+            <!-- Default icon is "+" -->
+            </div>
+            <div class="trace-proposer-title">
+              <div class="title-content">
+                <i class="fas fa-project-diagram"></i>
+                <h2>Trace Pattern Library</h2>
+                <div class="title-actions">
+                  <button class="expand-toggle" onclick="toggleButtons()">
+                    <i class="fas fa-chevron-down"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="title-divider"></div>
+            </div>
+            
+         
+            <div class="buttons-container">
+              <button class="action-btn" onclick="remplirTrace1()">
+                Ping Echo
+              </button>
+              <button class="action-btn" onclick="remplirTrace2()">
+                Maintain Data
+              </button>
+              <button class="action-btn" onclick="remplirTrace3()">
+                Maintain Copies
+              </button>
+              <button class="action-btn" onclick="remplirTrace5()">Onetime Password</button>
+             
+          </div>
+           
+         
+            </button>
+            <div class="buttons-container1" style="display: none;"> <!-- Initially hidden -->
+           
+              <button class="action-btn" onclick="remplirTrace4()">ID/Password & Maintain Confidentiality</button>
+              <button class="action-btn" onclick="remplirTrace6()">Authorise User</button>
+              <button class="action-btn" onclick="addNewTrace()">+ Add Trace</button>
+         
+          </div>
+          <div id="dynamic-trace-buttons" class="buttons-container"></div>
+
+          </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Enhanced Result Section -->
+      <div class="result-section">
+        <div class="result-header">
+          <div class="result-title">
+            <i class="fas fa-chart-bar"></i>
+            <h3>Analysis Results</h3>
+          </div>
+          <div class="result-actions">
+            <button class="result-btn download-btn" onclick="downloadResult()">
+              <i class="fas fa-download"></i> Download Results
+            </button>
+            <button class="result-btn clear-btn" onclick="clearResults()">
+              <i class="fas fa-trash-alt"></i> Clear
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="app-wrapper">
+        <!-- Votre contenu principal ici -->
+        
+       
+          <iframe class="output-container" id="output-frame"></iframe>
+        
+      
+  <div id="output"></div>
+  
+
+    <script src="script2.js" defer></script>
+
+    <script>
+  // Dynamic Screen Size Detection
+  const BREAKPOINTS = {
+        sm: 480,
+        md: 768,
+        lg: 1024,
+        xl: 1200,
+        xxl:1600
+      };
+
+      function updateDynamicClasses() {
+        const width = window.innerWidth;
+        const body = document.body;
+        
+        // Remove all dynamic classes first
+        body.classList.remove(
+          'dynamic-sm-screen',
+          'dynamic-md-screen',
+          'dynamic-lg-screen',
+          'dynamic-xl-screen',      
+              'dynamic-xsl-screen',
+          'dynamic-xxl-screen'
+        );
+        
+        // Add appropriate class based on current width
+        if (width <= BREAKPOINTS.sm) {
+          body.classList.add('dynamic-sm-screen');
+        } else if (width <= BREAKPOINTS.md) {
+          body.classList.add('dynamic-md-screen');
+        } else if (width <= BREAKPOINTS.lg) {
+          body.classList.add('dynamic-lg-screen');
+        } else if (width < BREAKPOINTS.xsl) {
+          body.classList.add('dynamic-xsl-screen');
+        } else if (width <= BREAKPOINTS.xl) {
+          body.classList.add('dynamic-xl-screen');
+          
+        } else if  (width > BREAKPOINTS.xl)
+        body.classList.add('dynamic-xxl-screen');
+        // Update CSS variable
+        document.documentElement.style.setProperty('--current-screen-width', `${width}px`);
+      }
+
+      // Initialize and set up event listener
+      window.addEventListener('DOMContentLoaded', () => {
+        updateDynamicClasses();
+        window.addEventListener('resize', updateDynamicClasses);
+      });
+
+      // Your existing functions...
+      function runCode() {
+        let code = document.getElementById("code").value;
+        let iframe = document.getElementById("output").contentWindow.document;
+        iframe.open();
+        iframe.write(code);
+        iframe.close();
+      }
+
+      function uploadFile() {
+        const fileInput = document.getElementById("file-input");
+        const codeDisplay = document.getElementById("code");
+        const guideLink = "help.html";
+
+        if (fileInput.files.length === 0) {
+          alert("❌ Veuillez sélectionner un fichier à charger.");
+          return;
+        }
+
+        const file = fileInput.files[0];
+        if (!file.name.endsWith(".txt")) {
+          alert("❌ Erreur : seul un fichier au format .txt est accepté.");
+          window.location.href = guideLink;
+          return;
+        }
+        
+        const reader = new FileReader();
+
+        reader.onload = function (event) {
+          const fileContent = event.target.result;
+          const isValidFormat = fileContent.split('\n').some(line => {
+            return line.match(/^CALLER:.+,METHOD:.+,CALLEE:.+$/);
+          });
+
+          if (!isValidFormat) {
+            if (confirm(`❌ Erreur : la syntaxe de la trace est incorrecte.\n\nChaque ligne doit être au format :\nCALLER:NomClasse,METHOD:NomMéthode,CALLEE:NomClasse\n\nVoulez-vous consulter la page d'aide pour plus d'informations ?`)) {
+              window.location.href = guideLink;
+            }
+            return;
+          }
+          
+          codeDisplay.textContent = fileContent;
+          setTimeout(() => {
+            if (typeof highlightKeywords === 'function') {
+              highlightKeywords();
+            }
+          }, 10);
+        };
+
+        reader.readAsText(file);
+      }
+ function runCode() {
+        let code = document.getElementById("code").value;
+        let iframe = document.getElementById("output").contentWindow.document;
+        iframe.open();
+        iframe.write(code);
+        iframe.close();
+      }
+      
+      /*function validateTraceFormat(content) {
+  const lines = content.split('\n');
+  return lines.every(line => {
+    return line === '' || line.match(/^CALLER:.+,METHOD:.+,CALLEE:.+$/);
+  });
+}
+*/
+     
+      function uploadFile() {
+    const fileInput = document.getElementById("file-input");
+    const codeDisplay = document.getElementById("code"); // Zone d'affichage du fichier
+    const guideLink = "help.html"; // Remplacez par votre vrai lien
+
+    if (fileInput.files.length === 0) {
+        alert("❌ Veuillez sélectionner un fichier à charger.");
+        return;
+    }
+
+    const file = fileInput.files[0];
+    if (!file.name.endsWith(".txt")) {
+        alert("❌ Erreur : seul un fichier au format .txt est accepté.");
+        window.location.href = guideLink; // Redirection vers help.html
+        return;
+    }
+    const reader = new FileReader();
+
+    reader.onload = function (event) {
+        const fileContent = event.target.result; // Contenu du fichier
+        
+        // Vérification du format
+        const isValidFormat = fileContent.split('\n').some(line => {
+            return line.match(/^CALLER:.+,METHOD:.+,CALLEE:.+$/);
+        });
+
+        if (!isValidFormat) {
+            if (confirm(`❌ Erreur : la syntaxe de la trace est incorrecte.\n\nChaque ligne doit être au format :\nCALLER:NomClasse,METHOD:NomMéthode,CALLEE:NomClasse\n\nVoulez-vous consulter la page d'aide pour plus d'informations ?`)) {
+                window.location.href = guideLink; // Redirection vers help.html
+            }
+            return;
+        }
+        codeDisplay.textContent = fileContent; // Affichage dans <pre id="code">
+        
+        // Appeler la fonction de coloration après un léger délai pour s'assurer que le DOM est mis à jour
+        setTimeout(() => {
+            if (typeof highlightKeywords === 'function') {
+                highlightKeywords();
+            }
+        }, 10);
+    };
+
+    reader.readAsText(file); // Lire le fichier en tant que texte
+}
+
+
+
+       function insererTrace(texte) {
+    let traceDisplay = document.getElementById("code");
+    if (traceDisplay) {
+        traceDisplay.innerHTML = texte
+            .replace(/CALLER:/g, "<span style='color: cyan; background: transparent;'>CALLER:</span>")
+            .replace(/METHOD:/g, "<span style='color: pink; background: transparent;'>METHOD:</span>")
+            .replace(/CALLEE:/g, "<span style='color: orange; background: transparent;'>CALLEE:</span>");
+    }
+}
+
+
+   
+
+function remplirTrace1() {
+          let trace1 =
+         `CALLER:anobject,METHOD:amethod,CALLEE:anobject;
+  CALLER:pingSender,METHOD:ping,CALLEE:pingReceiver;
+  CALLER:pingSender,METHOD:notifyException,CALLEE:Monitor;
+  CALLER:Monitor,METHOD:handleException,CALLEE:Monitor;
+  CALLER:pingReceiver,METHOD:echo,CALLEE:pingSender;
+  CALLER:anobject,METHOD:amethod,CALLEE:anobject;
+  CALLER:anobject,METHOD:amethod,CALLEE:anObject;
+  CALLER:anobject,METHOD:amethod,CALLEE:anobject;
+  CALLER:pingSender,METHOD:attach,CALLEE:pingReceiver;
+  CALLER:pingSender,METHOD:attach,CALLEE:Monitor;
+  CALLER:Monitor,METHOD:attach,CALLEE:Monitor;
+  CALLER:pingReceiver,METHOD:accept,CALLEE:pingSender;
+  CALLER:anobject,METHOD:amethod,CALLEE:anobject;
+  CALLER:anobject,METHOD:amethod,CALLEE:anObject;
+  CALLER:anobject,METHOD:amethod,CALLEE:anobject;
+  CALLER:anobject,METHOD:amethod,CALLEE:anobject;
+  CALLER:anobject,METHOD:amethod,CALLEE:anObject;
+  CALLER:anobject,METHOD:amethod,CALLEE:anobject;
+  `;
+         
+         
+          insererTrace(trace1);
+          enregistrerTrace(trace1);
+  
+      }
+      
+      function remplirTrace2() {
+          let trace2 =
+         `CALLER:UserService,METHOD:encrypt,CALLEE:UserService;
+  CALLER:UserService,METHOD:send,CALLEE:DataService;
+  CALLER:DataService,METHOD:decrypt,CALLEE:DataService;
+  
+  CALLER:LoginService,METHOD:encrypt,CALLEE:LoginService;
+  CALLER:LoginService,METHOD:lsend,CALLEE:AuthService;
+  CALLER:AuthService,METHOD:decrypt,CALLEE:AuthService;
+  
+  CALLER:LogService,METHOD:writeLog,CALLEE:LogServer;
+  
+  CALLER:ReportService,METHOD:chiffrer,CALLEE:ReportService;
+    CALLER:ReportService,METHOD:send,CALLEE:ManagerService;
+    CALLER:LogService,METHOD:dechiffrer,CALLEE:LogServer;`;
+         
+         
+          insererTrace(trace2);
+          enregistrerTrace(trace2);
+      }
+      function remplirTrace3() {
+          let trace3 =
+         `CALLER:CacheClient,METHOD:sendToMgr,CALLEE:CacheMgr;
+  CALLER:CacheMgr,METHOD:writeToCache,CALLEE:Cache;
+  CALLER:CacheMgr,METHOD:writeToRepo,CALLEE:Repository;
+  CALLER:CacheMgr,METHOD:updateBackupCache,CALLEE:Cache;
+  
+  CALLER:UserClient,METHOD:initRequest,CALLEE:RequestHandler;
+  CALLER:RequestHandler,METHOD:logToHistory,CALLEE:Logger;
+  
+  CALLER:CacheClient,METHOD:refreshData,CALLEE:CacheMgr;
+  CALLER:CacheMgr,METHOD:updateMainCache,CALLEE:Cache;
+  CALLER:CacheMgr,METHOD:syncWithRepo,CALLEE:Repository;
+  CALLER:CacheMgr,METHOD:mirrorToCache,CALLEE:Cache;
+  
+  CALLER:MobileClient,METHOD:submitData,CALLEE:CacheMgr;
+  CALLER:CacheMgr,METHOD:storeToCache,CALLEE:Cache;
+  
+  CALLER:APIClient,METHOD:postToMgr,CALLEE:CacheMgr;
+  CALLER:CacheMgr,METHOD:updatePrimary,CALLEE:Cache;
+  CALLER:CacheMgr,METHOD:storeToArchive,CALLEE:Repository;
+  CALLER:CacheMgr,METHOD:duplicateToBackup,CALLEE:Cache;
+  `;
+         
+         
+          insererTrace(trace3);
+          enregistrerTrace(trace3);
+  
+      }
+      function remplirTrace4() {
+          let trace4 =
+         `CALLER:Client,METHOD:encrypt,CALLEE:Client;
+  CALLER:Client,METHOD:request,CALLEE:Authenticator;
+  CALLER:Authenticator,METHOD:decrypt,CALLEE:Authenticator;
+  CALLER:Authenticator,METHOD:check,CALLEE:Authenticator;
+  CALLER:Client,METHOD:encrypt,CALLEE:Client;
+  CALLER:Client,METHOD:request,CALLEE:Authenticator;
+  CALLER:Authenticator,METHOD:decrypt,CALLEE:Authenticator;
+  CALLER:Authenticator,METHOD:check,CALLEE:Authenticator;
+  CALLER:Client,METHOD:encrypt,CALLEE:Client;
+  CALLER:Client,METHOD:request,CALLEE:Authenticator;
+  CALLER:Authenticator,METHOD:decrypt,CALLEE:Authenticator;
+  CALLER:Authenticator,METHOD:check,CALLEE:Authenticator;
+  CALLER:Authenticator,METHOD:decrypt,CALLEE:Authenticator;
+  CALLER:Authenticator,METHOD:check,CALLEE:Authenticator;
+  CALLER:Client,METHOD:encrypt,CALLEE:Client;`;
+         
+         
+          insererTrace(trace4);
+          enregistrerTrace(trace4);
+  
+      }function remplirTrace5() {
+          let trace5 =
+         `CALLER:Client,METHOD:encrypt,CALLEE:Client;
+  CALLER:Client,METHOD:requestAuthent,CALLEE:Authenticator;
+  CALLER:Client,METHOD:encrypt,CALLEE:Client;
+  CALLER:Client,METHOD:requestAuthent,CALLEE:Authenticator;
+  CALLER:Authenticator,METHOD:decrypt,CALLEE:Authenticator;
+  CALLER:Authenticator,METHOD:check,CALLEE:Authenticator;
+  CALLER:anobject,METHOD:amethod,CALLEE:anobject;
+  CALLER:anobject,METHOD:amethod,CALLEE:anObject;
+  CALLER:anobject,METHOD:amethod,CALLEE:anobject;
+  CALLER:objet,METHOD:encrypt,CALLEE:objet;
+  CALLER:objet,METHOD:requestAuthent,CALLEE:Authenticator;
+  CALLER:Authenticator,METHOD:decrypt,CALLEE:Authenticator;
+  CALLER:Authenticator,METHOD:check,CALLEE:Authenticator;
+  CALLER:anobject,METHOD:amethod,CALLEE:anObject;
+  CALLER:anobject,METHOD:amethod,CALLEE:anobject;
+  
+  `;
+         
+         
+          insererTrace(trace5);
+          enregistrerTrace(trace5);
+  
+      }function remplirTrace6() {
+          let trace6 =
+          `CALLER:Client,METHOD:request,CALLEE:ReferenceMonitor;
+CALLER:ReferenceMonitor,METHOD:check,CALLEE:ReferenceMonitor;
+CALLER:Client,METHOD:access,CALLEE:ReferenceMonitor;
+CALLER:Client,METHOD:requestAccess,CALLEE:Monitor;
+CALLER:Monitor,METHOD:checkPermission,CALLEE:Monitor;
+CALLER:Client,METHOD:access,CALLEE:Resource;
+CALLER:Client,METHOD:request,CALLEE:Monitor;
+CALLER:Monitor,METHOD:check,CALLEE:Monitor;
+CALLER:Client,METHOD:access,CALLEE:Resource;
+CALLER:Client,METHOD:request,CALLEE:ReferenceMonitor;
+CALLER:ReferenceMonitor,METHOD:check,CALLEE:ReferenceMonitor;
+CALLER:Client,METHOD:check,CALLEE:Resource;
+CALLER:Client,METHOD:requestAccess,CALLEE:Monitor;
+CALLER:Monitor,METHOD:checkPermission,CALLEE:Monitor;
+CALLER:Client,METHOD:access,CALLEE:Resource;
+CALLER:Client,METHOD:A,CALLEE:ReferenceMonitor;
+CALLER:ReferenceMonitor,METHOD:B,CALLEE:ReferenceMonitor;
+CALLER:Client,METHOD:C,CALLEE:Resource;
+CALLER:Client,METHOD:A,CALLEE:Client;
+CALLER:Client,METHOD:B,CALLEE:Client;
+CALLER:Client,METHOD:C,CALLEE:Resource;
+CALLER:Client,METHOD:request,CALLEE:ReferenceMonitor;
+CALLER:ReferenceMonitor,METHOD:check,CALLEE:Reference;
+CALLER:Client,METHOD:access,CALLEE:Resource;
+CALLER:User,METHOD:request,CALLEE:ReferenceMonitor;
+CALLER:ReferenceMonitor,METHOD:check,CALLEE:ReferenceMonitor;
+CALLER:User,METHOD:access,CALLEE:Resource;`
+         
+         
+          insererTrace(trace6);
+          enregistrerTrace(trace6);
+  
+      }
+    function addNewTrace() {
+    let codeEditor = document.getElementById("code");
+
+    if (codeEditor) {
+        codeEditor.innerText = "Écrivez votre trace ici"; // Reset text
+        codeEditor.focus(); // Put cursor inside the editor
+    }
+}
+
+      function removePlaceholder() {
+        let code = document.getElementById("code");
+        if (code.innerText === "Écrivez votre trace ici") {
+          code.innerText = "";
+        }
+      }
+
+      function addPlaceholder() {
+        let code = document.getElementById("code");
+        if (code.innerText.trim() === "") {
+          code.innerText = "Écrivez votre trace ici";
+        }
+      }
+      function highlightKeywords() {
+    const codeEditor = document.getElementById('code');
+    let content = codeEditor.innerHTML;
+
+    // Appliquer la coloration syntaxique
+    content = content
+        .replace(/CALLER:/g, '<span style="color: cyan;">CALLER:</span>')
+        .replace(/METHOD:/g, '<span style="color: pink;">METHOD:</span>')
+        .replace(/CALLEE:/g, '<span style="color: orange;">CALLEE:</span>');
+
+    // Mettre à jour la zone d'édition
+    codeEditor.innerHTML = content;
+}
+
+
+// Initial coloring of keywords
+
+
+function toggleButtons() {
+  const buttonsContainer = document.querySelector(".buttons-container1");
+  const toggleIcon = document.querySelector(".toggle-btn i");
+
+  if (buttonsContainer.style.display === "none" || buttonsContainer.style.display === "") {
+    buttonsContainer.style.display = "flex"; // Show the buttons
+    toggleIcon.classList.remove("fa-plus"); // Remove "+" icon
+    toggleIcon.classList.add("fa-minus"); // Add "-" icon
+  } else {
+    buttonsContainer.style.display = "none"; // Hide the buttons
+    toggleIcon.classList.remove("fa-minus"); // Remove "-" icon
+    toggleIcon.classList.add("fa-plus"); // Add "+" icon
+  }
+}
+let selectedTactic = ""; // Variable globale pour stocker la tactique choisie
+
+function selectTactic(tactic) {
+    selectedTactic = tactic;
+    console.log("✅ Tactique sélectionnée :", tactic);
+
+    // Activer le bouton "Analyser" si une tactique est choisie
+    const analyzeButton = document.getElementById("analyze-button");
+    if (analyzeButton) {
+        analyzeButton.disabled = false; // Activer le bouton
+    }
+    document.querySelectorAll(".menu-item").forEach(item => item.classList.remove("active"));
+    event.currentTarget.classList.add("active");
+}
+function runFunction() {
+    const fileInput = document.getElementById("file-input");
+    const outputFrame = document.getElementById("output-frame");
+
+    // Vérifier si un fichier est sélectionné
+    if (fileInput.files.length === 0) {
+        alert("❌ Veuillez sélectionner un fichier de trace.");
+        return;
+    }
+
+    // Vérifier si une tactique est sélectionnée
+    if (!selectedTactic) {
+        alert("❌ Aucune tactique sélectionnée ! Veuillez en choisir une avant de continuer.");
+        return;
+    }
+
+    const file = fileInput.files[0];
+
+    // Vérifier le type de fichier
+    if (!file.type.includes("text")) {
+        alert("❌ Veuillez sélectionner un fichier texte.");
+        return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function(event) {
+        const traceText = event.target.result.trim(); // Contenu du fichier
+        const lines = traceText.split(/\r?\n/); // Découpe en lignes
+
+        // Expression régulière pour la syntaxe attendue
+        const syntaxRegex = /^CALLER:.+,METHOD:.+,CALLEE:.+$/;
+
+        // Vérifier que chaque ligne respecte la syntaxe
+        const invalidLines = lines.filter(line => !syntaxRegex.test(line));
+
+        const outputDocument = outputFrame.contentDocument || outputFrame.contentWindow.document;
+
+        if (invalidLines.length > 0) {
+            // Si des lignes invalides, afficher un message d'erreur
+            outputDocument.body.innerHTML = `
+                <p style="color: red;">❌ Erreur de syntaxe détectée !</p>
+                <p>Chaque ligne doit respecter la forme : <code>CALLER:...,METHOD:...,CALLEE:...</code></p>
+                <p>Exemple de ligne incorrecte détectée :</p>
+                <pre style="color: black; background: #ffe6e6; padding: 10px;">${escapeHTML(invalidLines[0])}</pre>
+                
+            `;
+       
+            
+                window.location.href = guideLink; // Redirection vers help.html
+                return;
+            }
+         
+        
+
+        // Afficher un indicateur de chargement
+        outputDocument.body.innerHTML = `<p style="color: blue;">⏳ Analyse en cours...</p>`;
+
+        // Si tout est correct, envoyer au serveur
+        fetch("http://localhost:3000/run-parser", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                trace: traceText,
+                tactic: selectedTactic
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(err => { throw new Error(err.result); });
+            }
+            return response.json();
+        })
+        .then(data => {
+            outputDocument.body.innerHTML = `<pre style="font-size: 14px; color: white; background: black; padding: 10px;">${escapeHTML(data.result)}</pre>`;
+        })
+        .catch(error => {
+            console.error("Erreur :", error);
+            outputDocument.body.innerHTML = `<p style="color: red;">❌ ${escapeHTML(error.message)}</p>`;
+        });
+    };
+
+    reader.readAsText(file);
+}
+
+// Fonction pour échapper le HTML
+function escapeHTML(str) {
+    return str.replace(/&/g, "&amp;")
+              .replace(/</g, "&lt;")
+              .replace(/>/g, "&gt;")
+              .replace(/"/g, "&quot;")
+              .replace(/'/g, "&#039;");
+}
+const express = require("express");
+const cors = require("cors");
+const { exec } = require("child_process");
+
+const app = express();
+const PORT = 3000;
+
+// Middleware
+app.use(express.json());
+app.use(cors());
+
+app.listen(PORT, () => {
+    console.log(`Serveur en écoute sur http://localhost:${PORT}`);
+});
+
+app.post("/run-parser", (req, res) => {
+    const { tactic, trace } = req.body;
+
+    if (!tactic || !trace) {
+        return res.status(400).json({ error: "Tactique ou trace manquante." });
+    }
+
+    let parserCommand = "";
+
+    switch (tactic) {
+        case "Maintain Copies":
+            parserCommand = "javac MaintainMultipleCopiesParser.java && java MaintainMultipleCopiesParser";
+            break;
+        case "Authorize User": 
+            parserCommand = "javac AuthorizeUserTactic1.java && java AuthorizeUserTactic1";
+            break;
+        case "Maintain Confidentiality":
+            parserCommand = "javac MaintainDataConfidentialityParser.java && java MaintainDataConfidentialityParser";
+            break;
+        case "Ping Echo":
+            parserCommand = "javac PingEchoParser.java && java PingEchoParser";
+            break;
+        case "Onetime Password":
+            parserCommand = "javac OneTimePasswordParser.java && java OneTimePasswordParser";
+            break;
+        case "ID/Password & Maintain Confidentiality":
+            parserCommand = "javac IDPassMaintainConfParser.java && java IDPassMaintainConfParser";
+            break;
+        default:
+            return res.status(400).json({ error: "Tactique inconnue." });
+    }
+
+
+    console.log(`Exécution de la commande : ${parserCommand}`);
+
+    const process = exec(parserCommand, (error, stdout, stderr) => {
+        if (error) {
+            console.error(`Erreur d'exécution : ${stderr}`);
+            return res.status(500).json({ error: stderr });
+        }
+        console.log(`Résultat du parser : ${stdout}`);
+        res.json({ result: stdout });
+    });
+
+    // 🔹 Envoi de la trace au programme Java
+    console.log("Trace envoyée :", trace);
+    process.stdin.write(trace + "\n");
+    process.stdin.end();
+});
+function downloadResult() {
+  if (!lastAnalysisResult) {
+    alert("❌ Aucun résultat à télécharger. Veuillez d'abord exécuter une analyse.");
+    return;
+  }
+
+  // Create a blob with the result
+  const blob = new Blob([lastAnalysisResult], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
+  
+  // Create a temporary anchor element
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "analysis_result.txt";
+  
+  // Trigger the download
+  document.body.appendChild(a);
+  a.click();
+  
+  // Cleanup
+  setTimeout(() => {
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+  }, 100);
+}
+function formatTraceText(text) {
+    // Remove extra line breaks and whitespace
+    return text.replace(/\n\s*/g, '\n').trim();
+}
+class TraceAnalyzer {
+  static async analyze(trace, tactic) {
+    const response = await fetch('http://localhost:3000/run-parser', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ trace, tactic })
+    });
+    
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Analysis failed');
+    }
+    
+    return response.json();
+  }
+}
+
+/**
+ * Generates AI-powered security trace pattern suggestions
+ * @param {string} tactic - The security tactic to generate a trace for
+ * @param {number} [count=3] - Number of trace examples to generate
+ * @returns {Promise<Array<string>>} - Array of generated trace patterns
+ */
+ async function getAITraceSuggestion(tactic, count = 3) {
+  // Validate input
+  if (!tactic || typeof tactic !== 'string') {
+    throw new Error('Invalid tactic provided');
+  }
+
+  const validTactics = [
+    'Maintain Copies',
+    'Authorize User',
+    'Maintain Confidentiality',
+    'Ping Echo',
+    'One-time Password',
+    'ID/Password & Maintain Confidentiality'
+  ];
+
+  if (!validTactics.includes(tactic)) {
+    throw new Error(`Unsupported tactic. Valid options are: ${validTactics.join(', ')}`);
+  }
+
+  // Construct the AI prompt
+  const prompt = `
+    You are a security software expert. Generate ${count} diverse and realistic examples 
+    of security trace patterns for the "${tactic}" tactic. Each trace should follow this exact format:
+    CALLER:ClassName,METHOD:methodName,CALLEE:ClassName
+    
+    Include 3-5 method calls that demonstrate the tactic in action.
+    Use realistic class and method names that would appear in enterprise software.
+    Separate each complete trace example with "====".
+    
+    For ${tactic}, focus on these key aspects:
+    ${getTacticSpecificGuidance(tactic)}
+  `;
+
+  try {
+    // Call OpenAI API (or your preferred AI service)
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
+      },
+      body: JSON.stringify({
+        model: 'gpt-4',
+        messages: [{
+          role: 'system',
+          content: 'You are a security trace pattern specialist. Generate accurate, technical trace examples.'
+        }, {
+          role: 'user',
+          content: prompt
+        }],
+        temperature: 0.7,
+        max_tokens: 1000
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`AI API error: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    const content = data.choices[0]?.message?.content;
+    
+    if (!content) {
+      throw new Error('No content received from AI');
+    }
+
+    // Process the response into clean trace patterns
+    return processAIResponse(content);
+  } catch (error) {
+    console.error('AI suggestion failed:', error);
+    // Fallback to default patterns
+    return getDefaultPatterns(tactic, count);
+  }
+}
+
+// Helper function to add tactic-specific guidance
+function getTacticSpecificGuidance(tactic) {
+  const guidance = {
+    'Maintain Copies': `Focus on replication methods like copy(), sync(), replicate(). 
+      Include primary and backup storage interactions.`,
+    'Authorize User': `Show authentication flows with methods like authenticate(), 
+      verifyCredentials(), checkAccess().`,
+    'Maintain Confidentiality': `Highlight encryption/decryption with methods like encryptData(), 
+      decrypt(), secureTransmit().`,
+    'Ping Echo': `Demonstrate health checking with ping(), echo(), checkStatus(), 
+      and fault handling methods.`,
+    'One-time Password': `Show OTP generation, validation with generateOTP(), 
+      validateOTP(), expireToken().`,
+    'ID/Password & Maintain Confidentiality': `Combine authentication and encryption 
+      with methods like encryptCredentials(), verifySecureAuth().`
+  };
+  
+  return guidance[tactic] || 'Demonstrate the security pattern with realistic method calls.';
+}
+
+// Process the AI response into clean trace arrays
+function processAIResponse(content) {
+  return content
+    .split('====')
+    .map(trace => trace.trim())
+    .filter(trace => trace.length > 0)
+    .map(trace => {
+      // Remove any commentary or non-trace lines
+      return trace.split('\n')
+        .filter(line => line.startsWith('CALLER:'))
+        .join('\n');
+    });
+}
+
+// Fallback default patterns
+function getDefaultPatterns(tactic, count) {
+  const defaults = {
+    'Maintain Copies': [
+      `CALLER:DataManager,METHOD:replicateData,CALLEE:PrimaryStorage\n` +
+      `CALLER:DataManager,METHOD:copyToBackup,CALLEE:BackupStorage\n` +
+      `CALLER:BackupStorage,METHOD:verifyCopy,CALLEE:DataManager`,
+      
+      `CALLER:DatabaseSync,METHOD:syncRecords,CALLEE:MainDatabase\n` +
+      `CALLER:DatabaseSync,METHOD:updateReplica,CALLEE:ReplicaDatabase\n` +
+      `CALLER:ReplicaDatabase,METHOD:acknowledgeSync,CALLEE:DatabaseSync`
+    ],
+    // ... other default patterns
+  };
+  
+  return defaults[tactic]?.slice(0, count) || [];
+}
+
+// Example usage:
+document.getElementById('suggest-btn').addEventListener('click', async () => {
+  const tactic = document.getElementById('tactic-select').value;
+  const loadingIndicator = document.getElementById('loading');
+  const resultsContainer = document.getElementById('ai-results');
+  
+  loadingIndicator.style.display = 'block';
+  resultsContainer.innerHTML = '';
+  
+  try {
+    const suggestions = await getAITraceSuggestion(tactic, 2);
+    
+    suggestions.forEach((trace, index) => {
+      const traceElement = document.createElement('div');
+      traceElement.className = 'ai-suggestion';
+      traceElement.innerHTML = `
+        <h4>Option ${index + 1}:</h4>
+        <pre>${trace}</pre>
+        <button onclick="useThisPattern(${index})">Use This Pattern</button>
+      `;
+      resultsContainer.appendChild(traceElement);
+    });
+  } catch (error) {
+    resultsContainer.innerHTML = `
+      <div class="error">Error generating suggestions: ${error.message}</div>
+    `;
+  } finally {
+    loadingIndicator.style.display = 'none';
+  }
+});
+
+function useThisPattern(index) {
+  const suggestion = document.querySelectorAll('.ai-suggestion')[index];
+  const trace = suggestion.querySelector('pre').textContent;
+  document.getElementById('code').value = trace;
+  highlightTraceSyntax(); // Your existing syntax highlighting function
+}
+
+function compileOnly() {
+            console.log("Compile only selected");
+            // Your compile only logic here
+        }
+        
+        function runFunction() {
+            console.log("Compile and run selected");
+            // Your compile and run logic here
+        }
+
+
+        window.addEventListener('resize', () => {
+  const container = document.querySelector('.output-container');
+  container.style.transform = 'none';
+});
+function addNewTrace() {
+    const editorContent = document.getElementById('code').innerText.trim();
+
+    if (editorContent === '' || editorContent.startsWith('write your trace here')) {
+        alert('Veuillez écrire une trace avant d\'enregistrer.');
+        return;
+    }
+
+    const traceName = prompt("Entrez un nom pour votre nouvelle trace :");
+
+    if (traceName === null) return; // Annulé
+    if (traceName.trim() === '') {
+        alert("Le nom ne peut pas être vide.");
+        return;
+    }
+
+    let savedTraces = JSON.parse(localStorage.getItem('savedTraces')) || {};
+
+    if (savedTraces.hasOwnProperty(traceName)) {
+        alert("Ce nom existe déjà. Veuillez choisir un autre nom.");
+        return;
+    }
+
+    // Sauvegarder
+    savedTraces[traceName] = editorContent;
+    localStorage.setItem('savedTraces', JSON.stringify(savedTraces));
+
+    // Créer le bouton
+    createTraceButton(traceName);
+
+    alert("Trace enregistrée avec succès !");
+}
+function createTraceButton(name) {
+    const container = document.getElementById('dynamic-trace-buttons'); // C'est ici que le bouton sera ajouté
+
+    const newButton = document.createElement('button');
+    newButton.className = 'action-btn';
+    newButton.innerText = name;
+
+    newButton.onclick = function() {
+        const savedTraces = JSON.parse(localStorage.getItem('savedTraces')) || {};
+        document.getElementById('code').innerText = savedTraces[name];
+        highlightTraceSyntax(); // Pour recolorier si besoin
+    };
+
+    container.appendChild(newButton);
+}
+window.onload = function() {
+    const savedTraces = JSON.parse(localStorage.getItem('savedTraces')) || {};
+    for (let name in savedTraces) {
+        createTraceButton(name);
+    }
+};
+function compilerTrace() {
+  const editor = document.getElementById("code");
+  const text = editor.innerText.trim();
+  const guideLink = "help.html";
+
+  if (text === "" || text === "Écrivez votre trace ici") {
+    alert("❌ Veuillez écrire ou charger une trace.");
+    return;
+  }
+
+  const lines = text.split("\n");
+  const allValid = lines.every(line => {
+    return line.trim() === "" || /^CALLER:.+,METHOD:.+,CALLEE:.+$/.test(line.trim());
+  });
+
+  if (!allValid) {
+    const showHelp = confirm(`❌ Erreur : la syntaxe de la trace est incorrecte.\n\nChaque ligne doit être au format :\nCALLER:NomClasse,METHOD:NomMéthode,CALLEE:NomClasse\n\nVoulez-vous consulter la page d'aide ?`);
+    if (showHelp) {
+      window.location.href = guideLink;
+    }
+    return;
+  }
+
+  alert("✅ Compilation réussie !");
+}
+function clearResults() {
+  const outputFrame = document.getElementById("output-frame");
+
+  // Clear the iframe content with styled message
+  const outputDocument = outputFrame.contentDocument || outputFrame.contentWindow.document;
+  outputDocument.body.innerHTML = "<p style='color: black; font-size: 18px;'>Previous result erased successfully.</p>";
+
+  // Reset the global variable
+  lastAnalysisResult = "";
+
+  console.log(" Previous result erased successfully.");
+}
+
+let downloadCount = 1;
+
+async function downloadResult() {
+  const outputFrame = document.getElementById("output-frame");
+  const resultText = outputFrame?.contentWindow?.document?.body?.innerText?.trim();
+
+  if (!resultText || resultText === "") {
+    alert("❌ Aucun résultat à télécharger. Veuillez d'abord exécuter une analyse.");
+    return;
+  }
+
+  let customName = prompt("📝 Entrez le nom du fichier PDF (sans extension) :", "");
+  if (customName) {
+    customName = customName.trim().replace(/[^a-zA-Z0-9_\-]/g, "_");
+  }
+  if (!customName) {
+    customName = `analysis_result_${downloadCount}`;
+  }
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  const margin = 15;
+  let y = margin;
+
+  // 🎯 Titre
+  const title = selectedTactic ? `Résultat d'analyse — Tactique : ${selectedTactic}` : "Résultat d'analyse";
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(14);
+  doc.setTextColor(33, 37, 41);
+  doc.text(title, margin, y);
+
+  // Ligne
+  doc.setDrawColor(70, 130, 180);
+  doc.setLineWidth(0.8);
+  doc.line(margin, y + 5, 210 - margin, y + 5);
+
+  y += 15;
+
+  // 📆 Date
+  const today = new Date().toLocaleString("fr-FR");
+  doc.setFontSize(11);
+  doc.setFont("helvetica", "normal");
+  doc.setTextColor(60);
+  doc.setFillColor(240, 240, 240);
+  doc.rect(margin, y - 6, 100, 8, "F");
+  doc.text(`Date d'analyse : ${today}`, margin + 2, y);
+  y += 10;
+
+  // 📌 Nom de la tactique détectée (dans le contenu)
+  if (selectedTactic) {
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(12);
+    doc.setTextColor(0, 102, 204);
+    doc.text(`Tactique détectée : ${selectedTactic}`, margin, y);
+    y += 10;
+  }
+
+  // 📋 Résultat
+  doc.setFont("courier", "normal");
+  doc.setFontSize(10);
+  doc.setTextColor(20);
+  const lines = doc.splitTextToSize(resultText, 180);
+  const lineHeight = 6;
+  const pageHeight = 297;
+
+  for (let line of lines) {
+    if (y > pageHeight - 20) {
+      doc.addPage();
+      y = margin;
+    }
+    doc.text(line, margin, y);
+    y += lineHeight;
+  }
+
+  doc.save(`${customName}.pdf`);
+  showNotification(`✅ PDF généré avec succès : ${customName}.pdf`);
+  downloadCount++;
+}
+
+function showNotification(message) {
+  const notification = document.createElement("div");
+  notification.innerHTML = `<i class="fas fa-check-circle" style="margin-right: 8px;"></i>${message}`;
+  Object.assign(notification.style, {
+    position: "fixed",
+    bottom: "30px",
+    right: "30px",
+    background: "#198754",
+    color: "white",
+    padding: "14px 24px",
+    borderRadius: "12px",
+    fontSize: "16px",
+    fontWeight: "bold",
+    fontFamily: "Arial, sans-serif",
+    boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.25)",
+    zIndex: 9999,
+    opacity: "0",
+    transition: "opacity 0.4s ease"
+  });
+
+  document.body.appendChild(notification);
+  setTimeout(() => notification.style.opacity = "1", 100);
+  setTimeout(() => {
+    notification.style.opacity = "0";
+    setTimeout(() => document.body.removeChild(notification), 500);
+  }, 4000);
+}
+function enregistrerTrace(trace) {
+        let historique =
+          JSON.parse(localStorage.getItem("historiqueTraces")) || [];
+
+        // Ajouter la date et l'heure actuelle
+        let now = new Date();
+        let timestamp = now.toLocaleString(); // Format lisible (ex: "01/03/2025, 14:30:45")
+
+        // Création d'un objet contenant la trace et son horodatage
+        let traceAvecDate = {
+          date: timestamp,
+          contenu: trace,
+        };
+
+        // Ajouter la nouvelle trace au début de l'historique
+        historique.unshift(traceAvecDate);
+
+        // Garder seulement les 3 dernières traces
+        if (historique.length > 3) {
+          historique.pop();
+        }
+
+        // Sauvegarder l'historique mis à jour dans localStorage
+        localStorage.setItem("historiqueTraces", JSON.stringify(historique));
+      }
+    </script>
+   
+  </body>
+</html>

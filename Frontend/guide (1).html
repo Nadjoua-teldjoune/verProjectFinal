@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide & Documentation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Ajoutez FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-[#232323] text-white">
+
+    <div class="max-w-5xl mx-auto p-6">
+        <h1 class="text-3xl font-bold text-center mb-6 text-[#e3b70a]">
+            
+            <div class="absolute top-4 right-4">
+                <button onclick="window.location.href='guideen.html'" class="bg-[#e3b70a] text-black px-3 py-1 rounded-md hover:bg-yellow-500 text-sm">
+                    EN
+                </button>
+            </div>
+            
+            <i class="fas fa-book-open text-[#e3b70a]"></i> Guide & Documentation
+        </h1>
+
+        <!-- Introduction -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-[#e3b70a]">
+                <i class="fas fa-map-pin text-[#e3b70a]"></i> Introduction
+            </h2>
+            <p class="text-gray-300">
+                Ce guide fournit une explication détaillée des concepts utilisés dans l'analyse des traces 
+                et la détection des tactiques architecturales.
+            </p>
+        </section>
+
+        <!-- Terminologie -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-[#e3b70a]">
+                <i class="fas fa-search text-[#e3b70a]"></i> Terminologie
+            </h2>
+            <ul class="list-disc list-inside text-gray-300">
+                <li><b>Trace d'exécution :</b> Séquence d'appels entre les composants d'un logiciel.</li>
+                <li><b>Tactique Architecturale :</b> Stratégie utilisée pour répondre à un besoin non-fonctionnel.</li>
+                <li><b>Grammaire XPG :</b> Langage utilisé pour décrire la structure syntaxique d'une trace.</li>
+                <li><b>Diagramme de Séquence UML :</b> Représentation graphique des interactions entre objets.</li>
+            </ul>
+        </section>
+
+        <!-- Diagrammes de Séquence UML -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-[#e3b70a]">
+                <i class="fas fa-project-diagram text-[#e3b70a]"></i> Diagrammes de Séquence UML
+            </h2>
+            <p class="text-gray-300">Les diagrammes UML permettent de visualiser les interactions entre les composants.</p>
+            <img src="pingEchoTactic (1).png" alt="Exemple de diagramme UML" class="w-1/3 rounded-md">
+        </section>
+
+        <!-- Grammaire XPG -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-[#e3b70a]">
+                <i class="fas fa-scroll text-[#e3b70a]"></i> Grammaire XPG
+            </h2>
+            <p class="text-gray-300 mb-4">La grammaire XPG permet d'analyser une trace et d'en extraire des motifs spécifiques.</p>
+            <div class="bg-gray-700 p-4 rounded-md text-gray-300 font-mono">
+                <pre>
+  Exemple:
+
+(1) PingEchoPattern → MethodInv <same_caller, call+1> OptBlock MethodInv'
+(2) OptBlock → epsilon (cela veux dire que le bloc peut ne pas exister, il est optionnel)
+(3) OptBlock → MethodInv'' <call, same_callee> MethodInv'''
+(4) MethodInv → Caller: OBJ.METHOD_SIGNATURE Callee: OBJ'.METHOD_SIGNATURE'
+Δ: { MethodInv_caller = OBJ; MethodInv_callee = OBJ';
+ MethodInv_method_caller = METHOD_SIGNATURE;
+ MethodInv_method_callee = METHOD_SIGNATURE'}
+                </pre>
+            </div>
+        </section>
+
+        <!-- Traces d'Exécution -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-[#e3b70a]">
+                <i class="fas fa-map-pin text-[#e3b70a]"></i> Traces d'Exécution
+            </h2>
+            <p class="text-gray-300 mb-4">
+                Une trace d'exécution est une séquence d'événements capturant l'interaction entre les composants d'un système. 
+                Elle permet d'analyser le comportement du programme en temps réel et de détecter d'éventuelles anomalies.
+            </p>
+            <h3 class="text-xl font-semibold mb-2 text-[#e3b70a]">
+                <i class="fas fa-eye text-[#e3b70a]"></i> Comment interpréter une trace ?
+            </h3>
+            <p class="text-gray-300 mb-4">
+                L'interprétation d'une trace repose sur l'analyse des relations entre les appels de méthode. 
+                On identifie qui appelle qui, quelles méthodes sont invoquées et dans quel ordre.
+            </p>
+            <h3 class="text-xl font-semibold mb-2 text-[#e3b70a]">
+                <i class="fas fa-file-alt text-[#e3b70a]"></i> Exemple de trace CALLER/METHOD/CALLEE
+            </h3>
+            <div class="bg-gray-700 p-4 rounded-md text-gray-300 font-mono">
+                <pre>
+CALLER: UserController, METHOD: login, CALLEE: AuthService;
+CALLER: AuthService, METHOD: validateUser, CALLEE: Database;
+CALLER: Database, METHOD: checkCredentials, CALLEE: null;
+                </pre>
+            </div>
+        </section>
+
+        <!-- Tactiques Architecturales -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-[#e3b70a]">
+                <i class="fas fa-tools text-[#e3b70a]"></i> Tactiques Architecturales
+            </h2>
+            <div class="space-y-4">
+                <div class="bg-gray-700 p-4 rounded-md">
+                    <button class="faq-question w-full text-left font-semibold text-[#ffffff]" onclick="toggleFAQ(0)">
+                        <i class="fas fa-satellite-dish text-white"></i> Ping Echo
+                    </button>
+                    <div class="faq-answer hidden mt-2 text-gray-300">
+                        <p>
+                            La tactique Ping Echo permet de vérifier la disponibilité et la réactivité d’un service ou d’un composant système.  
+                            Un message "ping" est envoyé à une cible, qui doit répondre avec un message "echo".  
+                            Cela est couramment utilisé pour la surveillance des réseaux et des systèmes distribués.
+                        </p>
+                        <img src="ping-echo-example.png" alt="Exemple Ping Echo" class="w-1/3 rounded-md mt-2">
+                    </div>
+                </div>
+
+                <div class="bg-gray-700 p-4 rounded-md">
+                    <button class="faq-question w-full text-left font-semibold text-[#ffffff]" onclick="toggleFAQ(1)">
+                        <i class="fas fa-key text-white"></i> Authorize Users
+                    </button>
+                    <div class="faq-answer hidden mt-2 text-gray-300">
+                        <p>
+                            Cette tactique garantit que seuls les utilisateurs autorisés peuvent accéder aux ressources sécurisées d’un système.  
+                            Elle repose sur des mécanismes d'authentification (mots de passe, biométrie, tokens) et de contrôle d'accès (rôles, permissions).  
+                            Elle est essentielle pour assurer la confidentialité et la sécurité des données sensibles.
+                        </p>
+                        <img src="diagAuthorizeUser.png" alt="Exemple Authorize Users" class="w-1/3 rounded-md mt-2">
+                    </div>
+                </div>
+
+                <div class="bg-gray-700 p-4 rounded-md">
+                    <button class="faq-question w-full text-left font-semibold text-[#ffffff]" onclick="toggleFAQ(2)">
+                        <i class="fas fa-copy text-white"></i> Maintain Multiple Copies
+                    </button>
+                    <div class="faq-answer hidden mt-2 text-gray-300">
+                        <p>
+                            Cette tactique consiste à stocker plusieurs copies des données afin d'améliorer la fiabilité et la tolérance aux pannes.  
+                            Elle est utilisée dans les systèmes de sauvegarde, les bases de données répliquées et les architectures de stockage distribuées.  
+                            Cela permet de récupérer rapidement les informations en cas de défaillance d'un serveur ou d'un disque dur.
+                        </p>
+                        <img src="diagMaintainCopies.png" alt="Exemple Maintain Multiple Copies" class="w-1/3 rounded-md mt-2">
+                    </div>
+                </div>
+
+                <div class="bg-gray-700 p-4 rounded-md">
+                    <button class="faq-question w-full text-left font-semibold text-[#ffffff]" onclick="toggleFAQ(3)">
+                        <i class="fas fa-database text-white"></i> Maintain Data
+                    </button>
+                    <div class="faq-answer hidden mt-2 text-gray-300">
+                        <p>
+                            Cette tactique assure l'intégrité et la disponibilité des données en appliquant des mécanismes de validation et de correction d’erreurs.  
+                            Elle est utilisée pour prévenir la corruption des données et garantir leur exactitude dans le temps.  
+                            Des techniques comme les checksums, le versionnement et la redondance des données sont souvent employées.
+                        </p>
+                        <img src="diagMaintainData.png" alt="Exemple Maintain Data" class="w-1/3 rounded-md mt-2">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- JavaCC et Analyse Syntaxique -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-[#e3b70a]">
+                <i class="fas fa-code text-[#e3b70a]"></i> JavaCC et Analyse Syntaxique
+            </h2>
+            <p class="text-gray-300">
+                Cette section explique pourquoi JavaCC est un choix pertinent pour l'analyse syntaxique et comment il permet d'automatiser la détection des tactiques architecturales dans les traces d'exécution.
+            </p>
+            <h3 class="text-xl font-semibold mb-2 text-[#e3b70a]">
+                <i class="fas fa-info-circle text-[#e3b70a]"></i> Présentation de JavaCC
+            </h3>
+            <p class="text-gray-300">
+                → JavaCC (Java Compiler Compiler) est un générateur d'analyseurs syntaxiques pour Java.<br>
+                → Il permet de définir une grammaire qui décrit la structure des données à analyser.<br>
+                → Très utilisé pour construire des parseurs, notamment pour analyser du code ou des logs.
+            </p>
+            <h3 class="text-xl font-semibold mb-2 text-[#e3b70a]">
+                <i class="fas fa-cogs text-[#e3b70a]"></i> Explication du parseur utilisé pour l’analyse des traces
+            </h3>
+            <p class="text-gray-300">
+                → Dans ce projet, JavaCC est utilisé pour analyser les traces d’exécution et identifier des motifs spécifiques.<br>
+                → Le parseur transforme la séquence d’appels (CALLER → METHOD → CALLEE) en un ensemble structuré de données.<br>
+                → Il permet d’extraire automatiquement des informations utiles sans intervention manuelle.
+            </p>
+        </section>
+
+        <!-- Références et Ressources -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-[#e3b70a]">
+                <i class="fas fa-book text-[#e3b70a]"></i> Références et Ressources
+            </h2>
+            <div class="space-y-4 bg-gray-700 p-4 rounded-md text-gray-300">
+                <h3 class="font-semibold text-[#e3b70a]">
+                    <i class="fas fa-file-alt text-[#e3b70a]"></i> Documentation JavaCC
+                </h3>
+                <ul class="list-disc list-inside">
+                    <li><a href="https://javacc.org/" target="_blank" class="text-blue-400 hover:underline">Site officiel de JavaCC</a></li>
+                    <li><a href="#" class="text-blue-400 hover:underline">Tutoriels et exemples JavaCC</a></li>
+                </ul>
+
+                <h3 class="font-semibold text-[#e3b70a] mt-4">
+                    <i class="fas fa-book-open text-[#e3b70a]"></i> Exemples de tactiques dans la littérature
+                </h3>
+                <ul class="list-disc list-inside">
+                    <li><a href="#" class="text-blue-400 hover:underline">Études de cas sur les tactiques architecturales</a></li>
+                    <li><a href="#" class="text-blue-400 hover:underline">Articles académiques sur les tactiques</a></li>
+                </ul>
+
+                <h3 class="font-semibold text-[#e3b70a] mt-4">
+                    <i class="fas fa-graduation-cap text-[#e3b70a]"></i> Tutoriels sur les traces d’exécution
+                </h3>
+                <ul class="list-disc list-inside">
+                    <li><a href="#" class="text-blue-400 hover:underline">Introduction aux traces d’exécution</a></li>
+                    <li><a href="#" class="text-blue-400 hover:underline">Analyse et interprétation des traces</a></li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        function toggleFAQ(index) {
+            const answers = document.querySelectorAll(".faq-answer");
+            answers[index].classList.toggle("hidden");
+        }
+    </script>
+</body>
+</html>
+

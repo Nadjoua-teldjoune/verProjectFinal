@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Tactiques Architecturales | ArchiTrace Lab</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: #121212;
+        color: #f0f0f0;
+        line-height: 1.6;
+      }
+      header {
+        background-color: #1c1c1c;
+        padding: 40px 30px;
+        text-align: center;
+        border-bottom: 1px solid #333;
+        position: relative;
+      }
+      header h1 {
+        color: #f8d20d;
+        font-size: 2.8rem;
+        margin-bottom: 15px;
+      }
+      .tagline {
+        color: #aaa;
+        font-size: 1.1rem;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      .intro {
+        text-align: center;
+        padding: 40px 30px;
+        color: #ccc;
+        max-width: 900px;
+        margin: auto;
+      }
+      .intro h2 {
+        color: #f8d20d;
+        margin-bottom: 20px;
+        font-size: 1.8rem;
+      }
+      .tabs {
+        display: flex;
+        justify-content: center;
+        margin: 30px 0;
+        flex-wrap: wrap;
+      }
+      .tab-btn {
+        padding: 12px 25px;
+        margin: 0 10px;
+        background: #262626;
+        border: none;
+        color: #f0f0f0;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-weight: 500;
+      }
+      .tab-btn.active,
+      .tab-btn:hover {
+        background: #f8d20d;
+        color: #121212;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 30px;
+        padding: 40px;
+        max-width: 1400px;
+        margin: auto;
+      }
+      .card {
+        background: #1a1a1a;
+        border-left: 5px solid #f8d20d;
+        border-radius: 15px;
+        padding: 30px;
+        transition: all 0.3s ease;
+        box-shadow: 0 6px 15px rgba(255, 215, 0, 0.08);
+        position: relative;
+      }
+      .card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 30px rgba(255, 215, 0, 0.2);
+      }
+      .card h2 {
+        color: #f8d20d;
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+      }
+      .card i {
+        margin-right: 12px;
+        font-size: 1.2rem;
+      }
+      .card .category {
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        background: #333;
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-size: 0.7rem;
+        color: #f8d20d;
+      }
+      .description,
+      .example,
+      .why,
+      .implementation,
+      .pros-cons {
+        margin-top: 15px;
+        font-size: 0.95rem;
+        color: #ccc;
+      }
+      .example {
+        font-style: italic;
+        color: #999;
+        background: #222;
+        padding: 12px;
+        border-radius: 8px;
+        border-left: 3px solid #f8d20d;
+      }
+      .why {
+        background-color: #262626;
+        padding: 15px;
+        margin-top: 20px;
+        border-radius: 10px;
+        border-left: 4px solid #f8d20d;
+      }
+      .why strong {
+        color: #f8d20d;
+      }
+      .implementation {
+        background-color: #1e2a3a;
+        padding: 15px;
+        border-radius: 10px;
+        margin-top: 15px;
+      }
+      .implementation h3 {
+        color: #4dabf7;
+        font-size: 1rem;
+        margin-bottom: 10px;
+      }
+      .pros-cons {
+        display: flex;
+        gap: 15px;
+        margin-top: 15px;
+      }
+      .pros,
+      .cons {
+        flex: 1;
+        padding: 12px;
+        border-radius: 8px;
+      }
+      .pros {
+        background-color: #1a3a1e;
+        border-left: 4px solid #2ecc71;
+      }
+      .cons {
+        background-color: #3a1a1a;
+        border-left: 4px solid #e74c3c;
+      }
+      .pros h3,
+      .cons h3 {
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+      }
+      .pros h3 {
+        color: #2ecc71;
+      }
+      .cons h3 {
+        color: #e74c3c;
+      }
+      .pros ul,
+      .cons ul {
+        padding-left: 20px;
+        font-size: 0.85rem;
+      }
+      .source {
+        font-size: 0.85rem;
+        color: #888;
+        margin-top: 15px;
+      }
+      .source a {
+        color: #4dabf7;
+        text-decoration: none;
+      }
+      .source a:hover {
+        text-decoration: underline;
+      }
+      .quiz-section {
+        max-width: 900px;
+        margin: 50px auto;
+        padding: 30px;
+        background: #1a1a1a;
+        border-radius: 15px;
+        border-top: 5px solid #f8d20d;
+      }
+      .quiz-section h2 {
+        color: #f8d20d;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      .quiz-question {
+        margin-bottom: 25px;
+      }
+      .quiz-question h3 {
+        margin-bottom: 15px;
+        color: #ccc;
+      }
+      .quiz-options {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .quiz-option {
+        background: #262626;
+        padding: 12px 15px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .quiz-option:hover {
+        background: #333;
+      }
+      .quiz-option.correct {
+        background: #1a3a1e;
+        border-left: 4px solid #2ecc71;
+      }
+      .quiz-option.incorrect {
+        background: #3a1a1a;
+        border-left: 4px solid #e74c3c;
+      }
+      .feedback {
+        margin-top: 10px;
+        padding: 10px;
+        border-radius: 5px;
+        display: none;
+      }
+      .feedback.show {
+        display: block;
+      }
+      .correct-feedback {
+        background: #1a3a1e;
+        color: #2ecc71;
+      }
+      .incorrect-feedback {
+        background: #3a1a1a;
+        color: #e74c3c;
+      }
+      footer {
+        text-align: center;
+        padding: 30px;
+        background-color: #1a1a1a;
+        color: #777;
+        font-size: 0.9rem;
+        border-top: 1px solid #333;
+      }
+      .resources {
+        max-width: 900px;
+        margin: 50px auto;
+        padding: 30px;
+        background: #1a1a1a;
+        border-radius: 15px;
+      }
+      .resources h2 {
+        color: #f8d20d;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      .resource-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+      }
+      .resource-item {
+        background: #262626;
+        padding: 20px;
+        border-radius: 10px;
+        transition: all 0.3s;
+      }
+      .resource-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(255, 215, 0, 0.1);
+      }
+      .resource-item h3 {
+        color: #f8d20d;
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+      .resource-item p {
+        font-size: 0.9rem;
+        color: #aaa;
+        margin-bottom: 15px;
+      }
+      .resource-link {
+        display: inline-block;
+        background: #f8d20d;
+        color: #121212;
+        padding: 8px 15px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 0.85rem;
+        transition: all 0.2s;
+      }
+      .resource-link:hover {
+        background: #ffdf40;
+      }
+
+      .lang-switcher {
+       margin-left: auto;
+       position: absolute;
+       }
+
+#translateBtn {
+  background: none;
+  border: 2px solid #ffd700;
+  color: #ffd700;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+#translateBtn:hover {
+  background: #ffd700;
+  color: #121212;
+}
+
+    .card button {
+      background: #ffd700;
+      border: none;
+      padding: 10px 15px;
+      margin-top: 10px;
+      cursor: pointer;
+      border-radius: 5px;
+      color: #121212;
+      font-weight: bold;
+    }
+
+    
+
+    </style>
+
+  <body>
+    <header>
+      <h1>Tactiques Architecturales Détectées</h1>
+      <div class="lang-switcher">
+        <button id="translateBtn"  onclick="window.location.href='learning_english.html'">ANGLAIS</button>
+
+      </div>
+      <p class="tagline">
+        Découvrez, comprenez et maîtrisez les modèles architecturaux essentiels
+        pour concevoir des systèmes robustes et performants
+      </p>
+    </header>
+
+    <section class="intro">
+      <h2>Comprendre les Tactiques Architecturales</h2>
+      <p>
+        Les tactiques architecturales sont des solutions récurrentes à des
+        problèmes spécifiques dans la conception des systèmes logiciels. Elles
+        représentent les "briques de base" que les architectes logiciels
+        utilisent pour répondre à des exigences de qualité comme la scalabilité,
+        la résilience, la sécurité et la performance.
+      </p>
+      <p>
+        Ce guide interactif vous explique en détail chaque tactique identifiée
+        dans vos diagrammes UML, avec des exemples concrets, des cas
+        d'utilisation, et des bonnes pratiques d'implémentation.
+      </p>
+
+      <div class="tabs">
+        <button class="tab-btn active" onclick="filterCards('all')">
+          Toutes
+        </button>
+        <button class="tab-btn" onclick="filterCards('performance')">
+          Performance
+        </button>
+        <button class="tab-btn" onclick="filterCards('security')">
+          Sécurité
+        </button>
+        <button class="tab-btn" onclick="filterCards('reliability')">
+          Fiabilité
+        </button>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card" data-category="reliability">
+        <span class="category">Surveillance</span>
+        <h2><i class="fas fa-wave-square"></i> Ping Echo Tactic</h2>
+        <p class="description">
+          Cette tactique consiste à envoyer un message "ping" à un composant
+          pour vérifier sa disponibilité, et attendre une réponse "pong". C'est
+          un mécanisme fondamental de surveillance des systèmes distribués.
+        </p>
+
+        <div class="example">
+          <strong>Schéma d'interaction :</strong> A → ping() → B → pong() → A<br />
+          <strong>Fréquence typique :</strong> Toutes les 30 secondes à 5
+          minutes selon la criticité
+        </div>
+
+        <div class="why">
+          <strong>Pourquoi utiliser cette tactique ?</strong>
+          <p>
+            Dans les architectures modernes (microservices, APIs, cloud), la
+            détection rapide des pannes est cruciale. Cette tactique permet :
+          </p>
+          <ul>
+            <li>Détection proactive des composants défaillants</li>
+            <li>Surveillance de la latence réseau entre services</li>
+            <li>Intégration avec des systèmes d'alerting (comme Prometheus)</li>
+          </ul>
+          <p>
+            Elle est particulièrement importante pour les systèmes où le temps
+            de réponse est critique (fintech, jeux en ligne, IoT).
+          </p>
+        </div>
+
+        <div class="implementation">
+          <h3>Implémentation Typique</h3>
+          <p>
+            1. Implémentez un endpoint `/health` ou `/ping` sur chaque service
+          </p>
+          <p>
+            2. Configurez un service de monitoring pour interroger régulièrement
+            ces endpoints
+          </p>
+          <p>
+            3. Définissez des seuils d'alerte (ex: 3 pings consécutifs manqués)
+          </p>
+          <p>4. Intégrez avec votre système de logs et d'alerting</p>
+        </div>
+
+        <div class="pros-cons">
+          <div class="pros">
+            <h3>Avantages</h3>
+            <ul>
+              <li>Simple à mettre en œuvre</li>
+              <li>Faible overhead</li>
+              <li>Détection rapide des pannes</li>
+              <li>Standardisé (HTTP health checks)</li>
+            </ul>
+          </div>
+          <div class="cons">
+            <h3>Limitations</h3>
+            <ul>
+              <li>Ne détecte pas tous les types de défaillances</li>
+              <li>Peut générer du faux positif (réseau saturé)</li>
+              <li>Nécessite une configuration fine des timeouts</li>
+            </ul>
+          </div>
+          
+        </div>
+        <button onclick="window.location.href='PingEchoDiag.html'">Diagramme</button>
+        <div class="source">
+          <strong>Pour aller plus loin :</strong>
+          <a
+            href="https://www.oreilly.com/library/view/designing-data-intensive-applications/9781449373199/"
+            target="_blank"
+            >Designing Data-Intensive Applications</a
+          >,
+          <a
+            href="https://microservices.io/patterns/observability/health-check-api.html"
+            target="_blank"
+            >Health Check Pattern</a
+          >
+        </div>
+      </div>
+
+      <div class="card" data-category="performance">
+        <span class="category">Résilience</span>
+        <h2><i class="fas fa-copy"></i> Maintain Multiple Copies</h2>
+        <p class="description">
+          Duplication des données sur plusieurs nœuds pour garantir la
+          disponibilité et la durabilité, même en cas de défaillance matérielle.
+        </p>
+
+        <div class="example">
+          <strong>Schéma de réplication :</strong> Master → replicate(data) →
+          Replica1, Replica2<br />
+          <strong>Stratégies courantes :</strong> Synchrone (strong consistency)
+          vs Asynchrone (eventual consistency)
+        </div>
+
+        <div class="why">
+          <strong>Pourquoi cette tactique est essentielle ?</strong>
+          <p>
+            Les systèmes distribués modernes doivent résister aux pannes. Cette
+            tactique permet :
+          </p>
+          <ul>
+            <li>Haute disponibilité (zero-downtime upgrades)</li>
+            <li>Récupération après sinistre (disaster recovery)</li>
+            <li>Répartition de charge (lectures sur les replicas)</li>
+            <li>Conformité aux régulations (RGPD sur la durabilité)</li>
+          </ul>
+        </div>
+
+        <div class="implementation">
+          <h3>Mise en Œuvre</h3>
+          <p>
+            <strong>Bases de données :</strong> Réplication native (MySQL,
+            PostgreSQL, MongoDB)
+          </p>
+          <p>
+            <strong>Stockage distribué :</strong> RAFT consensus (etcd, Consul)
+          </p>
+          <p>
+            <strong>Cloud :</strong> Multi-AZ deployments (AWS), GCP Regional
+            Disks
+          </p>
+          <p>
+            <strong>Facteurs clés :</strong> Choix du facteur de réplication (3x
+            typique), stratégie de quorum
+          </p>
+        </div>
+
+        <div class="pros-cons">
+          <div class="pros">
+            <h3>Avantages</h3>
+            <ul>
+              <li>Résilience accrue</li>
+              <li>Meilleure performance (lectures locales)</li>
+              <li>Scalabilité horizontale</li>
+              <li>Compatibilité geo-distribution</li>
+            </ul>
+          </div>
+          <div class="cons">
+            <h3>Défis</h3>
+            <ul>
+              <li>Complexité de synchronisation</li>
+              <li>Coût stockage multiplié</li>
+              <li>Consistency trade-offs (CAP theorem)</li>
+              <li>Overhead réseau</li>
+            </ul>
+          </div>
+        </div>
+        <button onclick="window.location.href='maintainCopiesdDiag.html'">Diagramme</button>
+        <div class="source">
+          <strong>Références :</strong>
+          <a href="https://www.dsdm.org/" target="_blank"
+            >DSDM Agile Project Framework</a
+          >,
+          <a href="https://raft.github.io/" target="_blank">RAFT Consensus</a>
+        </div>
+      </div>
+
+      <div class="card" data-category="security">
+        <span class="category">Confidentialité</span>
+        <h2><i class="fas fa-lock"></i> Maintain Data Confidentiality</h2>
+        <p class="description">
+          Protection des données sensibles par chiffrement pendant le transfert
+          (TLS) et au repos (encryption-at-rest).
+        </p>
+
+        <div class="example">
+          <strong>Flux typique :</strong> Client → encrypt(data) → API → decrypt
+          → DB (encrypted)<br />
+          <strong>Algorithmes courants :</strong> AES-256 (symétrique), RSA
+          (asymétrique), ECC
+        </div>
+
+        <div class="why">
+          <strong>Enjeux de sécurité</strong>
+          <p>
+            Dans un contexte de cybermenaces croissantes et de régulations
+            strictes :
+          </p>
+          <ul>
+            <li>Protection contre les fuites de données</li>
+            <li>Conformité (RGPD, HIPAA, PCI-DSS)</li>
+            <li>Confiance utilisateur (reputation management)</li>
+            <li>Défense en profondeur (defense in depth)</li>
+          </ul>
+        </div>
+
+        <div class="implementation">
+          <h3>Implémentation Sécurisée</h3>
+          <p>
+            <strong>En transit :</strong> TLS 1.2+ (HTTPS), Perfect Forward
+            Secrecy
+          </p>
+          <p>
+            <strong>Au repos :</strong> TDE (Transparent Data Encryption),
+            Client-side encryption
+          </p>
+          <p>
+            <strong>Gestion des clés :</strong> HSMs, AWS KMS, Hashicorp Vault
+          </p>
+          <p>
+            <strong>Bonnes pratiques :</strong> Rotation régulière, séparation
+            des rôles, audit logs
+          </p>
+        </div>
+
+        <div class="pros-cons">
+          <div class="pros">
+            <h3>Bénéfices</h3>
+            <ul>
+              <li>Protection contre les attaques</li>
+              <li>Confiance des clients</li>
+              <li>Conformité légale</li>
+              <li>Réduction risque financier</li>
+            </ul>
+          </div>
+          <div class="cons">
+            <h3>Considérations</h3>
+            <ul>
+              <li>Overhead de performance</li>
+              <li>Complexité de gestion</li>
+              <li>Coût des solutions</li>
+              <li>Risque de perte de clés</li>
+            </ul>
+          </div>
+        </div>
+        <button onclick="window.location.href='MaintainDataConfDiag.html'">Diagramme</button>
+        <div class="source">
+          <strong>Appronfondir :</strong>
+          <a
+            href="https://www.schneier.com/book/applied_cryptography/"
+            target="_blank"
+            >Applied Cryptography</a
+          >,
+          <a href="https://owasp.org/www-project-top-ten/" target="_blank"
+            >OWASP Top 10</a
+          >
+        </div>
+      </div>
+
+      <div class="card" data-category="security">
+        <span class="category">Autorisation</span>
+        <h2><i class="fas fa-user-shield"></i> Authorize Users</h2>
+        <p class="description">
+          Contrôle d'accès basé sur les rôles (RBAC) ou les attributs (ABAC)
+          pour restreindre les actions utilisateurs.
+        </p>
+
+        <div class="example">
+          <strong>Workflow :</strong> User → requestAccess → AuthZ → Policy
+          Engine → (allow/deny)<br />
+          <strong>Standards :</strong> OAuth2 scopes, JWT claims, Open Policy
+          Agent (OPA)
+        </div>
+
+        <div class="why">
+          <strong>Nécessité du contrôle d'accès</strong>
+          <p>Pour prévenir :</p>
+          <ul>
+            <li>Accès non autorisés (data breaches)</li>
+            <li>Privilège escalation</li>
+            <li>Violations de séparation des tâches (SoD)</li>
+            <li>Non-conformité aux politiques internes</li>
+          </ul>
+        </div>
+
+        <div class="implementation">
+          <h3>Modèles d'Implémentation</h3>
+          <p>
+            <strong>RBAC :</strong> Rôles → Permissions (admin, user, auditor)
+          </p>
+          <p>
+            <strong>ABAC :</strong> Policies basées sur attributs (time,
+            location, device)
+          </p>
+          <p><strong>Solutions :</strong> Keycloak, Auth0, AWS IAM, Casbin</p>
+          <p>
+            <strong>Patterns :</strong> Policy Decision Point (PDP) séparé du
+            Policy Enforcement Point (PEP)
+          </p>
+        </div>
+
+        <div class="pros-cons">
+          <div class="pros">
+            <h3>Points Forts</h3>
+            <ul>
+              <li>Granularité fine</li>
+              <li>Auditabilité</li>
+              <li>Centralisation des règles</li>
+              <li>Adaptabilité aux besoins</li>
+            </ul>
+          </div>
+          <div class="cons">
+            <h3>Complexités</h3>
+            <ul>
+              <li>Gestion des permissions</li>
+              <li>Performance des checks</li>
+              <li>Explosion des combinaisons (ABAC)</li>
+              <li>Maintenance des politiques</li>
+            </ul>
+          </div>
+        </div>
+        <button onclick="window.location.href='authorizeUserDiag.html'">Diagramme</button>
+        <div class="source">
+          <strong>Ressources :</strong>
+          <a href="https://auth0.com/docs/authorization" target="_blank"
+            >Auth0 Authorization</a
+          >
+          <a
+            href="https://www.nist.gov/publications/guide-attribute-based-access-control-abac-definition-and-considerations"
+            target="_blank"
+            >NIST ABAC Guide</a
+          >
+        </div>
+      </div>
+
+      <div class="card" data-category="security">
+        <span class="category">Authentification</span>
+        <h2><i class="fas fa-key"></i> One-Time Password</h2>
+        <p class="description">
+          Mécanisme d'authentification à deux facteurs (2FA) utilisant un code
+          temporaire unique.
+        </p>
+
+        <div class="example">
+          <strong>Flux :</strong> User → login → SMS/Email/App OTP → validation
+          → session<br />
+          <strong>Technologies :</strong> TOTP (Time-based), HOTP (HMAC-based),
+          SMS, Push notifications
+        </div>
+
+        <div class="why">
+          <strong>Renforcement de la sécurité</strong>
+          <p>
+            Complète les mots de passe (souvent faibles/réutilisés) en ajoutant
+            :
+          </p>
+          <ul>
+            <li>Second facteur de connaissance (OTP)</li>
+            <li>Protection contre le phishing</li>
+            <li>Réduction des risques de credential stuffing</li>
+            <li>Conformité aux standards (PSD2 SCA)</li>
+          </ul>
+        </div>
+
+        <div class="implementation">
+          <h3>Options d'Implémentation</h3>
+          <p>
+            <strong>Self-hosted :</strong> FreeOTP, Google Authenticator libs
+          </p>
+          <p><strong>SaaS :</strong> Twilio Verify, Authy, Duo Security</p>
+          <p><strong>Standards :</strong> RFC 6238 (TOTP), RFC 4226 (HOTP)</p>
+          <p>
+            <strong>Alternatives :</strong> WebAuthn (FIDO2), Push-based 2FA
+          </p>
+        </div>
+        <button onclick="window.location.href='idPasswordDiag.html'">Diagramme</button>
+        <div class="pros-cons">
+          <div class="pros">
+            <h3>Avantages</h3>
+            <ul>
+              <li>Haute sécurité à coût modéré</li>
+              <li>Large adoption/utilisabilité</li>
+              <li>Compatibilité étendue</li>
+              <li>Indépendance du device (SMS)</li>
+            </ul>
+          </div>
+          <div class="cons">
+            <h3>Défis</h3>
+            <ul>
+              <li>Expérience utilisateur (friction)</li>
+              <li>Coût SMS (fraude possible)</li>
+              <li>Dépendance au device</li>
+              <li>SIM swapping vulnérabilité</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="source">
+          <strong>En savoir plus :</strong>
+          <a
+            href="https://www.owasp.org/index.php/Two_Factor_Authentication"
+            target="_blank"
+            >OWASP 2FA</a
+          >,
+          <a href="https://tools.ietf.org/html/rfc6238" target="_blank"
+            >RFC 6238 (TOTP)</a
+          >
+        </div>
+      </div>
+
+      <div class="card" data-category="security">
+        <span class="category">Sécurité Composée</span>
+        <h2><i class="fas fa-user-lock"></i> ID/Password + Confidentiality</h2>
+      
+        <p class="description">
+          Combine l'authentification par identifiant/mot de passe avec le chiffrement des données pour garantir à la fois l'identité de l'utilisateur et la confidentialité des informations transmises.
+        </p>
+      
+        <div class="example">
+          <strong>Workflow :</strong><br />
+          1️ User → submitCredentials → Authenticator<br />
+          2️ Authenticator → verifyCredentials<br />
+          3️ Data → encrypt → transmit → decrypt<br />
+          <strong>Standards :</strong> HTTPS, JWT, AES, TLS, bcrypt
+        </div>
+      
+        <div class="why">
+          <strong>Pourquoi cette composition ?</strong>
+          <p>Elle permet :</p>
+          <ul>
+            <li>D'authentifier les utilisateurs de manière fiable</li>
+            <li>De protéger les données sensibles échangées</li>
+            <li>D'assurer la sécurité end-to-end</li>
+          </ul>
+        </div>
+      
+        <div class="implementation">
+          <h3>Mise en œuvre typique</h3>
+          <p><strong>Authentification :</strong> Login avec ID/Password stocké de manière sécurisée (hash/salt)</p>
+          <p><strong>Confidentialité :</strong> Données chiffrées avant envoi (AES-256, TLS)</p>
+          <p><strong>Solutions :</strong> OpenID Connect + HTTPS + WebCrypto API</p>
+          <p><strong>Exemples :</strong> Connexion à un portail bancaire, EHR médical, etc.</p>
+        </div>
+      
+        <div class="pros-cons">
+          <div class="pros">
+            <h3>Points Forts</h3>
+            <ul>
+              <li>Sécurité complète : accès + contenu</li>
+              <li>Déploiement standardisé</li>
+              <li>Adapté aux systèmes web/cloud</li>
+            </ul>
+          </div>
+          <div class="cons">
+            <h3>Limites</h3>
+            <ul>
+              <li>Risque si mot de passe faible</li>
+              <li>Complexité de gestion des clés/chiffrement</li>
+              <li>Performance en cas de surcharge</li>
+            </ul>
+          </div>
+        </div>
+      
+        <!-- 👇 Ces deux éléments doivent être à l'intérieur de la carte -->
+        <div class="card-footer">
+          <button onclick="window.location.href='idPassMaintainDataConfdDiag.html'">Diagramme</button>
+      
+          <div class="source">
+            <strong>Références :</strong>
+            <a href="https://www.cio.com/article/282070/security-information-security-top-security-strategy-tactics-and-trends.html" target="_blank">CIO Security Trends</a>,
+            <a href="https://martinfowler.com/articles/patterns-of-distributed-systems/" target="_blank">Distributed Patterns</a>
+          </div>
+        </div>
+      </div>
+      
+    </section>
+
+    
+    <section class="resources">
+      <h2><i class="fas fa-book-open"></i> Ressources Complémentaires</h2>
+      <p>
+        Approfondissez vos connaissances avec ces ressources sélectionnées :
+      </p>
+
+      <div class="resource-list">
+        <div class="resource-item">
+          <h3>Designing Data-Intensive Applications</h3>
+          <p>
+            Le livre de référence sur les architectures distribuées par Martin
+            Kleppmann.
+          </p>
+          <a
+            href="https://www.oreilly.com/library/view/designing-data-intensive-applications/9781449373199/"
+            class="resource-link"
+            target="_blank"
+            >Voir le livre</a
+          >
+        </div>
+
+        <div class="resource-item">
+          <h3>Microsoft Architecture Center</h3>
+          <p>
+            Guides et patterns architecturaux pour le cloud et les systèmes
+            distribués.
+          </p>
+          <a
+            href="https://docs.microsoft.com/en-us/azure/architecture/patterns/"
+            class="resource-link"
+            target="_blank"
+            >Accéder</a
+          >
+        </div>
+
+        <div class="resource-item">
+          <h3>OWASP Security Guidelines</h3>
+          <p>
+            Meilleures pratiques de sécurité applicative par l'Open Web
+            Application Security Project.
+          </p>
+          <a
+            href="https://owasp.org/www-project-top-ten/"
+            class="resource-link"
+            target="_blank"
+            >Consulter</a
+          >
+        </div>
+
+        <div class="resource-item">
+          <h3>Google Site Reliability Engineering</h3>
+          <p>Les principes SRE pour des systèmes résilients et évolutifs.</p>
+          <a
+            href="https://sre.google/books/"
+            class="resource-link"
+            target="_blank"
+            >Lire</a
+          >
+        </div>
+      </div> 
+    </section>
+
+    <title>Bouton Retour</title>
+    <style>
+    body {
+      background-color: #121212;
+      color: white;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+  
+    .btn-retour {
+  background: linear-gradient(45deg, #b8860b, #ffcc00);
+  color: black;
+  font-size: 14px;           /* Taille de texte plus petite */
+  padding: 8px 16px;         /* Moins de padding pour une taille plus réduite */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  width: auto;               /* Assure que le bouton ne prenne que l’espace du texte */
+  max-width: 200px;          /* Optionnel : limite maximale */
+  box-shadow: 0px 4px 10px rgba(255, 215, 0, 0.5);
+  transition: all 0.3s ease;
+}
+
+  
+      .btn-retour:hover {
+        background: linear-gradient(45deg, #ffcc00, #b8860b);
+        transform: scale(1.1);
+        box-shadow: 0px 6px 15px rgba(255, 215, 0, 0.7);
+      }
+    </style>
+  </head>
+  
+  <button class="btn-retour" onclick="history.back()">← Retour</button>
+
+  </head>
+
+    <script>
+        function filterCards(category) {
+          const cards = document.querySelectorAll('.card');
+          const buttons = document.querySelectorAll('.tab-btn');
+          
+          buttons.forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.textContent.toLowerCase().includes(category.toLowerCase()) || 
+                (category === 'all' && btn.textContent.toLowerCase().includes('toutes'))) {
+              btn.classList.add('active');
+            }
+          });
+          
+          cards.forEach(card => {
+            if (category === 'all' || card.dataset.category === category) {
+              card.style.display = 'block';
+            } else {
+              card.style.display = 'none';
+            }
+          });
+        }
+   
+      function openDiagram(url) {
+        window.open(url, '_blank');
+      }
+    </script>
+    
+  </body>
+</html>

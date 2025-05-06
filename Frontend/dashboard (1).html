@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - Tactiques Architecturales</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Polices personnalisées */
+      body {
+        font-family: "Roboto", sans-serif;
+      }
+
+      /* Arrière-plan animé doré subtil */
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          45deg,
+          #1a1a1a,
+          /* Noir */ #262626,
+          /* Gris foncé */ #1a1a1a,
+          /* Noir */ #d4af37,
+          /* Doré */ #1a1a1a,
+          /* Noir */ #262626,
+          /* Gris foncé */ #1a1a1a /* Noir */
+        );
+        background-size: 400% 400%;
+        animation: gradientAnimation 15s ease infinite;
+        z-index: -1;
+        opacity: 0.1; /* Réduire l'opacité pour un effet plus discret */
+      }
+
+      @keyframes gradientAnimation {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      /* Couleurs personnalisées */
+      .bg-dark {
+        background-color: rgba(26, 26, 26, 0.9); /* Ajout de transparence */
+      }
+      .bg-dark-secondary {
+        background-color: rgba(38, 38, 38, 0.9); /* Ajout de transparence */
+      }
+      .text-gold {
+        color: #d4af37;
+      }
+      .border-gold {
+        border-color: #d4af37;
+      }
+      .hover\:bg-dark-secondary:hover {
+        background-color: #333333;
+      }
+
+      /* Animations */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .fade-in {
+        animation: fadeIn 0.5s ease-in-out;
+      }
+
+      /* Notifications */
+      .notification {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        padding: 10px 20px;
+        background-color: #d4af37;
+        color: #1a1a1a;
+        border-radius: 5px;
+        animation: fadeIn 0.5s ease-in-out;
+      }
+
+      /* Indicateur circulaire */
+      .circular-progress {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: conic-gradient(#d4af37 0%, #333333 0%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+
+      .circular-progress::before {
+        content: "";
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background-color: #262626;
+      }
+
+      .circular-progress span {
+        position: relative;
+        font-size: 24px;
+        font-weight: bold;
+        color: #ffffff;
+      }
+
+      /* Légende */
+      .tactic-label {
+        font-size: 12px; /* Taille de police réduite */
+        margin-top: 8px;
+        color: #d4af37;
+        text-align: center; /* Centrer le texte */
+        white-space: normal; /* Permettre le passage à la ligne */
+        word-wrap: break-word; /* Casser les mots longs */
+        max-width: 120px; /* Largeur maximale pour éviter le débordement */
+      }
+
+      /* Ajustement des conteneurs */
+      .chart-container {
+        height: 300px; /* Réduire la hauteur des conteneurs de graphiques */
+      }
+
+      .usage-container {
+        margin-top: 50px; /* Espacement entre les sections */
+      }
+      .button-transparent {
+        background-color: rgba(255, 204, 0, 0.2); /* Jaune transparent */
+        border: 2px solid #ffcc00; /* Bordure jaune */
+        color: #ffcc00; /* Texte et icône en jaune */
+        transition: all 0.3s ease-in-out;
+      }
+
+      .button-transparent:hover {
+        background-color: rgba(
+          255,
+          204,
+          0,
+          0.4
+        ); /* Légèrement plus opaque au survol */
+        transform: scale(1.05);
+      }
+
+      /* Style supplémentaire pour le bouton Retour */
+      button[onclick="goBack()"] {
+        background-color: #444; /* Couleur de fond */
+        color: #fff; /* Couleur du texte */
+        padding: 10px 20px; /* Espacement interne */
+        border: none; /* Pas de bordure */
+        border-radius: 8px; /* Coins arrondis */
+        font-weight: bold; /* Texte en gras */
+        cursor: pointer; /* Curseur en forme de main */
+        transition: all 0.3s ease; /* Transition fluide */
+        display: flex; /* Alignement horizontal */
+        align-items: center; /* Centrer verticalement */
+        gap: 8px; /* Espace entre l'icône et le texte */
+      }
+
+      /* Effet au survol */
+      button[onclick="goBack()"]:hover {
+        background-color: #555; /* Couleur plus foncée au survol */
+        transform: translateY(-2px); /* Légère élévation */
+        box-shadow: 0 4px 12px rgba(85, 85, 85, 0.3); /* Ombre subtile */
+      }
+
+      /* Effet au clic */
+      button[onclick="goBack()"]:active {
+        transform: translateY(0); /* Retour à la position initiale */
+      }
+    </style>
+  </head>
+  <body class="bg-dark text-white">
+    <div class="flex flex-col lg:flex-row h-screen">
+      <!-- Sidebar -->
+      <aside class="w-full lg:w-64 bg-dark-secondary p-5">
+        <h2 class="text-lg font-bold mb-4 text-gold">Tactiques</h2>
+        <ul>
+          <li
+            class="mb-2 p-2 rounded bg-dark hover:bg-dark-secondary cursor-pointer transition-colors transform hover:scale-105 flex items-center"
+            onclick="updateCharts('Ping Echo')"
+          >
+            <i class="fas fa-wifi text-gold mr-2"></i>
+            <span>Ping Echo</span>
+          </li>
+          <li
+            class="mb-2 p-2 rounded bg-dark hover:bg-dark-secondary cursor-pointer transition-colors transform hover:scale-105 flex items-center"
+            onclick="updateCharts('Maintain Multiple Copies')"
+          >
+            <i class="fas fa-copy text-gold mr-2"></i>
+            <span>Maintain Multiple Copies</span>
+          </li>
+          <li
+            class="mb-2 p-2 rounded bg-dark hover:bg-dark-secondary cursor-pointer transition-colors transform hover:scale-105 flex items-center"
+            onclick="updateCharts('Maintain Data Confidentiality')"
+          >
+            <i class="fas fa-lock text-gold mr-2"></i>
+            <span>Maintain Data Confidentiality</span>
+          </li>
+          <li
+            class="mb-2 p-2 rounded bg-dark hover:bg-dark-secondary cursor-pointer transition-colors transform hover:scale-105 flex items-center"
+            onclick="updateCharts('Authorize Users')"
+          >
+            <i class="fas fa-user-shield text-gold mr-2"></i>
+            <span>Authorize Users</span>
+          </li>
+          <li
+            class="mb-2 p-2 rounded bg-dark hover:bg-dark-secondary cursor-pointer transition-colors transform hover:scale-105 flex items-center"
+            onclick="updateCharts('Onetime Password (OTP)')"
+          >
+            <i class="fas fa-key text-gold mr-2"></i>
+            <span>Onetime Password (OTP)</span>
+          </li>
+          <li
+            class="mb-2 p-2 rounded bg-dark hover:bg-dark-secondary cursor-pointer transition-colors transform hover:scale-105 flex items-center"
+            onclick="updateCharts('Composition ID/Password & Maintain Data Confidentiality')"
+          >
+            <i class="fas fa-shield-alt text-gold mr-2"></i>
+            <span>Composition ID/Password & Maintain Data Confidentiality</span>
+          </li>
+        </ul>
+
+        <!-- Bouton pour accéder à la comparaison -->
+        <button
+          class="mb-2 p-2 rounded bg-dark hover:bg-dark-secondary cursor-pointer transition-colors transform hover:scale-105 flex items-center"
+          onclick="goToComparison()"
+        >
+          <i class="fas fa-balance-scale text-gold mr-2"></i>
+          <span>Comparer deux tactiques</span>
+        </button>
+
+        <button
+          class="mb-2 p-2 rounded bg-dark hover:bg-dark-secondary cursor-pointer transition-colors transform hover:scale-105 flex items-center"
+          onclick="goToCarte()"
+        >
+          <i class="fas fa-project-diagram text-gold mr-2"></i>
+          <span>Carte des Tactiques</span>
+        </button>
+
+        <!-- Bouton Retour en bas de la barre latérale -->
+        <button
+          class="mt-4 p-2 rounded bg-dark hover:bg-dark-secondary cursor-pointer transition-colors transform hover:scale-105 flex items-center"
+          onclick="goBack()"
+        >
+          <i class="fas fa-arrow-left text-gold mr-2"></i>
+          <span>Retour</span>
+        </button>
+      </aside>
+
+      <!-- Main Dashboard -->
+      <main class="flex-1 p-6 overflow-y-auto">
+        <h1 class="text-2xl font-bold text-gold"></h1>
+
+        <!-- Graphiques -->
+        <div class="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div
+            class="bg-dark-secondary p-4 rounded-lg border border-gold fade-in chart-container"
+            id="radar-container"
+          >
+            <h2 class="text-xl font-bold text-gold mb-4">
+              Caractéristiques de la Tactique
+            </h2>
+            <canvas id="radarChart"></canvas>
+          </div>
+          <div
+            class="bg-dark-secondary p-4 rounded-lg border border-gold fade-in chart-container"
+            id="bar-container"
+          >
+            <h2 class="text-xl font-bold text-gold mb-4">
+              Scores des Caractéristiques
+            </h2>
+            <canvas id="barChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Pourcentage d'utilisation des tactiques -->
+        <div
+          class="usage-container bg-dark-secondary p-4 rounded-lg border border-gold mt-6"
+        >
+          <h2 class="text-xl font-bold text-gold mb-4">
+            Pourcentage d'utilisation des tactiques
+          </h2>
+          <div class="flex flex-col lg:flex-row justify-around items-center">
+            <div class="text-center mb-4 lg:mb-0">
+              <div class="circular-progress" id="progress-1">
+                <span>35%</span>
+              </div>
+              <p class="tactic-label">Authorize Users</p>
+            </div>
+            <div class="text-center mb-4 lg:mb-0">
+              <div class="circular-progress" id="progress-2">
+                <span>30%</span>
+              </div>
+              <p class="tactic-label">Maintain Data Confidentiality</p>
+            </div>
+            <div class="text-center mb-4 lg:mb-0">
+              <div class="circular-progress" id="progress-3">
+                <span>15%</span>
+              </div>
+              <p class="tactic-label">Onetime Password (OTP)</p>
+            </div>
+            <div class="text-center mb-4 lg:mb-0">
+              <div class="circular-progress" id="progress-4">
+                <span>10%</span>
+              </div>
+              <p class="tactic-label">Maintain Multiple Copies</p>
+            </div>
+            <div class="text-center mb-4 lg:mb-0">
+              <div class="circular-progress" id="progress-5">
+                <span>5%</span>
+              </div>
+              <p class="tactic-label">Ping Echo</p>
+            </div>
+            <div class="text-center mb-4 lg:mb-0">
+              <div class="circular-progress" id="progress-6">
+                <span>5%</span>
+              </div>
+              <p class="tactic-label">
+                Composition ID/Password & Maintain Data Confidentiality
+              </p>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script>
+      // Données des tactiques
+      const tacticsData = {
+        "Ping Echo": {
+          performance: 70,
+          security: 30,
+          reliability: 80,
+          maintainability: 90,
+          complexity: 20,
+        },
+        "Maintain Multiple Copies": {
+          performance: 85,
+          security: 60,
+          reliability: 95,
+          maintainability: 70,
+          complexity: 50,
+        },
+        "Maintain Data Confidentiality": {
+          performance: 60,
+          security: 95,
+          reliability: 80,
+          maintainability: 65,
+          complexity: 70,
+        },
+        "Authorize Users": {
+          performance: 90,
+          security: 90,
+          reliability: 85,
+          maintainability: 75,
+          complexity: 60,
+        },
+        "Onetime Password (OTP)": {
+          performance: 65,
+          security: 95,
+          reliability: 75,
+          maintainability: 70,
+          complexity: 65,
+        },
+        "Composition ID/Password & Maintain Data Confidentiality": {
+          performance: 75,
+          security: 95,
+          reliability: 85,
+          maintainability: 60,
+          complexity: 80,
+        },
+      };
+
+      // Initialisation des graphiques
+      const radarCtx = document.getElementById("radarChart").getContext("2d");
+      const barCtx = document.getElementById("barChart").getContext("2d");
+
+      const radarChart = new Chart(radarCtx, {
+        type: "radar",
+        data: {
+          labels: [
+            "Performance",
+            "Sécurité",
+            "Fiabilité",
+            "Maintenabilité",
+            "Complexité",
+          ],
+          datasets: [
+            {
+              label: "Ping Echo",
+              data: Object.values(tacticsData["Ping Echo"]),
+              backgroundColor: "rgba(212, 175, 55, 0.2)",
+              borderColor: "#d4af37",
+              borderWidth: 2,
+            },
+          ],
+        },
+        options: {
+          scales: {
+            r: {
+              angleLines: { color: "#333333" },
+              grid: { color: "#333333" },
+              pointLabels: { color: "#ffffff" },
+              ticks: { display: false, color: "#ffffff" },
+            },
+          },
+          plugins: {
+            legend: { labels: { color: "#ffffff" } },
+          },
+        },
+      });
+
+      const barChart = new Chart(barCtx, {
+        type: "bar",
+        data: {
+          labels: [
+            "Performance",
+            "Sécurité",
+            "Fiabilité",
+            "Maintenabilité",
+            "Complexité",
+          ],
+          datasets: [
+            {
+              label: "Ping Echo",
+              data: Object.values(tacticsData["Ping Echo"]),
+              backgroundColor: [
+                "#d4af37",
+                "#b8860b",
+                "#ffd700",
+                "#daa520",
+                "#f0e68c",
+              ],
+              borderColor: "#ffffff",
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: { color: "#333333" },
+              ticks: { color: "#ffffff" },
+            },
+            x: {
+              grid: { color: "#333333" },
+              ticks: { color: "#ffffff" },
+            },
+          },
+          plugins: {
+            legend: { labels: { color: "#ffffff" } },
+          },
+        },
+      });
+
+      // Mettre à jour les graphiques en fonction de la tactique sélectionnée
+      function updateCharts(tactic) {
+        const data = tacticsData[tactic];
+
+        // Animation de chargement
+        document.getElementById("radar-container").classList.add("fade-in");
+        document.getElementById("bar-container").classList.add("fade-in");
+
+        // Mettre à jour le graphique radar
+        radarChart.data.datasets[0].label = tactic;
+        radarChart.data.datasets[0].data = Object.values(data);
+        radarChart.update();
+
+        // Mettre à jour le graphique en barres
+        barChart.data.datasets[0].label = tactic;
+        barChart.data.datasets[0].data = Object.values(data);
+        barChart.update();
+
+        // Notification
+        showNotification(`Tactique "${tactic}" sélectionnée`);
+      }
+
+      // Afficher une notification
+      function showNotification(message) {
+        const notification = document.createElement("div");
+        notification.className = "notification";
+        notification.textContent = message;
+        document.body.appendChild(notification);
+
+        // Supprimer la notification après 3 secondes
+        setTimeout(() => {
+          notification.remove();
+        }, 3000);
+      }
+
+      // Mettre à jour les cercles de pourcentage
+      function updateCircularProgress() {
+        const percentages = [35, 30, 15, 10, 5, 5];
+        percentages.forEach((percentage, index) => {
+          const progress = document.getElementById(`progress-${index + 1}`);
+          progress.style.background = `conic-gradient(#d4af37 ${percentage}%, #333333 0%)`;
+        });
+      }
+      function goToComparison() {
+        window.location.href = "comparison.html"; // Redirige vers la page de comparaison
+      }
+
+      function goToCarte() {
+        window.location.href = "carte.html"; // Redirige vers la page de comparaison
+      }
+      // Initialiser les cercles de pourcentage
+      updateCircularProgress();
+
+      function goBack() {
+        window.location.href = "index2.html"; // Rediriger vers une page spécifique
+      }
+    </script>
+  </body>
+</html>

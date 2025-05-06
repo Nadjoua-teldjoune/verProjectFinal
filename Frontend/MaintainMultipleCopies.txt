@@ -1,0 +1,22 @@
+version1
+
+(1) : MaintainMultipleCopiesPattern->MethodInv< not same_caller ,call+1> MethodInv'<same_caller, not same_callee >  OptBlock MethodInv''
+(2) :  OptBlock <- epsilon 
+(3) :  OptBlock MethodInv'' <call , same_caller > MethodInv'''
+(4) MethodInv → Caller: OBJ.METHOD_SIGNATURE Callee: OBJ'.METHOD_SIGNATURE'
+
+Δ: { MethodInv_caller = OBJ; MethodInv_callee = OBJ';
+         MethodInv_method_caller = METHOD_SIGNATURE;
+         MethodInv_method_callee = METHOD_SIGNATURE'}
+version2
+
+(1) : MaintainMultipleCopiesPattern->MethodInv< not same_caller ,call+1> MethodInv'<same_caller >  OptBlock MethodInv''
+(2) :  OptBlock <- epsilon 
+(3) :  OptBlock MethodInv'' <call , same_caller > MethodInv'''<same_callee> MethodInv'
+(4) MethodInv → Caller: OBJ.METHOD_SIGNATURE Callee: OBJ'.METHOD_SIGNATURE'
+
+Δ: { MethodInv_caller = OBJ; MethodInv_callee = OBJ';
+         MethodInv_method_caller = METHOD_SIGNATURE;
+         MethodInv_method_callee = METHOD_SIGNATURE'}
+
+

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help & Support</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="bg-[#232323] text-white">
+
+    <div class="max-w-4xl mx-auto p-6">
+        <h1 class="text-3xl font-bold text-center mb-6 text-[#e3b70a]">Help & Support</h1>
+
+        <div class="absolute top-4 right-4">
+            <button onclick="window.location.href='help.html'" class="bg-[#e3b70a] text-black px-3 py-1 rounded-md hover:bg-yellow-500 text-sm">
+                FR
+            </button>
+        </div>
+
+        <!-- Introduction -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-[#e3b70a]"><i class="fas fa-map-pin"></i> Tool Overview</h2>
+            <p class="text-gray-300">The tool allows you to analyze execution traces and detect architectural tactics.</p>
+            <ul class="list-disc pl-5 text-gray-300">
+                <li><i class="fas fa-file-upload"></i> Upload a file containing traces</li>
+                <li><i class="fas fa-search"></i> Detect architectural tactics</li>
+                <li><i class="fas fa-chart-bar"></i> Display results in a readable format</li>
+                <li><i class="fas fa-history"></i> View the history of recent traces</li>
+            </ul>
+            <h3 class="text-xl font-semibold mt-4 text-[#e3b70a]"><i class="fas fa-map-pin"></i> Supported File Types</h3>
+            <p class="text-gray-300">The tool accepts <code>.txt</code> and <code>.log</code> files. Formats like <code>.csv</code> or <code>.json</code> are not yet supported.</p>
+        </section>
+
+        <!-- User Guide -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-[#e3b70a]"><i class="fas fa-list-ol"></i> User Guide</h2>
+            <ol class="list-decimal pl-5 text-gray-300">
+                <li><strong><i class="fas fa-file-upload"></i> Upload a trace:</strong> Click on "Upload a file" and select a <code>.txt</code> file.</li>
+                <li><strong><i class="fas fa-mouse-pointer"></i> Select a tactic:</strong> Click on a tactic to see an example.</li>
+                <li><strong><i class="fas fa-play"></i> Run the analysis:</strong> The tool analyzes the structure and detects tactics.</li>
+                <li><strong><i class="fas fa-history"></i> View history:</strong> The tool keeps the last 3 traces.</li>
+            </ol>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-[#e3b70a]"><i class="fas fa-question-circle"></i> Frequently Asked Questions</h2>
+            <div class="space-y-4">
+
+                <div class="bg-gray-700 p-4 rounded-md">
+                    <button class="faq-question w-full text-left font-semibold text-[#ffffff]" onclick="toggleFAQ(0)">
+                        <i class="fas fa-plus-circle"></i> How to add a trace?
+                    </button>
+                    <p class="faq-answer hidden mt-2 text-gray-300">
+                        Use the editing area and paste your text or upload a file in <code>.txt</code> or <code>.log</code> format.
+                    </p>
+                </div>
+
+                <div class="bg-gray-700 p-4 rounded-md">
+                    <button class="faq-question w-full text-left font-semibold text-[#ffffff]" onclick="toggleFAQ(1)">
+                        <i class="fas fa-plus-circle"></i> What file formats are supported?
+                    </button>
+                    <p class="faq-answer hidden mt-2 text-gray-300">
+                        The tool only supports <code>.txt</code> and <code>.log</code> files. Any other format will not be recognized.
+                    </p>
+                </div>
+
+                <div class="bg-gray-700 p-4 rounded-md">
+                    <button class="faq-question w-full text-left font-semibold text-[#ffffff]" onclick="toggleFAQ(2)">
+                        <i class="fas fa-plus-circle"></i> How to interpret the results?
+                    </button>
+                    <p class="faq-answer hidden mt-2 text-gray-300">
+                        The results show the matches between your trace and the detected architectural tactics.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Common Issues -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-[#e3b70a]"><i class="fas fa-tools"></i> Common Issues and Solutions</h2>
+            <div class="bg-gray-700 p-4 rounded-md">
+                <h3 class="font-semibold text-[#e3b70a]"><i class="fas fa-map-pin"></i> Upload Issues</h3>
+                <p class="text-gray-300"><i class="fas fa-times-circle"></i> Unsupported file → Make sure the file is a <code>.txt</code> file.</p>
+                <p class="text-gray-300"><i class="fas fa-times-circle"></i> Empty file → Open it in a text editor to confirm its content.</p>
+            </div>
+            <div class="bg-gray-700 p-4 rounded-md mt-4">
+                <h3 class="font-semibold text-[#e3b70a]"><i class="fas fa-map-pin"></i> Issues with JavaCC</h3>
+                <p class="text-gray-300"><i class="fas fa-times-circle"></i> Parsing error → Check the syntax of your trace.</p>
+                <p class="text-gray-300"><strong><br>Example:</strong></p>
+                <p class="text-gray-300">
+                    CALLER:anobject,METHOD:amethod,CALLEE:anobject;<br>
+                    CALLER:anobject,METHOD:amethod,CALLEE:anobject;<br>
+                    CALLER:anobject,METHOD:amethod,CALLEE:anobject;
+                </p>
+            </div>
+        </section>
+        <div class="bg-gray-700 p-4 rounded-md">
+            <h3 class="font-semibold text-[#e3b70a]"><i class="fas fa-tachometer-alt"></i> Dashboard Overview</h3>
+            <p class="text-gray-300">
+                The Dashboard provides a comprehensive overview of key metrics and comparisons for your architectural analysis.
+                It includes performance, security, reliability, complexity, and maintainability scores, as well as a detailed 
+                comparison of the tactics used in your traces. This tool helps you quickly identify strengths and areas for 
+                improvement in your system’s architecture.
+            </p>
+        </div>
+        
+        <div class="bg-gray-700 p-4 rounded-md">
+            <h3 class="font-semibold text-[#e3b70a]">🗑 History Management</h3>
+            <p class="text-gray-300">
+                The tool saves the most recently analyzed traces. You can delete them at any time.
+            </p>
+        </div>
+   
+        </section>
+
+        <!-- Contact Section -->
+        <section class="text-center">
+            <h2 class="text-2xl font-semibold mb-4 text-[#e3b70a]"><i class="fas fa-envelope"></i> Contact & Support</h2>
+            <p class="text-gray-300 mb-4">If you need assistance, please contact us.</p>
+            <a href="mailto:support@example.com" class="bg-[#e3b70a] text-black px-4 py-2 rounded-md hover:bg-yellow-500">Send an email</a>
+        </section>
+    </div>
+
+    <script>
+        function toggleFAQ(index) {
+            let answers = document.querySelectorAll(".faq-answer");
+            answers[index].classList.toggle("hidden");
+        }
+    </script>
+</body>
+</html>
