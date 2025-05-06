@@ -1,6 +1,4 @@
-/* ==================== */
-/* Global Reset & Basics */
-/* ==================== */
+
 * {
   
     
@@ -9,12 +7,6 @@
     padding: 0;
     box-sizing: border-box;
 }
-
-/* ==================== */
-/* Navigation Bar */
-/* ==================== */
-
-
 
 a {
     text-decoration: none;
@@ -222,11 +214,6 @@ body.dark-mode .buttons-container h3 {
             
       
 
-
-
-
-
-/* FontAwesome Icon Styling */
 .info i {
     font-size: 30px;
     color: white;
@@ -238,19 +225,6 @@ body.dark-mode .buttons-container h3 {
     color: #ffcc00;  /* Highlight color */
     transform: scale(1.1);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-/* Dark Mode */
 body.dark-mode {
     background-color:rgb(23, 23, 23);
     color: white;
@@ -258,14 +232,6 @@ body.dark-mode {
 
 
 
-
-
-
-
-/* Left Side: Icons */
-
-
-/* Right Side: Buttons */
 .navbar-right {
     display: flex;
     align-items: center;
@@ -280,7 +246,6 @@ body.dark-mode {
     transition: color 0.3s ease; /* Smooth color transition */
 }
 
-/* Dark Mode Icon Color */
 .dark-mode .navbar-left i {
     color: #ffffff; /* White color for dark mode */
 }
@@ -292,9 +257,9 @@ body.dark-mode {
     color: #ffbb33; /* Green color on hover */
 }
 
-/* Run Button Styling */
 
-/* Dark/Light Mode Toggle Button Styling */
+
+
 
 
 .mode-toggle-btn:hover {
@@ -302,7 +267,6 @@ body.dark-mode {
 }
 
 
-/* Simple Icon Button */
 
 
 
@@ -338,7 +302,7 @@ body.dark-mode {
     max-width: 100%;
 }
 
-/* Second version adjustments */
+
 .menu-item.alt-version {
     background: rgb(23, 23, 23);
     border: none;
@@ -401,12 +365,11 @@ body.dark-mode {
     border-color: rgba(229, 161, 52, 0.5); /* Highlight border on hover */
 }
 
-/* Optional: Add a smooth transition for the text color on hover */
 .menu-item:hover h1 {
     color: rgba(0, 0, 0, 0.9); /* Darker text on hover for contrast */
 }
 
-/* Optional: Add a subtle animation for the icon on hover */
+
 .menu-item:hover img {
     transform: scale(1.1); /* Slightly enlarge the icon */
     transition: transform 0.3s ease-in-out;
@@ -418,7 +381,7 @@ body.dark-mode {
     gap: 1.125rem; /* 18px (1.125rem) base gap */
     flex-shrink: 0;
     
-    /* Responsive margin using your min() approach */
+    
     margin-left: min(62.5vw, 60rem); /* 62.5% of viewport width, max 60rem (960px) */
     
     /* Responsive adjustments */
@@ -525,10 +488,6 @@ header {
     transform: translateX(5px) scale(0.98); /* Slight press-down effect */
 }
 
-/* Ensure the h1 inside the button looks correct */
-
-/* For WebKit browsers (Chrome, Edge, Safari) */
-/* Icons */
 .menu-item img{
     width: 35px;
     height: 35px;
@@ -638,10 +597,7 @@ left:85%;
     }
 }
  
-        
-        /* Mobile Devices */
- 
-/* File Upload Section */
+      
 .file-upload {
     /* Base Styles */
     margin-bottom: 0.8rem;         /* Use rem for vertical spacing */
@@ -708,7 +664,7 @@ left:85%;
     }
 }
 #code span {
-    font-weight: bold; /* Optional: Make keywords bold */
+    font-weight: bold; 
 }
  
 .action-btn1 {
@@ -803,7 +759,7 @@ left:85%;
     transition: all 0.3s ease;
     
     /* Visual Styling */
-    color: #FFD700; /* Gold color matching your theme */
+    color: #FFD700; 
     font-size: clamp(1.1rem, 1.5vw, 1.3rem); /* Responsive sizing */
     
     /* Positioning */
@@ -914,7 +870,6 @@ left:85%;
     background: rgba(255, 215, 0, 0.2);
   }
   
-  /* États ouverts */
   .category.open .template-buttons {
     display: flex;
   }
@@ -923,7 +878,6 @@ left:85%;
     transform: rotate(90deg);
   }
 
-/* Professional Title - Dynamic Version */
 .trace-proposer-title {
     margin: 1.25rem 0 0.9375rem; /* 20px 0 15px → */
     width: 50%;
@@ -1037,28 +991,6 @@ left:85%;
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* ==================== */
 /* Global Reset & Basics */
 /* ==================== */
@@ -1143,16 +1075,6 @@ left:85%;
       
 
 
- /* Default styles */
- 
-
-  /* XXL Screens (> 1600px) - Default values already good */
- /* Large Desktop (1024-1200px) */
- 
-
-   /* Large Desktop (1024-1200px) */
- 
-   /* Large Desktop (1024-1200px) */
    .dynamic-xxl-screen .output-container {
     left:85%;
     top: 12%;
@@ -1294,7 +1216,7 @@ left:85%;
 .call-entry {
     display: block;
     margin-bottom: 2px;
-    color: #4fc3f7;            /* Light blue for better readability */
+    color: #4fc3f7;
 }
 
 .call-entry:hover {
@@ -1311,8 +1233,7 @@ left:85%;
     padding: 10px;
     border-radius: 5px;
 }#code {
-        /* Preserve original formatting */
-         /* Horizontal scroll for long lines */
+        
     overflow-y: auto;           /* Vertical scroll if needed */
     font-family: 'Courier New', monospace;
     background-color: #222;
@@ -1369,7 +1290,7 @@ left:85%;
         animation: fadeIn 0.6s ease-out;
       }
     
-      /* Professional title styling */
+     
       .tactic-selection-header {
         display: flex;
       
@@ -1463,8 +1384,7 @@ left:85%;
 
       /* Result section styling */
       .result-section {
-         /* Dynamic Sizing */
-        
+         
          
          /* Positioning */
          position: absolute;
@@ -1584,7 +1504,6 @@ left:85%;
             .dropdown:hover .btn-run .caret {
                 transform: rotate(180deg);
             }
-/* Container de sortie - Version optimisée */
 
 .output-container {
     /* Style visuel */
@@ -1811,64 +1730,5 @@ left:85%;
             font-family: 'Consolas', monospace;
             resize: vertical;
         }
-        
-        /* Éditeur avancé - intégré mais caché */
-        #advanced-editor-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.8);
-            z-index: 1000;
-            padding: 20px;
-        }
-        
-        #advanced-editor-container {
-            background: white;
-            border-radius: 10px;
-            height: 90vh;
-            display: flex;
-            flex-direction: column;
-            animation: fadeIn 0.3s;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        /* Éditeur avancé - overlay */
-#advanced-editor-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0,0,0,0.8);
-    z-index: 1000;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Conteneur de l'éditeur avancé */
-#advanced-editor-container {
-    background: white;
-    width: 90%;
-    max-width: 1200px;
-    height: 90vh;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-}
-
-/* Zone de texte de l'éditeur avancé */
-#advanced-editor {
-    flex-grow: 1;
-    padding: 20px;
-    font-family: 'Consolas', monospace;
-    border: none;
-    resize: none;
-    outline: none;
-}
+       
+  
